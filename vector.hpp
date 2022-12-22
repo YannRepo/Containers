@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 
 namespace ft
 {
-	template<typename T,typename Alloc = std::allocator<T> >
+	template<typename T,typename Allocator = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -129,6 +130,83 @@ namespace ft
 
 			};
 
+
+		public:
+			// constructor / destructor
+			vector()
+			{
+				this->_vector_pointer = NULL;
+				this->_vector_size = 0;
+				// this->_vector_capacity = 0;
+
+			}
+			vector(const vector& src)
+			{
+
+			}
+			~vector()
+			{
+				delete this->_vector_pointer;
+				this->_vector_pointer = NULL;
+			}
+
+			// surcharge operateur
+			vector& operator=(const vector& src)
+			{
+				// TBD
+				// this->_vector_size = src._vector_size;
+				// for (size_t i = 0; i < this->_vector_size; i++)
+				// {
+				// 	this->_vector_pointer[i] = src._vector_pointer[i];
+				// }
+				// this->_vector_pointer = src._vector_pointer;
+			}
+			T& operator[](size_t i) const
+			{
+				return (this->_vector_pointer[i]);
+			}
+
+
+			// modifier
+			void	assign(iterator first, iterator last)
+			{
+
+			}
+			void	push_back(const T value)
+			{
+				T*		previous_vector_pointer = this->_vector_pointer;
+				this->_vector_pointer = myAllocator.allocate((_vector_size + 1) * sizeof(T));
+				for (size_t i = 0; i < this->_vector_size; i++)
+					this->_vector_pointer[i] = previous_vector_pointer[i];
+				this->_vector_size += 1;
+				(this->_vector_pointer)[_vector_size - 1] = value;
+				std::cout << "_vector_pointer:"  << (this->_vector_pointer)[_vector_size - 1] << std::endl;
+				delete previous_vector_pointer;
+			}
+			T	pop_back()
+			{
+				T	pop_element = this->_vector_pointer[this->_vector_size - 1];
+				T*		previous_vector_pointer = this->_vector_pointer;
+				this->_vector_pointer = myAllocator.allocate((_vector_size - 1) * sizeof(T));
+				for (size_t i = 0; i < this->_vector_size - 1; i++)
+					this->_vector_pointer[i] = previous_vector_pointer[i];
+				this->_vector_size -= 1;
+				delete previous_vector_pointer;
+				return (pop_element);
+			}
+			// insert	Insert elements (public member function)
+			// erase	Erase elements (public member function)
+			// swap	Swap content (public member function)
+			// clear	Clear content (public member function)
+			// emplace	Construct and insert element (public member function)
+			// emplace_back
+
+		public: // public pour debug TBD repasser en private
+			Allocator myAllocator;
+
+			T*		_vector_pointer;
+			size_t	_vector_size;
+			// size_t	_vector_size_allocated;
 	};
 };
 
