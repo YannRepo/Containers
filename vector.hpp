@@ -13,8 +13,8 @@ namespace ft
 	{
 		public:
 			typedef T										value_type;
-			// typedef Allocator								allocator_type;
-			// typedef std::size_t								size_type;
+			typedef Allocator								allocator_type;
+			typedef std::size_t								size_type;
 			// typedef std::ptrdiff_t							difference_type;
 			// typedef value_type&								reference;
 			// typedef	const value_type&						const_reference;
@@ -130,36 +130,88 @@ namespace ft
 
 			};
 
-
+		// utils
+		public: // publiv pour debug, repasser en private TBD
+			void	check_vector_capacity_and_allocate_and_copy(size_type size)
+			{
+				if (size <= this->_vector_capacity)
+				{
+					return;
+				}
+				else
+				{
+					size_type previous_capacity = _vector_capacity;
+					if (_vector_capacity == 0)
+						_vector_capacity = 1;
+					else
+						_vector_capacity *= 2;
+					value_type* previous_vector = this->_vector_pointer;
+					this->_vector_pointer = this->myAllocator.allocate((size) * sizeof(value_type));
+					copy_vector(previous_capacity, previous_vector, this->_vector_pointer);
+					delete this->_vector_pointer;
+				}
+			}
+			void	copy_vector(size_type len_to_copy, value_type* src,  value_type* dest)
+			{
+				for(size_type i = 0; i < len_to_copy; i++)
+				{
+					dest[i] = src[i];
+				}
+			}
 		public:
 			// constructor / destructor
-			vector()
+			explicit vector (const allocator_type& alloc = allocator_type())
 			{
+				this->myAllocator = alloc;
 				this->_vector_pointer = NULL;
 				this->_vector_size = 0;
-				// this->_vector_capacity = 0;
+				this->_vector_capacity = 0;
+
 
 			}
+			explicit vector (size_type size, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+			{
+				this->myAllocator = alloc;
+				this->_vector_pointer = this->myAllocator.allocate((size) * sizeof(value_type));
+				this->_vector_size = size;
+				this->_vector_capacity = size;
+				for(size_t i = 0; i < size; i++)
+				{
+					this->_vector_pointer[i] = val;
+				}
+			}
+			// TBD
+			// template <class InputIterator>
+			// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+			// {
+				// faire fct difference entre 2 iterateur (fct distance dans iterator)
+			// 	std::cout << "prout2" << std::endl;
+
+			// 	// TBD
+			// }
 			vector(const vector& src)
 			{
-
+				*this = src;
 			}
 			~vector()
 			{
+				std::cout << "destructor" << std::endl;
 				delete this->_vector_pointer;
-				this->_vector_pointer = NULL;
+				// this->_vector_pointer = NULL;
 			}
 
 			// surcharge operateur
 			vector& operator=(const vector& src)
 			{
-				// TBD
-				// this->_vector_size = src._vector_size;
-				// for (size_t i = 0; i < this->_vector_size; i++)
-				// {
-				// 	this->_vector_pointer[i] = src._vector_pointer[i];
-				// }
-				// this->_vector_pointer = src._vector_pointer;
+				// TBD check fct
+				this->myAllocator = src.myAllocator;
+				this->_vector_size = src._vector_size;
+				this->_vector_capacity = src._vector_capacity;
+				this->_vector_pointer = this->myAllocator.allocate((size) * sizeof(value_type));
+				for (size_type i = 0; i < this->_vector_size; i++)
+				{
+					this->_vector_pointer[i] = src._vector_pointer[i];
+				}
 			}
 			T& operator[](size_t i) const
 			{
@@ -170,7 +222,7 @@ namespace ft
 			// modifier
 			void	assign(iterator first, iterator last)
 			{
-
+				//TBD
 			}
 			void	push_back(const T value)
 			{
@@ -206,8 +258,14 @@ namespace ft
 
 			T*		_vector_pointer;
 			size_t	_vector_size;
-			// size_t	_vector_size_allocated;
+			size_t	_vector_capacity;
 	};
+
+	// surcharge affichage // TBD check cas erreur sur class
+	// template<typename T>
+	// const
+
 };
+
 
 #endif
