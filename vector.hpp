@@ -29,6 +29,8 @@ namespace ft
 			// template<typename T>
 			class iterator
 			{
+				typedef T*									pointer;
+
 				// public:
 					// typedef int								difference_type
 				public:
@@ -36,7 +38,11 @@ namespace ft
 					iterator()
 					{
 						this->_pointer = NULL;
-						this->_size = 0;
+						// this->_size = 0;
+					}
+					iterator(pointer vector_pt)
+					{
+						this->_pointer = vector_pointer;
 					}
 					iterator(const iterator& src)
 					{
@@ -125,8 +131,8 @@ namespace ft
 
 
 				public: // public pour debug TBD
-					T*		_pointer;
-					int	_size;
+					pointer		_pointer;
+					int	_size; // TBD a sup
 
 			};
 
