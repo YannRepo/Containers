@@ -25,8 +25,10 @@ namespace ft
 			// typedef std::reverse_iterator<iterator>			reverse_iterator;
 			// typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 
+// ###########################################################################################################
+// #########################################   ITERATOR   ####################################################
+// ###########################################################################################################
 		public:
-			// template<typename T>
 			class iterator
 			{
 				typedef T*									pointer;
@@ -42,7 +44,7 @@ namespace ft
 					}
 					iterator(pointer vector_pt)
 					{
-						this->_pointer = vector_pointer;
+						this->_pointer = vector_pt;
 					}
 					iterator(const iterator& src)
 					{
@@ -85,11 +87,11 @@ namespace ft
 					}
 					bool operator==(const iterator& src)
 					{
-						return (this._pointer == src._pointer);
+						return (this->_pointer == src._pointer);
 					}
 					bool operator!=(const iterator& src)
 					{
-						return (this._pointer != src._pointer);
+						return (this->_pointer != src._pointer);
 					}
 					// bool operator*=(const iterator* src)
 					// {
@@ -136,7 +138,9 @@ namespace ft
 
 			};
 
-		// utils
+// ###########################################################################################################
+// #########################################   UTILS   #######################################################
+// ###########################################################################################################
 		public: // publiv pour debug, repasser en private TBD
 			void	check_vector_capacity_and_allocate_and_copy(size_type size)
 			{
@@ -164,8 +168,19 @@ namespace ft
 					dest[i] = src[i];
 				}
 			}
+
+// ###########################################################################################################
+// #########################################   VECTOR   ######################################################
+// ###########################################################################################################
+// ------------------------------------------ Capacity -------------------------------------------------------		
 		public:
-			// constructor / destructor
+		size_t size()
+		{
+			return (this->_vector_size);
+		}
+		
+// ---------------------------------- constructor / destructor -----------------------------------------------		
+		public:
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				this->myAllocator = alloc;
@@ -213,7 +228,7 @@ namespace ft
 				this->myAllocator = src.myAllocator;
 				this->_vector_size = src._vector_size;
 				this->_vector_capacity = src._vector_capacity;
-				this->_vector_pointer = this->myAllocator.allocate((size) * sizeof(value_type));
+				this->_vector_pointer = this->myAllocator.allocate((_vector_capacity) * sizeof(value_type));
 				for (size_type i = 0; i < this->_vector_size; i++)
 				{
 					this->_vector_pointer[i] = src._vector_pointer[i];
