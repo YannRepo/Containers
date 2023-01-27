@@ -1,0 +1,75 @@
+In C++, iterators are used to navigate through the elements of a container, such as an array, vector, or list. An iterator is an object that can be used to traverse through the elements of a container and access their values.
+
+There are different types of iterators in C++, but the most commonly used are input iterators, output iterators, and forward iterators.
+
+Input iterators allow you to read the elements of a container in a sequential order, but you cannot modify the elements through an input iterator.
+
+Output iterators allow you to write to the elements of a container, but you cannot read from them.
+
+Forward iterators, on the other hand, allow you to both read and write the elements of a container, and can be used to iterate through the container in a sequential order.
+
+To use an iterator, you first need to obtain an iterator object from the container. You can do this by using the container's begin() and end() functions. The begin() function returns an iterator to the first element of the container, while the end() function returns an iterator to one past the last element of the container.
+
+You can then use the iterator to access the elements of the container by dereferencing the iterator using the * operator, and you can move the iterator to the next element in the container by incrementing it using the ++ operator.
+
+For example, to iterate through the elements of an std::vector<int> container, you can do something like this:
+
+Copy code
+std::vector<int> myVector;
+// Fill the vector with some values
+
+// Obtain an iterator to the first element of the vector
+std::vector<int>::iterator it = myVector.begin();
+
+// Iterate through the vector
+while (it != myVector.end()) {
+    // Access the current element of the vector
+    int value = *it;
+    std::cout << value << std::endl;
+
+    // Move the iterator to the next element
+    it++;
+}
+This is the basic usage of iterator in C++ STL, but keep in mind that iterator in c++ is a very powerful tool and it can be used in more complex ways and with different types of container such as associative and unordered container.
+
+
+
+yann.bel@yahoo.com
+I need to re-implement an vector class in C++ but I don't know how to create the iterator. How can I start ? 
+To create an iterator for your custom vector class, you will need to define an iterator class that implements the required functionality. Here are the basic steps you can follow to create an iterator for your custom vector class:
+
+Define the iterator class: Create a new class that will represent your iterator. This class should have a constructor that takes a pointer to the underlying data, and should define the operator* and operator++ operators.
+
+Define the begin() and end() functions: Define two functions called begin() and end() that return an iterator to the first and last elements of the vector, respectively.
+
+Define the iterator type: Define a type called iterator that is an alias for the iterator class you just created.
+
+Example of an iterator class for a custom vector:
+
+Copy code
+template<typename T>
+class MyVector {
+  public:
+    class iterator {
+    public:
+        iterator(T* ptr) : m_ptr(ptr) {}
+        T& operator*() { return *m_ptr; }
+        iterator& operator++() { ++m_ptr; return *this; }
+        bool operator!=(const iterator& other) { return m_ptr != other.m_ptr; }
+    private:
+        T* m_ptr;
+    };
+    iterator begin() { return iterator(m_data); }
+    iterator end() { return iterator(m_data + m_size); }
+  private:
+    T* m_data;
+    size_t m_size;
+};
+And now you can use your custom vector with the STL algorithm and loops like this:
+
+Copy code
+MyVector<int> myvec;
+for(auto i:myvec)
+    std::cout<<i<<std::endl;
+Keep in mind that this is a basic example and you can add more functionality to your iterator, such as const_iterator, reverse_iterator, operator-- etc.
+Also it is important to test your iterator class to make sure it works correctly with different types of inputs and use cases.
