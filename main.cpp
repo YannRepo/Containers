@@ -64,7 +64,10 @@ int main()
 	// #### Constructor check ####
 	// ft::vector<int> vec1(5, 22);
 	ft::vector<int> vec1(5, 22);
-	print_myvector<int>(vec1, 5);
+	vec1.push_back(5);
+	//vec1.pop_back();
+	//vec1.reserve(50);
+	print_myvector<int>(vec1, vec1._vector_size);
 
 	// begin / end -> return un iterator ? = un pointeur ?
 

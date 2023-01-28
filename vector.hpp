@@ -184,7 +184,8 @@ namespace ft
 				this->_vector_capacity = size;
 				for(size_t i = 0; i < size; i++)
 				{
-					this->_vector_pointer[i] = val;
+					this->myAllocator.construct(&_vector_pointer[i], val);
+					//this->_vector_pointer[i] = val;
 				}
 			}
 			// TBD
@@ -233,6 +234,29 @@ namespace ft
 		{
 			return(this->myAllocator.max_size());
 		}
+
+
+		//resize(size_type n, value_type val = value_type())
+		//{
+
+		//}
+
+		void reserve (size_type n)
+		{
+			if(n > _vector_capacity)
+			{
+				value_type* new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type));
+				for (size_t i = 0; i < this->_vector_size; i++)
+				{
+					this->myAllocator.construct(&new_pt_tmp[i], this->_vector_pointer[i]);
+					this->myAllocator.destroy(&this->_vector_pointer[i]);
+				}
+				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity );
+				this->_vector_capacity = n;
+				this->_vector_pointer = new_pt_tmp;
+			}
+		}
+
 		// --- TBD
 		//max_size
 		//resize
@@ -274,25 +298,36 @@ namespace ft
 			}
 			void	push_back(const T value)
 			{
-				T*		previous_vector_pointer = this->_vector_pointer;
-				this->_vector_pointer = myAllocator.allocate((_vector_size + 1) * sizeof(T));
-				for (size_t i = 0; i < this->_vector_size; i++)
-					this->_vector_pointer[i] = previous_vector_pointer[i];
+				//T*		previous_vector_pointer = this->_vector_pointer;
+				if (this->_vector_size + 1 > this->_vector_capacity)
+				{
+					this->reserve(this->_vector_capacity * 2);
+				}
+				this->myAllocator.construct(&this->_vector_pointer[this->_vector_size], value);
 				this->_vector_size += 1;
-				(this->_vector_pointer)[_vector_size - 1] = value;
-				std::cout << "_vector_pointer:"  << (this->_vector_pointer)[_vector_size - 1] << std::endl;
-				delete previous_vector_pointer;
+
+				//this->_vector_pointer = myAllocator.allocate((_vector_size + 1) * sizeof(T));
+				//for (size_t i = 0; i < this->_vector_size; i++)
+				//	this->_vector_pointer[i] = previous_vector_pointer[i];
+				//(this->_vector_pointer)[_vector_size - 1] = value;
+				//std::cout << "_vector_pointer:"  << (this->_vector_pointer)[_vector_size - 1] << std::endl;
+				//this->myAllocator.destroy(&previous_vector_pointer);
 			}
-			T	pop_back()
+			void	pop_back()
 			{
-				T	pop_element = this->_vector_pointer[this->_vector_size - 1];
-				T*		previous_vector_pointer = this->_vector_pointer;
-				this->_vector_pointer = myAllocator.allocate((_vector_size - 1) * sizeof(T));
-				for (size_t i = 0; i < this->_vector_size - 1; i++)
-					this->_vector_pointer[i] = previous_vector_pointer[i];
-				this->_vector_size -= 1;
-				delete previous_vector_pointer;
-				return (pop_element);
+				if (this->_vector_size > 0)
+				{
+					this->myAllocator.destroy(&this->_vector_pointer[this->_vector_size]);
+					this->_vector_size--;
+				}
+				//T	pop_element = this->_vector_pointer[this->_vector_size - 1];
+				//T*		previous_vector_pointer = this->_vector_pointer;
+				//this->_vector_pointer = myAllocator.allocate((_vector_size - 1) * sizeof(T));
+				//for (size_t i = 0; i < this->_vector_size - 1; i++)
+				//	this->_vector_pointer[i] = previous_vector_pointer[i];
+				//this->_vector_size -= 1;
+				//delete previous_vector_pointer;
+				//return (pop_element);
 			}
 			// insert	Insert elements (public member function)
 			// erase	Erase elements (public member function)
