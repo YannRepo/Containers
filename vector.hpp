@@ -15,6 +15,7 @@ namespace ft
 			typedef T										value_type;
 			typedef Allocator								allocator_type;
 			typedef std::size_t								size_type;
+			typedef value_type*								pointer;
 			// typedef std::ptrdiff_t							difference_type;
 			// typedef value_type&								reference;
 			// typedef	const value_type&						const_reference;
@@ -31,7 +32,7 @@ namespace ft
 		public:
 			class iterator
 			{
-				typedef T*									pointer;
+				//typedef T*									pointer;
 
 				// public:
 					// typedef int								difference_type
@@ -74,7 +75,8 @@ namespace ft
 					iterator& operator=(const iterator& src)
 					{
 						this->_pointer = src._pointer;
-						this->_size = src._size;
+						//this->_size = src._size;
+						return (*this);
 					}
 					bool operator==(const iterator& src)
 					{
@@ -84,6 +86,14 @@ namespace ft
 					{
 						return (this->_pointer != src._pointer);
 					}
+					value_type& operator*(void)
+					{
+						return (*this->_pointer);
+					}
+					//value_type& operator*(const iterator& src)
+					//{
+					//	return (*this->_pointer);
+					//}
 					// bool operator*=(const iterator* src)
 					// {
 					// 	return (this._pointer* == src._pointer*);
@@ -105,14 +115,16 @@ namespace ft
 					}
 					iterator& operator++(int)
 					{
-						iterator it_copy = *this;
+						//iterator it_copy = *this;
+						//this->_pointer++;
+						//return (it_copy);
 						this->_pointer++;
-						return (it_copy);
+						return (*this);
 					}
 					iterator& operator--()
 					{
 						this->_pointer--;
-						return(this);
+						return(*this);
 					}
 					iterator& operator--(int)
 					{
@@ -125,7 +137,7 @@ namespace ft
 
 				public: // public pour debug TBD
 					pointer		_pointer;
-					int	_size; // TBD a sup
+					//int	_size; // TBD a sup
 
 			};
 
@@ -213,13 +225,14 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 		iterator begin()
 		{
-			return(iterator(*this));
+			return(iterator(&this->_vector_pointer[0]));
 		}
 		iterator end()
 		{
-			iterator ite = iterator(*this);
-			iterator::advance(&ite, this->_size);
-			return(ite);
+			//iterator ite = iterator(&this->_vector_pointer[0]);
+			//iterator::advance(&ite, this->_vector_size);
+			//return(ite);
+			return (&this->_vector_pointer[this->_vector_size]);
 		}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------------ Capacity -------------------------------------------------------

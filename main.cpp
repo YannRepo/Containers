@@ -3,7 +3,7 @@
 
 // fct debug
 template<typename T>
-void print_myvector(ft::vector<T>& vector_to_print, size_t tmp_nb_value)
+void print_myvector1(ft::vector<T>& vector_to_print, size_t tmp_nb_value)
 {
 	std::cout << "[";
 	for(size_t i = 0; i < tmp_nb_value; i++)
@@ -15,7 +15,21 @@ void print_myvector(ft::vector<T>& vector_to_print, size_t tmp_nb_value)
 	}
 	std::cout << "]" << std::endl;
 }
+template<typename T>
+void print_myvector2(ft::vector<T>& vector_to_print, size_t tmp_nb_value)
+{
+	int tmp;
 
+	std::cout << "[";
+	ft::vector<int>::iterator it;
+	for(it = vector_to_print.begin(); it != vector_to_print.end(); it++)
+	{
+		tmp = *it;
+		std::cout << tmp << ", ";
+	}
+	std::cout << "]" << std::endl;
+
+}
 
 int main()
 {
@@ -67,7 +81,8 @@ int main()
 	vec1.push_back(5);
 	//vec1.pop_back();
 	//vec1.reserve(50);
-	print_myvector<int>(vec1, vec1._vector_size);
+	print_myvector2<int>(vec1, vec1._vector_size);
+
 
 	// begin / end -> return un iterator ? = un pointeur ?
 

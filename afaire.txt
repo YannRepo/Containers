@@ -1,6 +1,6 @@
 *begin
 *end
-assign(int, int)
+assign(int, int) (->reserve)
 capacity
 max_size
 
