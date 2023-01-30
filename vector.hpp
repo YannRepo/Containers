@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-
+// TBD voir comment interdire les modf de variable sur des *const_iterator
 namespace ft
 {
 	template<typename T,typename Allocator = std::allocator<T> >
@@ -17,7 +17,7 @@ namespace ft
 			typedef std::size_t								size_type;
 			typedef value_type*								pointer;
 			// typedef std::ptrdiff_t							difference_type;
-			// typedef value_type&								reference;
+			typedef value_type&								reference;
 			// typedef	const value_type&						const_reference;
 			// typedef Allocator::pointer						pointer;
 			// typedef Allocator::const_pointer				const_pointer;
@@ -29,117 +29,142 @@ namespace ft
 // ###########################################################################################################
 // #########################################   ITERATOR   ####################################################
 // ###########################################################################################################
+	class iterator
+	{
+		// TBD check type def
+		//typedef const T*									const_pointer;
+		typedef T										value_type;
+		typedef T*									pointer;
+		// ligne MI
+			//operator iterator<value_type const>()const{return iterator<value_type const>(_pointer);}
+
+
+
+		// public:
+			// typedef int								difference_type
 		public:
-			class iterator
+			// constructor / detructor
+			iterator()
 			{
-				//typedef T*									pointer;
+				this->_pointer = NULL;
+				// this->_size = 0;
+			}
+			iterator(pointer vector_pt)
+			{
+				this->_pointer = vector_pt;
+			}
+			iterator(const iterator& src)
+			{
+				*this = src;
+			}
+			~iterator(){}
 
-				// public:
-					// typedef int								difference_type
-				public:
-					// constructor / detructor
-					iterator()
-					{
-						this->_pointer = NULL;
-						// this->_size = 0;
-					}
-					iterator(pointer vector_pt)
-					{
-						this->_pointer = vector_pt;
-					}
-					iterator(const iterator& src)
-					{
-						*this = src;
-					}
-					~iterator(){}
+			// // functions
+			void advance(iterator& it, int n)
+			{
+				it._pointer += n;
+			}
+			long distance(iterator first, iterator last)
+			{
+				return (last._pointer - first._pointer);
+			}
+			iterator prev(iterator first, int n)
+			{
+				return(iterator(*this)--);
+			}
+			iterator next(iterator first, int n)
+			{
+				return(iterator(*this)++);
+			}
 
-					// // functions
-					void advance(iterator& it, int n)
-					{
-						it._pointer += n;
-					}
-					long distance(iterator first, iterator last)
-					{
-						return (last._pointer - first._pointer);
-					}
-					iterator prev(iterator first, int n)
-					{
-						return(iterator(*this)--);
-					}
-					iterator next(iterator first, int n)
-					{
-						return(iterator(*this)++);
-					}
-
-					// // operator overload
-					iterator& operator=(const iterator& src)
-					{
-						this->_pointer = src._pointer;
-						//this->_size = src._size;
-						return (*this);
-					}
-					bool operator==(const iterator& src)
-					{
-						return (this->_pointer == src._pointer);
-					}
-					bool operator!=(const iterator& src)
-					{
-						return (this->_pointer != src._pointer);
-					}
-					value_type& operator*(void)
-					{
-						return (*this->_pointer);
-					}
-					//value_type& operator*(const iterator& src)
-					//{
-					//	return (*this->_pointer);
-					//}
-					// bool operator*=(const iterator* src)
-					// {
-					// 	return (this._pointer* == src._pointer*);
-					// }
-					// bool operator*!=(const iterator* src)
-					// {
-					// 	return (this._pointer* != src._pointer*)
-					// }
-					// iterator& operator->(const iterator& src)
-					// {
-					// 	// TBD
-					// }
-					//*a = t
-					//*a++
-					iterator& operator++()
-					{
-						this->_pointer++;
-						return(this);
-					}
-					iterator& operator++(int)
-					{
-						//iterator it_copy = *this;
-						//this->_pointer++;
-						//return (it_copy);
-						this->_pointer++;
-						return (*this);
-					}
-					iterator& operator--()
-					{
-						this->_pointer--;
-						return(*this);
-					}
-					iterator& operator--(int)
-					{
-						iterator it_copy = *this;
-						this->_pointer--;
-						return (it_copy);
-					}
-					// + - ?
+			// // operator overload
+			iterator& operator=(const iterator& src)
+			{
+				this->_pointer = src._pointer;
+				//this->_size = src._size;
+				return (*this);
+			}
+			bool operator==(const iterator& src)
+			{
+				return (this->_pointer == src._pointer);
+			}
+			bool operator!=(const iterator& src)
+			{
+				return (this->_pointer != src._pointer);
+			}
+			value_type& operator*(void) const
+			{
+				return (*this->_pointer);
+			}
+			//value_type& operator*(const iterator& src)
+			//{
+			//	return (*this->_pointer);
+			//}
+			// bool operator*=(const iterator* src)
+			// {
+			// 	return (this._pointer* == src._pointer*);
+			// }
+			// bool operator*!=(const iterator* src)
+			// {
+			// 	return (this._pointer* != src._pointer*)
+			// }
+			// iterator& operator->(const iterator& src)
+			// {
+			// 	// TBD
+			// }
+			//*a = t
+			//*a++
+			iterator& operator++()
+			{
+				this->_pointer++;
+				return(this);
+			}
+			iterator& operator++(int)
+			{
+				//iterator it_copy = *this;
+				//this->_pointer++;
+				//return (it_copy);
+				this->_pointer++;
+				return (*this);
+			}
+			iterator& operator--()
+			{
+				this->_pointer--;
+				return(*this);
+			}
+			iterator& operator--(int)
+			{
+				iterator it_copy = *this;
+				this->_pointer--;
+				return (it_copy);
+			}
+			iterator&  operator+(int n)
+			{
+				// TBD voir si il faut ajouter un check sur la taille du vector
+				advance(*this, n);
+				return (*this);
+			}
+			iterator&  operator-(int n)
+			{
+				// TBD voir si il faut ajouter un check a 0
+				advance(*this, -n);
+				return (*this);
+			}
+			// + - ?
 
 
-				public: // public pour debug TBD
-					pointer		_pointer;
-					//int	_size; // TBD a sup
+		public: // public pour debug TBD
+			pointer		_pointer;
+			//int	_size; // TBD a sup
 
-			};
+	};
+
+public:
+		typedef iterator const				const_iterator;
+
+	
+	//		//typedef iterator				iterator;
+
 
 // ###########################################################################################################
 // #########################################   UTILS   #######################################################
@@ -227,6 +252,12 @@ namespace ft
 		{
 			return(iterator(&this->_vector_pointer[0]));
 		}
+		// TBD check si on laisse des const partout
+		const_iterator begin() const
+		{
+			return(const_iterator(&this->_vector_pointer[0]));
+		}
+
 		iterator end()
 		{
 			//iterator ite = iterator(&this->_vector_pointer[0]);
@@ -238,7 +269,7 @@ namespace ft
 // ------------------------------------------ Capacity -------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 		public:
-		size_t size()
+		size_t size() const
 		{
 			return (this->_vector_size);
 		}
@@ -253,7 +284,10 @@ namespace ft
 		//{
 
 		//}
-
+		size_type capacity() const
+		{
+			return(this->_vector_capacity);
+		}
 		void reserve (size_type n)
 		{
 			if(n > _vector_capacity)
@@ -302,12 +336,33 @@ namespace ft
 				return (this->_vector_pointer[i]);
 			}
 
-
-			// modifier
 			void	assign(iterator first, iterator last)
 			{
+				iterator it;
+				size_t size;
+				size = 0;
+				for(it = first; it != last; it++)
+				{
+					size++;
+				}
+				this->reserve(size);
+				this->_vector_size = size;
+				size_t i = 0;
+				for(it = first; it != last; it++)
+				{
+					this->myAllocator.construct(&this->_vector_pointer[i], *it);
+					i++;
+				}				
+			}
 				
-				//TBD
+			void assign (size_type n, const value_type& val)
+			{
+				this->reserve(n);
+				this->_vector_size = n;
+				for (size_t i = 0; i < n; i++)
+				{
+					this->myAllocator.construct(&this->_vector_pointer[i], val);
+				}
 			}
 			void	push_back(const T value)
 			{

@@ -1,10 +1,11 @@
 *begin
 *end
-assign(int, int) (->reserve)
-capacity
-max_size
+*assign(int, int) (->reserve)
+*capacity
+*max_size
 
-
+*operateur '+' sur iterator
+const_iterator
 check cas erreur assign
 
 
