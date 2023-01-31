@@ -82,12 +82,12 @@ int main()
 
 	std::cout << "###########  Constructor  ##########" << std::endl;
 	std::cout << "-----------  range  ----------------" << std::endl;
-	//ft::vector<int> vec_constr_range(4, 2);
-	//vec_constr_range.push_back(3);
-	//vec_constr_range.push_back(1);
-	//print_myvector2<int>(vec_constr_range);
-	//ft::vector<int> vec_constr_range_copy(vec_constr_range.begin(), vec_constr_range.end()-1);
-	//print_myvector2<int>(vec_constr_range_copy);
+	ft::vector<int> vec_constr_range(2, 2);
+	vec_constr_range.push_back(3);
+	vec_constr_range.push_back(1);
+	print_myvector2<int>(vec_constr_range);
+	ft::vector<int> vec_constr_range_copy(vec_constr_range.begin(), vec_constr_range.end());
+	print_myvector2<int>(vec_constr_range_copy);
 
 
 	
@@ -117,6 +117,8 @@ int main()
 	std::cout << "###########  ITERATOR  ###########" << std::endl;
 	
 	//const iterator
+	std::cout << "-----  const iterator  -----" << std::endl;
+
 	ft::vector<int> vec2(5, 22);
 	ft::vector<int>::const_iterator it = vec2.begin();
 	//*it = 4; // decommenter cette ligne doit generer une erreur comme pour la std ci-dessous
@@ -127,7 +129,7 @@ int main()
 
 
 	// operator+
-	std::cout << "Operator+" << std::endl;
+	std::cout << "-----  operator+  -----" << std::endl;
 	ft::vector<int> vec_iterator_operator_plus(1, 12);
 	vec_iterator_operator_plus.push_back(5);
 	vec_iterator_operator_plus.push_back(6);

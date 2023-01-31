@@ -56,7 +56,7 @@ namespace ft
 			}
 			iterator(const iterator &src)
 			{
-				*this = src;
+				this->_pointer = src._pointer;
 			}
 			~iterator() {}
 
@@ -174,8 +174,9 @@ namespace ft
 			}
 			const_iterator(const iterator &src)
 			{
-				*this = src;
+				this->_pointer = src._pointer;
 			}
+			// TBD destruct ?
 			~const_iterator() {}
 			// surcharge operateur * pour return const
 			const value_type &operator*(void) const
@@ -258,13 +259,19 @@ namespace ft
 			}
 		}
 		// TBD
-		template <class InputIterator>
-		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+		//template <class InputIterator>
+		vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
 		 {
+			size_t size;
 			this->myAllocator = alloc;
-			this->_vector_size = distance(first, last);
-			reserve(this->_vector_size);
-			this->_vector_capacity = _vector_size;
+			size = distance(first, last);
+			this->_vector_capacity = 0;
+			this->_vector_size = 0;
+			this->_vector_pointer = NULL;
+			reserve(size);			
+			//this->_vector_size = 0;
+			//this->_vector_capacity = size;
+
 			//InputIterator it = first;
 			//while (it != last)
 			//{
@@ -277,14 +284,12 @@ namespace ft
 			while (first != last)
 			{
 				i++;
-				this->myAllocator.construct(&this->_vector_pointer[i], *first);
+				//this->myAllocator.construct(&this->_vector_pointer[i], *first);
 
-				//push_back(*first);
+				push_back(*first);
 				first++;
 			}
 
-
-		 	std::cout << "prout2" << std::endl;
 
 		 	// TBD
 		 }
@@ -344,17 +349,21 @@ namespace ft
 		{
 			return (this->_vector_capacity);
 		}
-		void reserve(size_type n)
+		void reserve(size_type n) // TBD a revoir car met des 0 en trop dans test de constructor range ?
 		{
 			if (n > _vector_capacity)
 			{
 				value_type *new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type));
-				for (size_t i = 0; i < this->_vector_size; i++)
+				if (this->_vector_size > 0)
 				{
-					this->myAllocator.construct(&new_pt_tmp[i], this->_vector_pointer[i]);
-					this->myAllocator.destroy(&this->_vector_pointer[i]);
+					for (size_t i = 0; i < this->_vector_size; i++)
+					{
+						this->myAllocator.construct(&new_pt_tmp[i], this->_vector_pointer[i]);
+						this->myAllocator.destroy(&this->_vector_pointer[i]);
+					}
+					if (this->_vector_pointer) // peut etre inutil car redondant avec test size > 0. Mais a garder au cas ou pour le vecteur est vide
+						this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 				}
-				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 				this->_vector_capacity = n;
 				this->_vector_pointer = new_pt_tmp;
 			}
