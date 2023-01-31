@@ -80,6 +80,20 @@ int main()
 
 	// std::cout << "my_vec:"  << my_vec._vector_pointer[4] << std::endl;
 
+	std::cout << "###########  Constructor  ##########" << std::endl;
+	std::cout << "-----------  range  ----------------" << std::endl;
+	//ft::vector<int> vec_constr_range(4, 2);
+	//vec_constr_range.push_back(3);
+	//vec_constr_range.push_back(1);
+	//print_myvector2<int>(vec_constr_range);
+	//ft::vector<int> vec_constr_range_copy(vec_constr_range.begin(), vec_constr_range.end()-1);
+	//print_myvector2<int>(vec_constr_range_copy);
+
+
+	
+
+
+
 	std::cout << "###########  VECTOR  ##########" << std::endl;
 	// #### Constructor check ####
 	// ft::vector<int> vec1(5, 22);

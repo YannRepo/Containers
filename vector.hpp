@@ -16,7 +16,7 @@ namespace ft
 		typedef Allocator									allocator_type;
 		typedef std::size_t									size_type;
 		typedef value_type									*pointer;
-		// typedef std::ptrdiff_t							difference_type;
+		typedef std::ptrdiff_t								difference_type;
 		typedef value_type&									reference;
 		typedef	const value_type&							const_reference;
 		// typedef Allocator::pointer						pointer;
@@ -65,10 +65,11 @@ namespace ft
 			{
 				it._pointer += n;
 			}
-			long distance(iterator first, iterator last)
-			{
-				return (last._pointer - first._pointer);
-			}
+			// fct distance dans les utils
+			//difference_type distance(iterator first, iterator last)
+			//{
+			//	return (last._pointer - first._pointer);
+			//}
 			iterator prev(iterator first, int n)
 			{
 				return (iterator(*this)--);
@@ -218,6 +219,17 @@ namespace ft
 				dest[i] = src[i];
 			}
 		}
+		template <class InpputIterator>
+		difference_type distance(InpputIterator first, InpputIterator last)
+		{
+			difference_type distance = 0;
+			while (first != last)
+			{
+				distance++;
+				first++;
+			}
+			return (distance);
+		}
 
 	// ###########################################################################################################
 	// #########################################   VECTOR   ######################################################
@@ -246,14 +258,36 @@ namespace ft
 			}
 		}
 		// TBD
-		// template <class InputIterator>
-		// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-		// {
-		// faire fct difference entre 2 iterateur (fct distance dans iterator)
-		// 	std::cout << "prout2" << std::endl;
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+		 {
+			this->myAllocator = alloc;
+			this->_vector_size = distance(first, last);
+			reserve(this->_vector_size);
+			this->_vector_capacity = _vector_size;
+			//InputIterator it = first;
+			//while (it != last)
+			//{
+			//	this->_vector_size++;
+			//}
 
-		// 	// TBD
-		// }
+
+			//it = first;
+			size_t i = 0;
+			while (first != last)
+			{
+				i++;
+				this->myAllocator.construct(&this->_vector_pointer[i], *first);
+
+				//push_back(*first);
+				first++;
+			}
+
+
+		 	std::cout << "prout2" << std::endl;
+
+		 	// TBD
+		 }
 		vector(const vector &src)
 		{
 			*this = src;
@@ -335,7 +369,7 @@ namespace ft
 		// X shrink_to_fit-- (pas a faire car c++11)
 
 		// -----------------------------------------------------------------------------------------------------------
-		// ------------------------------------------ Modifier -------------------------------------------------------
+		// ------------------------------------------ Element access -------------------------------------------------------
 		// -----------------------------------------------------------------------------------------------------------
 		reference operator[](size_t n)
 		{
@@ -345,7 +379,7 @@ namespace ft
 		{
 			return (this->_vector_pointer[n]);
 		}
-
+		// TBD changer check ppour prendre >0 (faire fct in range)
 		reference at(size_type n)
 		{
 			if (n >= this->size())
