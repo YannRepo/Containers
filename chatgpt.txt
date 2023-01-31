@@ -73,3 +73,64 @@ for(auto i:myvec)
     std::cout<<i<<std::endl;
 Keep in mind that this is a basic example and you can add more functionality to your iterator, such as const_iterator, reverse_iterator, operator-- etc.
 Also it is important to test your iterator class to make sure it works correctly with different types of inputs and use cases.
+
+####################################################################################################################################################################################
+
+How can I implement a const_iterator from a vector iterator in c++  ?
+You can implement a const_iterator from a vector iterator by defining a class that inherits from vector<T>::iterator and overrides the reference operator (operator*) to return a const reference.
+
+Here's an example:
+
+cpp
+Copy code
+template <typename T>
+class VectorConstIterator : public std::vector<T>::iterator {
+ public:
+  using base = typename std::vector<T>::iterator;
+
+  VectorConstIterator(base it) : base(it) {}
+
+  const T& operator*() const {
+    return base::operator*();
+  }
+};
+You can then use this class to create a const_iterator:
+
+c
+Copy code
+std::vector<int> v{1, 2, 3};
+VectorConstIterator<int> it(v.begin());
+const int& i = *it;
+
+------------------------------------------------------------------------------------------------------------------
+
+CONTEXT: with this method, the begin function does not work because it return a iterator and not a const_iterator (the error message is  error: no viable conversion from 'ft::vector<int>::iterator' to 'ft::vector<int>::const_iterator'). 
+QUESTION: How can I fix this error ? I would like that the function begin works with both iterators.
+
+To make the begin function work with both iterator and const_iterator, you can provide two begin functions, one returning an iterator and the other returning a const_iterator. You can do this by using a typedef for each type, and then providing two begin functions, each using a different type:
+
+cpp
+Copy code
+template <typename T>
+class Vector {
+ public:
+  typedef typename std::vector<T>::iterator iterator;
+  typedef typename std::vector<T>::const_iterator const_iterator;
+
+  iterator begin() {
+    return data_.begin();
+  }
+  const_iterator begin() const {
+    return data_.begin();
+  }
+  // ...
+ private:
+  std::vector<T> data_;
+};
+With this implementation, you can use begin with either an iterator or a const_iterator:
+
+java
+Copy code
+Vector<int> v;
+Vector<int>::iterator it = v.begin();
+Vector<int>::const_iterator cit = v.begin();

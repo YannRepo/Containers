@@ -33,18 +33,7 @@ void print_myvector2(ft::vector<T>& vector_to_print)
 
 int main()
 {
-	ft::vector<int> vec2(5, 22);
-	ft::vector<int>::const_iterator it = vec2.begin();
-	it = vec2.begin();
-	*it = 4;
-	//std::cout << (*it) << std::endl;
-	//it = vec2.begin();
-	std::vector<int> vec3(5, 22);
 
-	std::vector<int>::const_iterator it2;
-	// = vec3.begin();
-	it2 = vec3.begin();
-	*it2 = 4;
 
 	//ft::vector<int>::ft::vector_iterator<int> it;
 	//ft::vector_iterator<int> it;
@@ -113,6 +102,16 @@ int main()
 	// ##############################   Iterator   #################################3
 	std::cout << "###########  ITERATOR  ###########" << std::endl;
 	
+	//const iterator
+	ft::vector<int> vec2(5, 22);
+	ft::vector<int>::const_iterator it = vec2.begin();
+	//*it = 4; // decommenter cette ligne doit generer une erreur comme pour la std ci-dessous
+
+	std::vector<int> vec3(5, 22);
+	std::vector<int>::const_iterator it2 = vec3.begin();
+	//*it2 = 4; 
+
+
 	// operator+
 	std::cout << "Operator+" << std::endl;
 	ft::vector<int> vec_iterator_operator_plus(1, 12);
