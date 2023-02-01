@@ -1,9 +1,12 @@
 #ifndef VECTOR_HPP
-#define VECTOR_HPP
+# define VECTOR_HPP
 
-#include <iostream>
-#include <vector>
-#include <memory>
+# include <iostream>
+# include <vector>
+# include <memory>
+
+# include "is_integral.hpp"
+# include "enable_if.hpp"
 
 // TBD voir comment interdire les modf de variable sur des *const_iterator
 namespace ft
@@ -258,10 +261,12 @@ namespace ft
 				// this->_vector_pointer[i] = val;
 			}
 		}
-		// TBD
-		//template <class InputIterator>
-		vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
-		 {
+		// version simplifiee
+		//vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		{
 			size_t size;
 			this->myAllocator = alloc;
 			size = distance(first, last);
@@ -269,30 +274,14 @@ namespace ft
 			this->_vector_size = 0;
 			this->_vector_pointer = NULL;
 			reserve(size);			
-			//this->_vector_size = 0;
-			//this->_vector_capacity = size;
-
-			//InputIterator it = first;
-			//while (it != last)
-			//{
-			//	this->_vector_size++;
-			//}
-
-
-			//it = first;
 			size_t i = 0;
 			while (first != last)
 			{
 				i++;
-				//this->myAllocator.construct(&this->_vector_pointer[i], *first);
-
 				push_back(*first);
 				first++;
 			}
-
-
-		 	// TBD
-		 }
+		}
 		vector(const vector &src)
 		{
 			*this = src;
@@ -448,7 +437,9 @@ namespace ft
 			return (*this);
 		}
 
-		void assign(iterator first, iterator last)
+		template <class InputIterator>  
+		void assign(InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			iterator it;
 			size_t size;

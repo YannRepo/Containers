@@ -8,6 +8,8 @@ SRCS += main.cpp
 OBJS = ${SRCS:.cpp=.o}
 
 HEADER += vector.hpp
+HEADER += is_integral.hpp
+HEADER += enable_if.hpp
 
 INCLUDES_DIR =
 

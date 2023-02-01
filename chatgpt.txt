@@ -134,3 +134,19 @@ Copy code
 Vector<int> v;
 Vector<int>::iterator it = v.begin();
 Vector<int>::const_iterator cit = v.begin();
+
+------------------------------------------------------------------------------------------------------------------
+
+Explain me std::is_integral 
+
+std::is_integral is a type trait in the C++ Standard Library that determines if a given type is an integral type, i.e., it is one of the following: bool, char, signed char, unsigned char, short, unsigned short, int, unsigned int, long, unsigned long, long long, unsigned long long. It is defined in the <type_traits> header.
+
+This type trait can be useful in various template metaprogramming contexts, such as SFINAE, where the presence or absence of a particular type trait can be used to conditionally enable or disable a function template.
+
+------------------------------------------------------------------------------------------------------------------
+
+what is a type_trait in c++
+
+In C++, a type trait is a compile-time construct that provides information about the properties of a type. Type traits are defined in the C++ Standard Library as a series of templates that can be used to perform type-based computations and tests. For example, the std::is_integral type trait can be used to determine if a type is an integral type (such as int or bool) or not, and the std::remove_pointer type trait can be used to remove the pointer type from a type, leaving just the underlying object type. Type traits can be used to perform type-based metaprogramming, which is a technique for writing programs that generate code at compile-time.
+
+

@@ -1,11 +1,10 @@
-*begin
-*end
-*assign(int, int) (->reserve)
-*capacity
-*max_size
+dernier constructor vector (copy)
+assign
+insert
+operator = pour iterator
+operator != pour iterator
 
-*operateur '+' sur iterator
-const_iterator
+
 check cas erreur assign
 
 

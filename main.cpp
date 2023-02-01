@@ -1,5 +1,59 @@
 #include <vector>
 #include "vector.hpp"
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+
+// print title tool
+# define COLOR_NORMAL  "\x1B[0m"
+# define COLOR_RED  "\x1B[31m"
+# define COLOR_GREEN  "\x1B[32m"
+# define COLOR_YELLOW  "\x1B[33m"
+# define COLOR_BLUE  "\x1B[34m"
+# define COLOR_MAGENTA  "\x1B[35m"
+# define COLOR_CYAN  "\x1B[36m"
+# define COLOR_WHITE  "\x1B[37m"
+
+# define DEBUG_WIDTH 50
+
+
+void print_title_1(std::string str)
+{
+	int width = DEBUG_WIDTH;
+	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
+	std::cout <<std::endl;
+	std::cout << COLOR_GREEN;
+	std::cout << std::setfill('#') << std::setw(width) << "" << std::endl;
+	std::cout << std::setfill('#') << std::setw(fill) << "";
+	std::cout << "  " + str + "  ";
+	std::cout << std::setfill('#') << std::setw(fill) << "" << std::endl;
+	std::cout << std::setfill('#') << std::setw(width) << "";
+	std::cout << COLOR_NORMAL <<std::endl;
+}
+
+void print_title_2(std::string str)
+{
+	int width = DEBUG_WIDTH;
+	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
+	std::cout <<std::endl;
+	std::cout << COLOR_MAGENTA;
+	std::cout << std::setfill('*') << std::setw(fill) << "";
+	std::cout << "  " + str + "  ";
+	std::cout << std::setfill('*') << std::setw(fill) << "";
+	std::cout << COLOR_NORMAL <<std::endl;
+}
+
+void print_title_3(std::string str)
+{
+	int width = DEBUG_WIDTH;
+	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
+	std::cout << COLOR_BLUE;
+	std::cout << std::setfill('-') << std::setw(fill) << "";
+	std::cout << "  " + str + "  ";
+	std::cout << std::setfill('-') << std::setw(fill) << "";
+	std::cout << COLOR_NORMAL <<std::endl;
+}
 
 // fct debug
 template<typename T>
@@ -28,7 +82,6 @@ void print_myvector2(ft::vector<T>& vector_to_print)
 		std::cout << tmp << ", ";
 	}
 	std::cout << "]" << std::endl;
-
 }
 
 int main()
@@ -80,22 +133,11 @@ int main()
 
 	// std::cout << "my_vec:"  << my_vec._vector_pointer[4] << std::endl;
 
-	std::cout << "###########  Constructor  ##########" << std::endl;
-	std::cout << "-----------  range  ----------------" << std::endl;
-	ft::vector<int> vec_constr_range(2, 2);
-	vec_constr_range.push_back(3);
-	vec_constr_range.push_back(1);
-	print_myvector2<int>(vec_constr_range);
-	ft::vector<int> vec_constr_range_copy(vec_constr_range.begin(), vec_constr_range.end());
-	print_myvector2<int>(vec_constr_range_copy);
-
-
-	
-
-
-
-	std::cout << "###########  VECTOR  ##########" << std::endl;
+	print_title_1("VECTOR");
 	// #### Constructor check ####
+	print_title_2("Constructor");
+	
+	print_title_3("Range avec 2 int");
 	// ft::vector<int> vec1(5, 22);
 	ft::vector<int> vec1(5, 22);
 	vec1.push_back(5);
@@ -103,22 +145,32 @@ int main()
 	//vec1.reserve(50);
 	print_myvector2<int>(vec1);
 
+	print_title_2("Range avec iterateurs");
+	ft::vector<int> vec_constr_range(2, 2);
+	vec_constr_range.push_back(3);
+	vec_constr_range.push_back(1);
+	print_myvector2<int>(vec_constr_range);
+	ft::vector<int> vec_constr_range_copy(vec_constr_range.begin(), vec_constr_range.end());
+	print_myvector2<int>(vec_constr_range_copy);
+
+	print_title_2("Assign");
+
 	// test assign A
+	print_title_3("Range avec 2 int");
 	ft::vector<int> vec_assign_A(3, 22);
 	vec_assign_A.assign(4, 3);
 	print_myvector2<int>(vec_assign_A);
 
 	// test assign B
+	print_title_2("Range avec iterateurs");
 	ft::vector<int> vec_assign_B(2, 1);
 	vec_assign_B.assign(vec_assign_A.begin(), vec_assign_A.end());
 	print_myvector2<int>(vec_assign_B);
 
 	// ##############################   Iterator   #################################3
-	std::cout << "###########  ITERATOR  ###########" << std::endl;
-	
+	print_title_1("ITERATOR");	
 	//const iterator
-	std::cout << "-----  const iterator  -----" << std::endl;
-
+	print_title_2("Const iterator");	
 	ft::vector<int> vec2(5, 22);
 	ft::vector<int>::const_iterator it = vec2.begin();
 	//*it = 4; // decommenter cette ligne doit generer une erreur comme pour la std ci-dessous
@@ -129,7 +181,7 @@ int main()
 
 
 	// operator+
-	std::cout << "-----  operator+  -----" << std::endl;
+	print_title_2("operator+");	
 	ft::vector<int> vec_iterator_operator_plus(1, 12);
 	vec_iterator_operator_plus.push_back(5);
 	vec_iterator_operator_plus.push_back(6);
