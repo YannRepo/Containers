@@ -38,8 +38,8 @@ namespace ft
 		{
 			// TBD check type def
 			// typedef const T*									const_pointer;
-			typedef T value_type;
-			typedef T *pointer;
+			typedef T											value_type;
+			typedef T*											pointer;
 
 			// ligne MI
 			// operator iterator<value_type const>()const{return iterator<value_type const>(_pointer);}
@@ -97,7 +97,7 @@ namespace ft
 			{
 				return (this->_pointer != src._pointer);
 			}
-			value_type &operator*(void) const
+			value_type& operator*(void) const
 			{
 				return (*this->_pointer);
 			}
@@ -124,20 +124,18 @@ namespace ft
 				this->_pointer++;
 				return (*this);
 			}
-			iterator &operator++(int)
+			iterator operator++(int)
 			{
-				// iterator it_copy = *this;
-				// this->_pointer++;
-				// return (it_copy);
+				iterator it_copy = *this;
 				this->_pointer++;
-				return (*this);
+				return (it_copy);
 			}
 			iterator &operator--()
 			{
 				this->_pointer--;
 				return (*this);
 			}
-			iterator &operator--(int)
+			iterator operator--(int)
 			{
 				iterator it_copy = *this;
 				this->_pointer--;
@@ -340,6 +338,9 @@ namespace ft
 		}
 		void reserve(size_type n) // TBD a revoir car met des 0 en trop dans test de constructor range ?
 		{
+			// a ajouter (ligne issues du .h de la std)
+			//if (__n > this->max_size())
+			//__throw_length_error(__N("vector::reserve"));
 			if (n > _vector_capacity)
 			{
 				value_type *new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type));
@@ -500,12 +501,47 @@ namespace ft
 			// delete previous_vector_pointer;
 			// return (pop_element);
 		}
-		// insert	Insert elements (public member function)
+
+
+		iterator insert (iterator position, const value_type& val)
+		{
+			// en cours
+			std::cout << "position" << *position << std::endl;
+			if (this->_vector_size + 1 > this->_vector_capacity)
+			{
+				this->reserve(this->_vector_capacity * 2);
+			}
+			std::cout << "position" << *position << std::endl;
+
+			//iterator it_end = this->end() - 1;
+			//while (it_end != position)
+			//{
+			//	std::cout << "it_end" << *it_end << std::endl;
+			//	std::cout << "position" << *position << std::endl;
+
+			//	*it_end = *(it_end - 1);
+			//	it_end--;
+			//}
+			//*it_end = val;
+			return (position);
+		}
+
+		void insert (iterator position, size_type n, const value_type& val)
+		{
+			// TBD
+			
+		}
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		{
+			// TBD
+		}
+
 		// erase	Erase elements (public member function)
 		// swap	Swap content (public member function)
-		// clear	Clear content (public member function)
-		// emplace	Construct and insert element (public member function)
-		// emplace_back
+		// clear	Clear content (public member function
 
 	public: // public pour debug TBD repasser en private
 		Allocator myAllocator;
@@ -513,6 +549,11 @@ namespace ft
 		T *_vector_pointer;
 		size_t _vector_size;
 		size_t _vector_capacity;
+
+		// ajouter ?
+		//_start
+		//_finish
+		//_end_of_storage
 	};
 
 	// surcharge affichage // TBD check cas erreur sur class

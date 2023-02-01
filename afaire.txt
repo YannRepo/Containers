@@ -1,5 +1,5 @@
 dernier constructor vector (copy)
-assign
+*assign
 insert
 operator = pour iterator
 operator != pour iterator

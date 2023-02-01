@@ -167,6 +167,22 @@ int main()
 	vec_assign_B.assign(vec_assign_A.begin(), vec_assign_A.end());
 	print_myvector2<int>(vec_assign_B);
 
+	// test insert
+	print_title_2("Insert");
+	print_title_3("position + val");
+	ft::vector<int> vec_insert_A(4, 1);
+	ft::vector<int>::iterator position = vec_insert_A.begin();
+	print_myvector2<int>(vec_insert_A);
+	std::cout << "position" << *position << std::endl;
+
+	vec_insert_A.insert(position, 5);
+	//print_myvector2<int>(vec_insert_A);
+
+
+
+
+
+
 	// ##############################   Iterator   #################################3
 	print_title_1("ITERATOR");	
 	//const iterator
