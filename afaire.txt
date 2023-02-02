@@ -1,8 +1,11 @@
+resize
+clear
+
 dernier constructor vector (copy)
-*assign
-insert
 operator = pour iterator
 operator != pour iterator
+operator + / - pour iterator avec un iterator (git julia)
+
 
 
 check cas erreur assign

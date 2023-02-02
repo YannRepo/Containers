@@ -162,7 +162,10 @@ namespace ft
 				return (iterator(this->_pointer - n));
 
 			}
-			// + - ?
+			reference operator[](int n)
+		{
+			return (*(this->_pointer + n));
+		}
 
 		public: // public pour debug TBD
 			pointer _pointer;
@@ -337,13 +340,32 @@ namespace ft
 			return (this->myAllocator.max_size());
 		}
 
-		// resize(size_type n, value_type val = value_type())
-		//{
-
-		//}
+		void resize(size_type n, value_type val = value_type())
+		{
+			if (n > max_size())
+				throw (std::length_error("vector::resize"));
+			if (n < this->_vector_size)
+			{
+				size_type i = n;
+				while (i < this->_vector_size)
+				{
+					this->myAllocator.destroy(&this->_vector_pointer[i]);
+					i++;
+				}
+				this->_vector_size = n;
+			}
+			else
+			{
+				this->insert(this->end(), n - this->_vector_size, val);
+			}
+		}
 		size_type capacity() const
 		{
 			return (this->_vector_capacity);
+		}
+		bool empty() const
+		{
+			return (this->_vector_size == 0);
 		}
 		void reserve(size_type n)
 		{
@@ -551,13 +573,16 @@ namespace ft
 		{
 			difference_type insertion_distance = distance(this->begin(), position);
 			difference_type insertion_size = distance(first, last);
- 
+ 			if (insertion_size == 0)
+				return;
+
 			if (this->_vector_size + this->distance(first, last) > this->_vector_capacity)
 			{
-				if (this->_vector_capacity == 0)
-					this->reserve(1);
-				else
-					this->reserve(this->_vector_capacity * 2);
+				this->reserve(this->_vector_size + this->distance(first, last));
+				//if (this->_vector_capacity == 0)
+				//	this->reserve(1);
+				//else
+				//	this->reserve(this->_vector_capacity * 2);
 			}
 			this->_vector_size += insertion_size;
 			// copie des valeurs apres position, a la fin du vecteur
@@ -577,6 +602,11 @@ namespace ft
 				it++;
 				first++;
 			}
+		}
+
+		void clear()
+		{
+			this->resize(0);
 		}
 
 		// erase	Erase elements (public member function)

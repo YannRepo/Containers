@@ -84,57 +84,24 @@ void print_myvector2(ft::vector<T>& vector_to_print)
 	std::cout << "]" << std::endl;
 }
 
+template<typename T>
+void print_size_capacity(ft::vector<T>& vector_to_print)
+{
+	std::cout << "size " << vector_to_print.size() << " - capacity " << vector_to_print.capacity() << std::endl;
+
+}
+
+// ###########################################################################################################
+// #########################################   DEBUT MAIN   #######################################################
+// ###########################################################################################################
+
+
 int main()
 {
-
-
-	//ft::vector<int>::ft::vector_iterator<int> it;
-	//ft::vector_iterator<int> it;
-	
-	// ft::vector<int>::iterator it;
-	// int* tab = new int[4];
-	// tab[0] = 0;
-	// tab[1] = 11;
-	// tab[2] = 22;
-	// tab[3] = 33;
-	// it._pointer = tab;
-	// it._size = 3;
-	// std::cout << *it._pointer << std::endl;
-	// // it.advance(it, 2);
-	// std::cout << *it._pointer << std::endl;
-	// std::cout << *it.begin()._pointer << std::endl;
-	// std::cout << *it.end()._pointer << std::endl;
-
-
-	// std::allocator<int> myAllocator;
-
-	// int* arr = myAllocator.allocate(5);
-	// arr[0] = 4;
-	// std::cout << arr[0] << std::endl;
-
-	// std::vector<int> vec_int;
-	// vec_int.push_back(1);
-	// vec_int.push_back(2);
-	// std::cout << "vec:"  << *vec_int.end() << std::endl;
-
-	// ft::vector<int> my_vec;
-	// my_vec.push_back(2);
-	// my_vec.push_back(3);
-	// my_vec.push_back(4);
-	// my_vec.push_back(5);
-	// // my_vec._vector_pointer[1] = 22;
-	// std::cout << "my_vec:"  << my_vec._vector_pointer[0] << std::endl;
-	// std::cout << "my_vec:"  << my_vec._vector_pointer[1] << std::endl;
-	// std::cout << "my_vec:"  << my_vec._vector_pointer[2] << std::endl;
-	// std::cout << "my_vec:"  << my_vec._vector_pointer[3] << std::endl;
-	// std::cout << "my_vec:"  << my_vec.pop_back() << std::endl;
-	// std::cout << "my_vec:"  << my_vec._vector_pointer[3] << std::endl;
-
-
-	// std::cout << "my_vec:"  << my_vec._vector_pointer[4] << std::endl;
-
-	print_title_1("VECTOR");
-	// #### Constructor check ####
+	// ##############################   Vector   #################################3
+	// ------------------------------------------ Constructor destructor -------------------------------------------------------
+	print_title_1("VECTOR - Constructor destructor");
+		// #### Constructor check ####
 	print_title_2("Constructor");
 	
 	print_title_3("Range avec 2 int");
@@ -145,7 +112,7 @@ int main()
 	//vec1.reserve(50);
 	print_myvector2<int>(vec1);
 
-	print_title_2("Range avec iterateurs");
+	print_title_3("Range avec iterateurs");
 	ft::vector<int> vec_constr_range(2, 2);
 	vec_constr_range.push_back(3);
 	vec_constr_range.push_back(1);
@@ -153,19 +120,29 @@ int main()
 	ft::vector<int> vec_constr_range_copy(vec_constr_range.begin(), vec_constr_range.end());
 	print_myvector2<int>(vec_constr_range_copy);
 
-	print_title_2("Assign");
+	// ------------------------------------------ Iterators -------------------------------------------------------
+	print_title_1("VECTOR - Iterators");
+	// ------------------------------------------ Capacity -------------------------------------------------------
+	print_title_1("VECTOR - Capacity");
+	print_title_2("Resize");
+	ft::vector<int> vec_capacity;
+	vec_capacity.push_back(1);
+	vec_capacity.push_back(2);
+	print_size_capacity(vec_capacity);
+	print_myvector2<int>(vec_capacity);
+	vec_capacity.resize(8);
+	print_size_capacity(vec_capacity);
+	print_myvector2<int>(vec_capacity);
+	vec_capacity.resize(1);
+	print_size_capacity(vec_capacity);
+	print_myvector2<int>(vec_capacity);
 
-	// test assign A
-	print_title_3("Range avec 2 int");
-	ft::vector<int> vec_assign_A(3, 22);
-	vec_assign_A.assign(4, 3);
-	print_myvector2<int>(vec_assign_A);
 
-	// test assign B
-	print_title_2("Range avec iterateurs");
-	ft::vector<int> vec_assign_B(2, 1);
-	vec_assign_B.assign(vec_assign_A.begin(), vec_assign_A.end());
-	print_myvector2<int>(vec_assign_B);
+
+	// ------------------------------------------ Element access -------------------------------------------------------
+	print_title_1("VECTOR - Element access");
+	// ------------------------------------------ Modifiers -------------------------------------------------------
+	print_title_1("VECTOR - Modifiers");
 
 	print_title_2("Insert");
 	// test insert position + val
@@ -184,6 +161,8 @@ int main()
 	position = vec_insert_A.end(); // necessaire car iterator HS si reallocation dans insert
 	vec_insert_A.insert(position, 9);
 	print_myvector2<int>(vec_insert_A);
+	std::cout << "size " << vec_insert_A.size() << " - capacity " << vec_insert_A.capacity() << std::endl;
+
 
 	// test insert iterator position + size + value
 	print_title_3("Position + size + value");
@@ -193,10 +172,12 @@ int main()
 	vec_insert_B.push_back(7);
 	print_myvector2<int>(vec_insert_B);
 	ft::vector<int>::iterator position3 = vec_insert_B.begin();
-	ft::vector<int>::iterator position3 = vec_insert_B.begin() + 1; // autres tests possibles
+	//ft::vector<int>::iterator position3 = vec_insert_B.begin() + 1; // autres tests possibles
 	//ft::vector<int>::iterator position3 = vec_insert_B.end(); // autres tests possibles
 	vec_insert_B.insert(position3, 3, 11);
 	print_myvector2<int>(vec_insert_B);
+	std::cout << "size " << vec_insert_B.size() << " - capacity " << vec_insert_B.capacity() << std::endl;
+
 
 	// test insert iterator begin + iterator end
 	print_title_3("Iterator begin + iterator end");
@@ -207,6 +188,11 @@ int main()
 	ft::vector<int> vec_insert_D(1, 11);
 	vec_insert_D.push_back(13);
 	vec_insert_D.push_back(14);
+	vec_insert_D.push_back(15);
+	vec_insert_D.push_back(16);
+	vec_insert_D.push_back(17);
+	vec_insert_D.push_back(18);
+	vec_insert_D.push_back(19);
 
 	print_myvector2<int>(vec_insert_C);
 	print_myvector2<int>(vec_insert_D);
@@ -214,15 +200,24 @@ int main()
 	ft::vector<int>::iterator position2 = vec_insert_C.begin();
 	//ft::vector<int>::iterator position2 = vec_insert_C.begin() + 1; // autres tests possibles
 	//ft::vector<int>::iterator position2 = vec_insert_C.end(); // autres tests possibles
-	vec_insert_C.insert(position2, vec_insert_D.begin(), vec_insert_D.end());
+	vec_insert_C.insert(position2, vec_insert_D.begin(), vec_insert_D.begin() + 5);
 	print_myvector2<int>(vec_insert_C);
 	print_myvector2<int>(vec_insert_D);
+	std::cout << "size " << vec_insert_C.size() << " - capacity " << vec_insert_C.capacity() << std::endl;
 
+	print_title_2("Assign");
 
+	// test assign A
+	print_title_3("Range avec 2 int");
+	ft::vector<int> vec_assign_A(3, 22);
+	vec_assign_A.assign(4, 3);
+	print_myvector2<int>(vec_assign_A);
 
-
-
-
+	// test assign B
+	print_title_2("Range avec iterateurs");
+	ft::vector<int> vec_assign_B(2, 1);
+	vec_assign_B.assign(vec_assign_A.begin(), vec_assign_A.end());
+	print_myvector2<int>(vec_assign_B);
 
 
 
