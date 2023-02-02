@@ -170,13 +170,19 @@ int main()
 	// test insert
 	print_title_2("Insert");
 	print_title_3("position + val");
-	ft::vector<int> vec_insert_A(4, 1);
+	ft::vector<int> vec_insert_A(1, 1);
+	vec_insert_A.push_back(3);
+	vec_insert_A.push_back(5);
+	vec_insert_A.push_back(7);
+	
 	ft::vector<int>::iterator position = vec_insert_A.begin();
 	print_myvector2<int>(vec_insert_A);
 	std::cout << "position" << *position << std::endl;
 
-	vec_insert_A.insert(position, 5);
+	//vec_insert_A.insert(position, 9);
 	//print_myvector2<int>(vec_insert_A);
+	//vec_insert_A.insert(position, 9);
+
 
 
 

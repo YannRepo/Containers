@@ -141,17 +141,26 @@ namespace ft
 				this->_pointer--;
 				return (it_copy);
 			}
-			iterator &operator+(int n)
+			iterator &operator+=(int n)
 			{
 				// TBD voir si il faut ajouter un check sur la taille du vector
 				advance(*this, n);
 				return (*this);
 			}
-			iterator &operator-(int n)
+			iterator &operator-=(int n)
 			{
 				// TBD voir si il faut ajouter un check a 0
 				advance(*this, -n);
 				return (*this);
+			}
+			iterator operator+(int n)
+			{
+				return (iterator(this->_pointer + n));
+			}
+			iterator operator-(int n)
+			{
+				return (iterator(this->_pointer - n));
+
 			}
 			// + - ?
 
@@ -227,6 +236,7 @@ namespace ft
 			difference_type distance = 0;
 			while (first != last)
 			{
+				std::cout << "distance " << distance << std::endl;
 				distance++;
 				first++;
 			}
@@ -336,7 +346,7 @@ namespace ft
 		{
 			return (this->_vector_capacity);
 		}
-		void reserve(size_type n) // TBD a revoir car met des 0 en trop dans test de constructor range ?
+		void reserve(size_type n)
 		{
 			// a ajouter (ligne issues du .h de la std)
 			//if (__n > this->max_size())
@@ -473,7 +483,10 @@ namespace ft
 			// T*		previous_vector_pointer = this->_vector_pointer;
 			if (this->_vector_size + 1 > this->_vector_capacity)
 			{
-				this->reserve(this->_vector_capacity * 2);
+				if (this->_vector_capacity == 0)
+					this->reserve(1);
+				else
+					this->reserve(this->_vector_capacity * 2);
 			}
 			this->myAllocator.construct(&this->_vector_pointer[this->_vector_size], value);
 			this->_vector_size += 1;
@@ -505,25 +518,29 @@ namespace ft
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			// en cours
-			std::cout << "position" << *position << std::endl;
+			difference_type insertion_distance = distance (this->begin(), position);
+			std::cout << "distance: " << insertion_distance << std::endl;
+			std::cout << "check" << std::endl;
 			if (this->_vector_size + 1 > this->_vector_capacity)
 			{
-				this->reserve(this->_vector_capacity * 2);
+				if (this->_vector_capacity == 0)
+					this->reserve(1);
+				else
+					this->reserve(this->_vector_capacity * 2);
 			}
-			std::cout << "position" << *position << std::endl;
+			this->_vector_size++;
+			iterator it_end = this->end() - 1;
+			size_t i = this->_vector_size - 1;
 
-			//iterator it_end = this->end() - 1;
-			//while (it_end != position)
-			//{
-			//	std::cout << "it_end" << *it_end << std::endl;
-			//	std::cout << "position" << *position << std::endl;
-
-			//	*it_end = *(it_end - 1);
-			//	it_end--;
-			//}
-			//*it_end = val;
-			return (position);
+			while (i != insertion_distance)
+			{
+				std::cout << "i" << i << " - " << *it_end << "-" <<  *(it_end - 1)<< std::endl;
+				*it_end = *(it_end - 1);
+				it_end--;
+				i--;
+			}
+			*it_end = val;
+			return (this->begin() + insertion_distance);
 		}
 
 		void insert (iterator position, size_type n, const value_type& val)
