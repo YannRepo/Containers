@@ -236,7 +236,6 @@ namespace ft
 			difference_type distance = 0;
 			while (first != last)
 			{
-				std::cout << "distance " << distance << std::endl;
 				distance++;
 				first++;
 			}
@@ -519,8 +518,6 @@ namespace ft
 		iterator insert (iterator position, const value_type& val)
 		{
 			difference_type insertion_distance = distance (this->begin(), position);
-			std::cout << "distance: " << insertion_distance << std::endl;
-			std::cout << "check" << std::endl;
 			if (this->_vector_size + 1 > this->_vector_capacity)
 			{
 				if (this->_vector_capacity == 0)
@@ -531,10 +528,8 @@ namespace ft
 			this->_vector_size++;
 			iterator it_end = this->end() - 1;
 			size_t i = this->_vector_size - 1;
-
 			while (i != insertion_distance)
 			{
-				std::cout << "i" << i << " - " << *it_end << "-" <<  *(it_end - 1)<< std::endl;
 				*it_end = *(it_end - 1);
 				it_end--;
 				i--;
@@ -545,7 +540,8 @@ namespace ft
 
 		void insert (iterator position, size_type n, const value_type& val)
 		{
-			// TBD
+			ft::vector<value_type> tmp_vec(n, val);
+			this->insert(position, tmp_vec.begin(), tmp_vec.end());
 			
 		}
 
@@ -553,7 +549,34 @@ namespace ft
 		void insert (iterator position, InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			// TBD
+			difference_type insertion_distance = distance(this->begin(), position);
+			difference_type insertion_size = distance(first, last);
+ 
+			if (this->_vector_size + this->distance(first, last) > this->_vector_capacity)
+			{
+				if (this->_vector_capacity == 0)
+					this->reserve(1);
+				else
+					this->reserve(this->_vector_capacity * 2);
+			}
+			this->_vector_size += insertion_size;
+			// copie des valeurs apres position, a la fin du vecteur
+			iterator it_end = this->end() - 1;
+			size_t i = this->_vector_size - 1;
+			while (i != insertion_distance + insertion_size - 1)
+			{
+				*it_end = *(it_end - insertion_size);
+				it_end--;
+				i--;
+			}
+			// insertion des nouvelles valeurs [first, last) a la position
+			iterator it = this->begin() + insertion_distance;
+			while (first != last)
+			{
+				*it = *first;
+				it++;
+				first++;
+			}
 		}
 
 		// erase	Erase elements (public member function)

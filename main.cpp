@@ -167,21 +167,58 @@ int main()
 	vec_assign_B.assign(vec_assign_A.begin(), vec_assign_A.end());
 	print_myvector2<int>(vec_assign_B);
 
-	// test insert
 	print_title_2("Insert");
+	// test insert position + val
 	print_title_3("position + val");
 	ft::vector<int> vec_insert_A(1, 1);
 	vec_insert_A.push_back(3);
 	vec_insert_A.push_back(5);
 	vec_insert_A.push_back(7);
+	//vec_insert_A.reserve(30);
+	print_myvector2<int>(vec_insert_A);
 	
 	ft::vector<int>::iterator position = vec_insert_A.begin();
+	vec_insert_A.insert(position, 2);
 	print_myvector2<int>(vec_insert_A);
-	std::cout << "position" << *position << std::endl;
 
-	//vec_insert_A.insert(position, 9);
-	//print_myvector2<int>(vec_insert_A);
-	//vec_insert_A.insert(position, 9);
+	position = vec_insert_A.end(); // necessaire car iterator HS si reallocation dans insert
+	vec_insert_A.insert(position, 9);
+	print_myvector2<int>(vec_insert_A);
+
+	// test insert iterator position + size + value
+	print_title_3("Position + size + value");
+	ft::vector<int> vec_insert_B(1, 1);
+	vec_insert_B.push_back(3);
+	vec_insert_B.push_back(5);
+	vec_insert_B.push_back(7);
+	print_myvector2<int>(vec_insert_B);
+	ft::vector<int>::iterator position3 = vec_insert_B.begin();
+	ft::vector<int>::iterator position3 = vec_insert_B.begin() + 1; // autres tests possibles
+	//ft::vector<int>::iterator position3 = vec_insert_B.end(); // autres tests possibles
+	vec_insert_B.insert(position3, 3, 11);
+	print_myvector2<int>(vec_insert_B);
+
+	// test insert iterator begin + iterator end
+	print_title_3("Iterator begin + iterator end");
+	ft::vector<int> vec_insert_C(1, 1);
+	vec_insert_C.push_back(3);
+	vec_insert_C.push_back(5);
+	vec_insert_C.push_back(7);
+	ft::vector<int> vec_insert_D(1, 11);
+	vec_insert_D.push_back(13);
+	vec_insert_D.push_back(14);
+
+	print_myvector2<int>(vec_insert_C);
+	print_myvector2<int>(vec_insert_D);
+	
+	ft::vector<int>::iterator position2 = vec_insert_C.begin();
+	//ft::vector<int>::iterator position2 = vec_insert_C.begin() + 1; // autres tests possibles
+	//ft::vector<int>::iterator position2 = vec_insert_C.end(); // autres tests possibles
+	vec_insert_C.insert(position2, vec_insert_D.begin(), vec_insert_D.end());
+	print_myvector2<int>(vec_insert_C);
+	print_myvector2<int>(vec_insert_D);
+
+
 
 
 
