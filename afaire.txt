@@ -1,5 +1,5 @@
-erase
-operator + / - pour iterator avec un iterator (git julia)
+mettre debuger en place
+check dans les const iterator qu'on a toutes les ope de l'iterator
 
 
 

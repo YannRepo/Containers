@@ -132,23 +132,23 @@ namespace ft
 				advance(*this, -n);
 				return (*this);
 			}
-			iterator operator+(int n)
+			iterator operator+(int n) const
 			{
 				return (iterator(this->_pointer + n));
 			}
-			difference_type operator+(const  iterator& it)
+			difference_type operator+(const  iterator& it) const
 			{
 				return (this->_pointer + it._pointer);
 			}
-			iterator operator-(int n)
+			iterator operator-(int n) const
 			{
 				return (iterator(this->_pointer - n));
 			}
-			difference_type operator-(const  iterator& it)
+			difference_type operator-(const  iterator& it) const
 			{
 				return (this->_pointer - it._pointer);
 			}
-			reference operator[](int n)
+			reference operator[](int n) const
 		{
 			return (*(this->_pointer + n));
 		}
@@ -588,6 +588,30 @@ namespace ft
 				it++;
 				first++;
 			}
+		}
+
+		iterator erase (iterator position)
+		{
+			iterator it = position;
+			this->myAllocator.destroy(&(*position));
+			//this->myAllocator.destroy(&this->_vector_pointer[this->_vector_size]);
+			while (it + 1 != this->end())
+			{
+				*(it) = *(it + 1); 
+				it++;
+			}
+			this->_vector_size--;
+			return (position);
+			
+		}
+		iterator erase (iterator first, iterator last)
+		{
+			while (first != last)
+			{
+				erase (first);
+				last--; // on recule last car indirectement first avance avec la suppression
+			}
+			return (first);
 		}
 
 		void clear()

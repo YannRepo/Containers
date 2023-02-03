@@ -205,6 +205,7 @@ int main()
 	print_myvector2<int>(vec_insert_D);
 	std::cout << "size " << vec_insert_C.size() << " - capacity " << vec_insert_C.capacity() << std::endl;
 
+	// test assign Assign
 	print_title_2("Assign");
 
 	// test assign A
@@ -214,12 +215,45 @@ int main()
 	print_myvector2<int>(vec_assign_A);
 
 	// test assign B
-	print_title_2("Range avec iterateurs");
+	print_title_3("Range avec iterateurs");
 	ft::vector<int> vec_assign_B(2, 1);
 	vec_assign_B.assign(vec_assign_A.begin(), vec_assign_A.end());
 	print_myvector2<int>(vec_assign_B);
 
+	// test Erase
+	print_title_2("Erase");
 
+	// test Erase position
+	print_title_3("Position");
+	ft::vector<int> vec_erase_A(1, 1);
+	vec_erase_A.push_back(3);
+	vec_erase_A.push_back(5);
+	vec_erase_A.push_back(7);
+	print_myvector2<int>(vec_erase_A);
+	//ft::vector<int>::iterator returned = vec_erase_A.erase(vec_erase_A.begin());
+	//ft::vector<int>::iterator returned = vec_erase_A.erase(vec_erase_A.end() - 1); // autres tests
+	ft::vector<int>::iterator returned = vec_erase_A.erase(vec_erase_A.begin() + 1); // autres tests
+	print_myvector2<int>(vec_erase_A);
+	std::cout << "return =  " << *(returned) << std::endl;
+
+	// test Erase it first, it last
+	print_title_3("it first, it last");
+	ft::vector<int> vec_erase_B(1, 1);
+	vec_erase_B.push_back(2);
+	vec_erase_B.push_back(3);
+	vec_erase_B.push_back(4);
+	vec_erase_B.push_back(5);
+	vec_erase_B.push_back(6);
+	vec_erase_B.push_back(7);
+	vec_erase_B.push_back(8);
+	ft::vector<int>::iterator first = vec_erase_B.begin() + 1;
+	ft::vector<int>::iterator last = vec_erase_B.begin() + 3;
+	//ft::vector<int>::iterator last = vec_erase_B.end(); // autres tests
+	print_myvector2<int>(vec_erase_B);
+	ft::vector<int>::iterator returned_B = vec_erase_B.erase(first, last);
+	print_myvector2<int>(vec_erase_B);
+	std::cout << "return =  " << *(returned_B) << std::endl;
+	
 
 	// ##############################   Iterator   #################################3
 	print_title_1("ITERATOR");	
