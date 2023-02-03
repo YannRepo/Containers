@@ -5,219 +5,39 @@
 # include <vector>
 # include <memory>
 
+# include "vector_iterator.hpp"
 # include "is_integral.hpp"
 # include "enable_if.hpp"
 
 // TBD voir comment interdire les modf de variable sur des *const_iterator
 namespace ft
 {
+	//class random_access_iterator;
+
 	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
-	public:
-		typedef T											value_type;
-		typedef const T*									const_pointer;
-		typedef T*											pointer;
-		typedef Allocator									allocator_type;
-		typedef std::size_t									size_type;
-		//typedef value_type									*pointer;
-		typedef std::ptrdiff_t								difference_type;
-		typedef value_type&									reference;
-		typedef	const value_type&							const_reference;
+		public:
+			typedef T												value_type;
+			typedef const T*										const_pointer;
+			typedef T*												pointer;
+			typedef Allocator										allocator_type;
+			typedef std::size_t										size_type;
+			typedef std::ptrdiff_t									difference_type;
+			typedef value_type&										reference;
+			typedef	const value_type&								const_reference;
 		// typedef Allocator::pointer						pointer;
 		// typedef Allocator::const_pointer				const_pointer;
 		// //typedef iterator
 		// //typedef const_iterator
 		// typedef std::reverse_iterator<iterator>			reverse_iterator;
 		// typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-		// typedef typename std::vector<T>::iterator			iterator;
-		// typedef typename std::vector<T>::const_iterator		const_iterator;
+			typedef ft::random_access_iterator<T>					iterator;
+			//typedef typename ft::const_random_access_iterator<T>	const_iterator;
+	        typedef ft::random_access_iterator<const T> 	const_iterator;
 
-	// ###########################################################################################################
-	// #########################################   ITERATOR   ####################################################
-	// ###########################################################################################################
-		class iterator
-		{
-			// TBD check type def
-			//typedef const T*									const_pointer;
-			//typedef T											value_type;
-			//typedef T*											pointer;
 
-			// ligne MI
-			// operator iterator<value_type const>()const{return iterator<value_type const>(_pointer);}
 
-			// public:
-			// typedef int								difference_type
-		public:
-			// constructor / detructor
-			iterator()
-			{
-				this->_pointer = NULL;
-				// this->_size = 0;
-			}
-			iterator(pointer vector_pt)
-			{
-				this->_pointer = vector_pt;
-			}
-			iterator(const iterator &src)
-			{
-				this->_pointer = src._pointer;
-			}
-			~iterator() {}
-
-			// // functions
-			void advance(iterator &it, int n)
-			{
-				it._pointer += n;
-			}
-			iterator prev(iterator first, int n)
-			{
-				return (iterator(*this)--);
-			}
-			iterator next(iterator first, int n)
-			{
-				return (iterator(*this)++);
-			}
-
-			// // operator overload
-			iterator &operator=(const iterator &src)
-			{
-				this->_pointer = src._pointer;
-				// this->_size = src._size;
-				return (*this);
-			}
-			bool operator==(const iterator &src)
-			{
-				return (this->_pointer == src._pointer);
-			}
-			bool operator!=(const iterator &src)
-			{
-				return (this->_pointer != src._pointer);
-			}
-			value_type& operator*(void) const
-			{
-				return (*this->_pointer);
-			}
-			pointer operator->() const
-			{
-				return (this->_pointer);
-			}
-			iterator &operator++()
-			{
-				this->_pointer++;
-				return (*this);
-			}
-			iterator operator++(int)
-			{
-				iterator it_copy = *this;
-				this->_pointer++;
-				return (it_copy);
-			}
-			iterator &operator--()
-			{
-				this->_pointer--;
-				return (*this);
-			}
-			iterator operator--(int)
-			{
-				iterator it_copy = *this;
-				this->_pointer--;
-				return (it_copy);
-			}
-			iterator operator+(int n) const
-			{
-				return (iterator(this->_pointer + n));
-			}
-			difference_type operator+(const  iterator& it) const
-			{
-				return (this->_pointer + it._pointer);
-			}
-			iterator operator-(int n) const
-			{
-				return (iterator(this->_pointer - n));
-			}
-			difference_type operator-(const  iterator& it) const
-			{
-				return (this->_pointer - it._pointer);
-			}
-			bool operator<(const iterator &compared) const
-			{
-				return (this->_pointer < compared._pointer);
-			}
-			bool operator>(const iterator &compared) const
-			{
-				return (this->_pointer > compared._pointer);
-			}
-			bool operator<=(const iterator &compared) const
-			{
-				return (this->_pointer <= compared._pointer);
-			}
-			bool operator>=(const iterator &compared) const
-			{
-				return (this->_pointer >= compared._pointer);
-			}
-			iterator &operator+=(int n)
-			{
-				advance(*this, n);
-				return (*this);
-			}
-			iterator &operator-=(int n)
-			{
-				advance(*this, -n);
-				return (*this);
-			}
-			
-			reference operator[](int n) const
-			{
-				return (*(this->_pointer + n));
-			}
-
-		public: // public pour debug TBD
-			pointer _pointer;
-			// int	_size; // TBD a sup
-		};
-
-		class const_iterator : public ft::vector<T>::iterator
-		{
-		public:
-			// constructor / detructor
-			const_iterator()
-			{
-				this->_pointer = NULL;
-				// this->_size = 0;
-			}
-			const_iterator(pointer vector_pt)
-			{
-				this->_pointer = vector_pt;
-			}
-			const_iterator(const iterator &src)
-			{
-				this->_pointer = src._pointer;
-			}
-			// TBD destruct ?
-			~const_iterator() {}
-			// surcharge operateur * pour return const
-			const value_type &operator*(void) const
-			{
-				return (*this->_pointer);
-			}
-			const_pointer operator->() const
-			{
-				//std::cout << "check2" << std::endl;
-				const pointer tmp = this->_pointer;
-				return (tmp);
-			}
-			const_reference operator[](int n) const
-			{
-				return (*(this->_pointer + n));
-			}
-			
-		};
-
-	public:
-		// typedef iterator const				const_iterator;
-
-		//		//typedef iterator				iterator;
 
 	// ###########################################################################################################
 	// #########################################   UTILS   #######################################################
@@ -342,6 +162,7 @@ namespace ft
 		{
 			return (const_iterator(&this->_vector_pointer[this->_vector_size]));
 		}
+
 		// -----------------------------------------------------------------------------------------------------------
 		// ------------------------------------------ Capacity -------------------------------------------------------
 		// -----------------------------------------------------------------------------------------------------------

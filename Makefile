@@ -8,6 +8,7 @@ SRCS += main.cpp
 OBJS = ${SRCS:.cpp=.o}
 
 HEADER += vector.hpp
+HEADER += vector_iterator.hpp
 HEADER += is_integral.hpp
 HEADER += enable_if.hpp
 
