@@ -124,16 +124,6 @@ namespace ft
 				this->_pointer--;
 				return (it_copy);
 			}
-			iterator &operator+=(int n)
-			{
-				advance(*this, n);
-				return (*this);
-			}
-			iterator &operator-=(int n)
-			{
-				advance(*this, -n);
-				return (*this);
-			}
 			iterator operator+(int n) const
 			{
 				return (iterator(this->_pointer + n));
@@ -150,10 +140,37 @@ namespace ft
 			{
 				return (this->_pointer - it._pointer);
 			}
+			bool operator<(const iterator &compared) const
+			{
+				return (this->_pointer < compared._pointer);
+			}
+			bool operator>(const iterator &compared) const
+			{
+				return (this->_pointer > compared._pointer);
+			}
+			bool operator<=(const iterator &compared) const
+			{
+				return (this->_pointer <= compared._pointer);
+			}
+			bool operator>=(const iterator &compared) const
+			{
+				return (this->_pointer >= compared._pointer);
+			}
+			iterator &operator+=(int n)
+			{
+				advance(*this, n);
+				return (*this);
+			}
+			iterator &operator-=(int n)
+			{
+				advance(*this, -n);
+				return (*this);
+			}
+			
 			reference operator[](int n) const
-		{
-			return (*(this->_pointer + n));
-		}
+			{
+				return (*(this->_pointer + n));
+			}
 
 		public: // public pour debug TBD
 			pointer _pointer;
@@ -189,6 +206,10 @@ namespace ft
 				//std::cout << "check2" << std::endl;
 				const pointer tmp = this->_pointer;
 				return (tmp);
+			}
+			const_reference operator[](int n) const
+			{
+				return (*(this->_pointer + n));
 			}
 			
 		};
@@ -654,7 +675,7 @@ namespace ft
 // ###########################################################################################################
 	
 	template <class InputIterator>
-	InputIterator operator+(size_t lhs, InputIterator rhs)
+	InputIterator operator+(int lhs, InputIterator rhs)
 	{
 		return (rhs + lhs);
 	}
