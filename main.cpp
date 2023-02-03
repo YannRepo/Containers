@@ -260,7 +260,7 @@ int main()
 	//const iterator
 	print_title_2("Const iterator");	
 	ft::vector<int> vec2(5, 22);
-	//ft::vector<int>::const_iterator it = vec2.begin(); //ecommenter cette ligne genere une erreur ?
+	ft::vector<int>::const_iterator it = vec2.begin();
 	//*it = 4; // decommenter cette ligne doit generer une erreur comme pour la std ci-dessous
 
 	std::vector<int> vec3(5, 22);

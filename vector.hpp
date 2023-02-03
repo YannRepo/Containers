@@ -6,6 +6,8 @@
 # include <memory>
 
 # include "vector_iterator.hpp"
+//# include "random_access_iterator.hpp"
+
 # include "is_integral.hpp"
 # include "enable_if.hpp"
 
@@ -24,7 +26,7 @@ namespace ft
 			typedef Allocator										allocator_type;
 			typedef std::size_t										size_type;
 			typedef std::ptrdiff_t									difference_type;
-			typedef value_type&										reference;
+			typedef T&										reference;
 			typedef	const value_type&								const_reference;
 		// typedef Allocator::pointer						pointer;
 		// typedef Allocator::const_pointer				const_pointer;
@@ -34,9 +36,8 @@ namespace ft
 		// typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef ft::random_access_iterator<T>					iterator;
 			//typedef typename ft::const_random_access_iterator<T>	const_iterator;
-	        typedef ft::random_access_iterator<const T> 	const_iterator;
-
-
+			typedef ft::random_access_iterator<const T>			const_iterator;
+			
 
 
 	// ###########################################################################################################
@@ -141,22 +142,20 @@ namespace ft
 		// -----------------------------------------------------------------------------------------------------------
 		// ------------------------------------------ Iterators -------------------------------------------------------
 		// -----------------------------------------------------------------------------------------------------------
+		// TBD fct modifiees depuis que ca marchait sur 1 fichier
 		iterator begin()
 		{
-			return (iterator(&this->_vector_pointer[0]));
+			return (iterator(_vector_pointer));
 		}
-		// TBD check si on laisse des const partout
+		
 		const_iterator begin() const
 		{
-			return (const_iterator(&this->_vector_pointer[0]));
+			return (const_iterator(_vector_pointer));
 		}
 
 		iterator end()
 		{
-			// iterator ite = iterator(&this->_vector_pointer[0]);
-			// iterator::advance(&ite, this->_vector_size);
-			// return(ite);
-			return (iterator(&this->_vector_pointer[this->_vector_size]));
+				return (iterator(&this->_vector_pointer[this->_vector_size]));
 		}
 		const_iterator end() const
 		{
