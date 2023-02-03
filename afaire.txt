@@ -1,9 +1,4 @@
-resize
-clear
-
-dernier constructor vector (copy)
-operator = pour iterator
-operator != pour iterator
+erase
 operator + / - pour iterator avec un iterator (git julia)
 
 

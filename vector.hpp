@@ -68,11 +68,6 @@ namespace ft
 			{
 				it._pointer += n;
 			}
-			// fct distance dans les utils
-			//difference_type distance(iterator first, iterator last)
-			//{
-			//	return (last._pointer - first._pointer);
-			//}
 			iterator prev(iterator first, int n)
 			{
 				return (iterator(*this)--);
@@ -101,24 +96,10 @@ namespace ft
 			{
 				return (*this->_pointer);
 			}
-			// value_type& operator*(const iterator& src)
-			//{
-			//	return (*this->_pointer);
-			// }
-			//  bool operator*=(const iterator* src)
-			//  {
-			//  	return (this._pointer* == src._pointer*);
-			//  }
-			//  bool operator*!=(const iterator* src)
-			//  {
-			//  	return (this._pointer* != src._pointer*)
-			//  }
 			//  iterator& operator->(const iterator& src)
 			//  {
 			//  	// TBD
 			//  }
-			//*a = t
-			//*a++
 			iterator &operator++()
 			{
 				this->_pointer++;
@@ -143,13 +124,11 @@ namespace ft
 			}
 			iterator &operator+=(int n)
 			{
-				// TBD voir si il faut ajouter un check sur la taille du vector
 				advance(*this, n);
 				return (*this);
 			}
 			iterator &operator-=(int n)
 			{
-				// TBD voir si il faut ajouter un check a 0
 				advance(*this, -n);
 				return (*this);
 			}
@@ -157,10 +136,17 @@ namespace ft
 			{
 				return (iterator(this->_pointer + n));
 			}
+			difference_type operator+(const  iterator& it)
+			{
+				return (this->_pointer + it._pointer);
+			}
 			iterator operator-(int n)
 			{
 				return (iterator(this->_pointer - n));
-
+			}
+			difference_type operator-(const  iterator& it)
+			{
+				return (this->_pointer - it._pointer);
 			}
 			reference operator[](int n)
 		{
@@ -473,7 +459,7 @@ namespace ft
 		void assign(InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			iterator it;
+			InputIterator it;
 			size_t size;
 			size = 0;
 			for (it = first; it != last; it++)
