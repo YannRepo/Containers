@@ -16,9 +16,11 @@ namespace ft
 	{
 	public:
 		typedef T											value_type;
+		typedef const T*									const_pointer;
+		typedef T*											pointer;
 		typedef Allocator									allocator_type;
 		typedef std::size_t									size_type;
-		typedef value_type									*pointer;
+		//typedef value_type									*pointer;
 		typedef std::ptrdiff_t								difference_type;
 		typedef value_type&									reference;
 		typedef	const value_type&							const_reference;
@@ -37,9 +39,9 @@ namespace ft
 		class iterator
 		{
 			// TBD check type def
-			// typedef const T*									const_pointer;
-			typedef T											value_type;
-			typedef T*											pointer;
+			//typedef const T*									const_pointer;
+			//typedef T											value_type;
+			//typedef T*											pointer;
 
 			// ligne MI
 			// operator iterator<value_type const>()const{return iterator<value_type const>(_pointer);}
@@ -96,10 +98,10 @@ namespace ft
 			{
 				return (*this->_pointer);
 			}
-			//  iterator& operator->(const iterator& src)
-			//  {
-			//  	// TBD
-			//  }
+			pointer operator->() const
+			{
+				return (this->_pointer);
+			}
 			iterator &operator++()
 			{
 				this->_pointer++;
@@ -182,6 +184,13 @@ namespace ft
 			{
 				return (*this->_pointer);
 			}
+			const_pointer operator->() const
+			{
+				//std::cout << "check2" << std::endl;
+				const pointer tmp = this->_pointer;
+				return (tmp);
+			}
+			
 		};
 
 	public:
@@ -639,6 +648,16 @@ namespace ft
 	// surcharge affichage // TBD check cas erreur sur class
 	// template<typename T>
 	// const
+
+// ###########################################################################################################
+// #########################################   Surcharge hors class vector / iterator   ######################################################
+// ###########################################################################################################
+	
+	template <class InputIterator>
+	InputIterator operator+(size_t lhs, InputIterator rhs)
+	{
+		return (rhs + lhs);
+	}
 
 };
 
