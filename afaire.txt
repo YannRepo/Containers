@@ -1,3 +1,4 @@
+operateur -> sur iterator
 mettre debuger en place
 check dans les const iterator qu'on a toutes les ope de l'iterator
 
