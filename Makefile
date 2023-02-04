@@ -9,6 +9,7 @@ OBJS = ${SRCS:.cpp=.o}
 
 HEADER += vector.hpp
 HEADER += vector_iterator.hpp
+HEADER += lexicographical_compare.hpp
 HEADER += is_integral.hpp
 HEADER += enable_if.hpp
 

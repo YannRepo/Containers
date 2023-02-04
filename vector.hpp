@@ -6,7 +6,7 @@
 # include <memory>
 
 # include "vector_iterator.hpp"
-//# include "random_access_iterator.hpp"
+# include "lexicographical_compare.hpp"
 
 # include "is_integral.hpp"
 # include "enable_if.hpp"
@@ -469,9 +469,6 @@ namespace ft
 			this->resize(0);
 		}
 
-		// erase	Erase elements (public member function)
-		// swap	Swap content (public member function)
-		// clear	Clear content (public member function
 
 	public: // public pour debug TBD repasser en private
 		Allocator myAllocator;
@@ -490,8 +487,52 @@ namespace ft
 	// template<typename T>
 	// const
 
+// ###########################################################################################################
+// #########################################   Surcharge operator   ######################################################
+// ###########################################################################################################
+// surcharges faites en dehors de la classe car ce sont des fct non membres sur les vectors
+template< class T, class Alloc >
+bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	for (int i = 0; i < lhs.size(); i++)
+	{
+		if (lhs[i] != rhs[i])
+			return (false);
+	}
+	return (true);
+}
 
+template< class T, class Alloc >
+bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (!(lhs == rhs));
+}
 
+template< class T, class Alloc >
+bool operator<( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+}
+
+template< class T, class Alloc >
+bool operator<=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (!(lhs > rhs));
+}
+
+template< class T, class Alloc >
+bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (rhs < lhs);
+}
+
+template< class T, class Alloc >
+bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (!(lhs < rhs));
+}
 };
 
 #endif
