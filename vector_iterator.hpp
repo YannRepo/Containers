@@ -67,6 +67,10 @@ namespace ft
 			{
 				return (random_access_iterator(*this)++);
 			}
+			pointer base() const
+			{
+				return (this->_pointer);
+			}
 
 			// // operator overload
 			random_access_iterator& operator=(const random_access_iterator &rhs)
@@ -74,14 +78,14 @@ namespace ft
 				this->_pointer = rhs._pointer;
 				return (*this);
 			}
-			bool operator==(const random_access_iterator &src)
-			{
-				return (this->_pointer == src._pointer);
-			}
-			bool operator!=(const random_access_iterator &src)
-			{
-				return (this->_pointer != src._pointer);
-			}
+			//bool operator==(const random_access_iterator &src)
+			//{
+			//	return (this->_pointer == src._pointer);
+			//}
+			//bool operator!=(const random_access_iterator &src)
+			//{
+			//	return (this->_pointer != src._pointer);
+			//}
 			value_type& operator*(void) const
 			{
 				return (*this->_pointer);
@@ -128,22 +132,22 @@ namespace ft
 			{
 				return (this->_pointer - it._pointer);
 			}
-			bool operator<(const random_access_iterator &compared) const
-			{
-				return (this->_pointer < compared._pointer);
-			}
-			bool operator>(const random_access_iterator &compared) const
-			{
-				return (this->_pointer > compared._pointer);
-			}
-			bool operator<=(const random_access_iterator &compared) const
-			{
-				return (this->_pointer <= compared._pointer);
-			}
-			bool operator>=(const random_access_iterator &compared) const
-			{
-				return (this->_pointer >= compared._pointer);
-			}
+			//bool operator<(const random_access_iterator &compared) const
+			//{
+			//	return (this->_pointer < compared._pointer);
+			//}
+			//bool operator>(const random_access_iterator &compared) const
+			//{
+			//	return (this->_pointer > compared._pointer);
+			//}
+			//bool operator<=(const random_access_iterator &compared) const
+			//{
+			//	return (this->_pointer <= compared._pointer);
+			//}
+			//bool operator>=(const random_access_iterator &compared) const
+			//{
+			//	return (this->_pointer >= compared._pointer);
+			//}
 			random_access_iterator &operator+=(int n)
 			{
 				advance(*this, n);
@@ -170,6 +174,61 @@ namespace ft
 			pointer _pointer;
 			// int	_size; // TBD a sup
 	};
+
+
+// ###########################################################################################################
+// #########################################   Surcharge hors class vector / iterator   ######################################################
+// ###########################################################################################################
+	
+	// TBD verif si cette surcharge est tjr utile ?
+	template <class InputIterator>
+	InputIterator operator+(int lhs, InputIterator rhs)
+	{
+		return (rhs + lhs);
+	}
+
+
+
+	//template <typename T1>
+	//bool operator==(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T1> &rhs)
+	//{
+	//	return (lhs.base() == rhs.base());
+	//}
+	template <typename T1, typename T2>
+	bool operator==(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
+	{
+		return (lhs.base() == rhs.base());
+	}
+
+	template <typename T1, typename T2>
+	bool operator!=(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
+	{
+		return (lhs.base() != rhs.base());
+	}
+
+	template <typename T1, typename T2>
+	bool operator<(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
+	{
+		return (lhs.base() < rhs.base());
+	}
+
+	template <typename T1, typename T2>
+	bool operator>(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
+	{
+		return (lhs.base() > rhs.base());
+	}
+
+	template <typename T1, typename T2>
+	bool operator<=(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
+	{
+		return (lhs.base() <= rhs.base());
+	}
+
+	template <typename T1, typename T2>
+	bool operator>=(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
+	{
+		return (lhs.base() >= rhs.base());
+	}
 
 // ###########################################################################################################
 // #########################################   const_random_access_iterator   ####################################################
