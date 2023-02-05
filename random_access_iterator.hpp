@@ -1,14 +1,8 @@
-#ifndef VECTOR_ITERATOR_HPP
-# define VECTOR_ITERATOR_HPP
+#ifndef RANDOM_ACCESS_ITERATOR
+# define RANDOM_ACCESS_ITERATOR
 
 #include <iostream>
-#include <vector>
-
 #include "vector.hpp"
-
-# include <iterator>
-# include <cstddef>
-
 
 namespace ft
 {
@@ -29,13 +23,18 @@ namespace ft
 			typedef std::ptrdiff_t								difference_type;
 			//typedef value_type&									reference;
 			//typedef	const value_type&							const_reference;
+			typedef std::random_access_iterator_tag				iterator_category;
+
 
 // ajout
 			typedef T*												pointer;
 
 			typedef T&										reference;
 
-
+		public: // public pour debug TBD
+			pointer _pointer;
+			// int	_size; // TBD a sup
+			
 		public:
 			// constructor / detructor
 			random_access_iterator()
@@ -170,9 +169,7 @@ namespace ft
 				return random_access_iterator<const T>(this->_pointer);
 			}
 
-		public: // public pour debug TBD
-			pointer _pointer;
-			// int	_size; // TBD a sup
+
 	};
 
 
@@ -228,6 +225,13 @@ namespace ft
 	bool operator>=(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
 	{
 		return (lhs.base() >= rhs.base());
+	}
+
+	template<typename T1, typename T2>
+	inline typename ft::random_access_iterator<T1>::difference_type operator-(const ft::random_access_iterator<T1> &lhs,
+	const ft::random_access_iterator<T2> &rhs)
+	{
+		return lhs.base() - rhs.base();
 	}
 
 // ###########################################################################################################

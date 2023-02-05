@@ -5,7 +5,9 @@
 # include <vector>
 # include <memory>
 
-# include "vector_iterator.hpp"
+# include "random_access_iterator.hpp"
+# include "vector_reverse_iterator.hpp"
+# include "iterator_traits.hpp"
 # include "lexicographical_compare.hpp"
 
 # include "is_integral.hpp"
@@ -26,19 +28,24 @@ namespace ft
 			typedef Allocator										allocator_type;
 			typedef std::size_t										size_type;
 			typedef std::ptrdiff_t									difference_type;
-			typedef T&										reference;
+			typedef T&												reference;
 			typedef	const value_type&								const_reference;
 		// typedef Allocator::pointer						pointer;
 		// typedef Allocator::const_pointer				const_pointer;
 		// //typedef iterator
 		// //typedef const_iterator
-		// typedef std::reverse_iterator<iterator>			reverse_iterator;
-		// typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-			typedef ft::random_access_iterator<T>					iterator;
-			//typedef typename ft::const_random_access_iterator<T>	const_iterator;
-			typedef ft::random_access_iterator<const T>			const_iterator;
+		typedef ft::random_access_iterator<T>					iterator;
+		typedef ft::random_access_iterator<const T>				const_iterator;
+		 typedef ft::reverse_iterator<iterator>					reverse_iterator;
+		 typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			
 
+	public: // public pour debug TBD repasser en private
+		Allocator myAllocator;
+
+		T *_vector_pointer;
+		size_t _vector_size;
+		size_t _vector_capacity;
 
 	// ###########################################################################################################
 	// #########################################   UTILS   #######################################################
@@ -142,7 +149,7 @@ namespace ft
 		// -----------------------------------------------------------------------------------------------------------
 		// ------------------------------------------ Iterators -------------------------------------------------------
 		// -----------------------------------------------------------------------------------------------------------
-		// TBD fct modifiees depuis que ca marchait sur 1 fichier
+		// Iterator
 		iterator begin()
 		{
 			return (iterator(_vector_pointer));
@@ -160,6 +167,26 @@ namespace ft
 		const_iterator end() const
 		{
 			return (const_iterator(&this->_vector_pointer[this->_vector_size]));
+		}
+
+		// Reverse Iterator
+		reverse_iterator rbegin()
+		{
+			return (reverse_iterator(_vector_pointer));
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return (const_reverse_iterator(_vector_pointer));
+		}
+
+		reverse_iterator rend()
+		{
+				return (reverse_iterator(&this->_vector_pointer[this->_vector_size]));
+		}
+		const_reverse_iterator rend() const
+		{
+			return (const_reverse_iterator(&this->_vector_pointer[this->_vector_size]));
 		}
 
 		// -----------------------------------------------------------------------------------------------------------
@@ -464,18 +491,28 @@ namespace ft
 			return (first);
 		}
 
+		void swap (vector& x)
+		{
+			T *_vector_pointer_tmp = x._vector_pointer;
+			size_t _vector_size_tmp = x._vector_size;
+			size_t _vector_capacity_tmp = x._vector_capacity;
+
+			x._vector_pointer = this->_vector_pointer;
+			x._vector_size = this->_vector_size;
+			x._vector_capacity = this->_vector_capacity;
+
+			this->_vector_pointer = _vector_pointer_tmp;
+			this->_vector_size = _vector_size_tmp;
+			this->_vector_capacity = _vector_capacity_tmp;
+		}
+
 		void clear()
 		{
 			this->resize(0);
 		}
 
 
-	public: // public pour debug TBD repasser en private
-		Allocator myAllocator;
 
-		T *_vector_pointer;
-		size_t _vector_size;
-		size_t _vector_capacity;
 
 		// ajouter ?
 		//_start
@@ -488,51 +525,57 @@ namespace ft
 	// const
 
 // ###########################################################################################################
-// #########################################   Surcharge operator   ######################################################
+// #########################################   Fonctions non membres   ######################################################
 // ###########################################################################################################
 // surcharges faites en dehors de la classe car ce sont des fct non membres sur les vectors
-template< class T, class Alloc >
-bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-{
-	if (lhs.size() != rhs.size())
-		return (false);
-	for (int i = 0; i < lhs.size(); i++)
+	template< class T, class Alloc >
+	bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		if (lhs[i] != rhs[i])
+		if (lhs.size() != rhs.size())
 			return (false);
+		for (int i = 0; i < lhs.size(); i++)
+		{
+			if (lhs[i] != rhs[i])
+				return (false);
+		}
+		return (true);
 	}
-	return (true);
-}
 
-template< class T, class Alloc >
-bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-{
-	return (!(lhs == rhs));
-}
+	template< class T, class Alloc >
+	bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
 
-template< class T, class Alloc >
-bool operator<( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-{
-	return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
-}
+	template< class T, class Alloc >
+	bool operator<( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
 
-template< class T, class Alloc >
-bool operator<=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-{
-	return (!(lhs > rhs));
-}
+	template< class T, class Alloc >
+	bool operator<=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs > rhs));
+	}
 
-template< class T, class Alloc >
-bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-{
-	return (rhs < lhs);
-}
+	template< class T, class Alloc >
+	bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
 
-template< class T, class Alloc >
-bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-{
-	return (!(lhs < rhs));
-}
+	template< class T, class Alloc >
+	bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	}
+
+
+	template <class T, class Alloc>
+	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
 };
-
 #endif

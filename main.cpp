@@ -95,6 +95,10 @@ void print_size_capacity(ft::vector<T>& vector_to_print)
 // #########################################   DEBUT MAIN   #######################################################
 // ###########################################################################################################
 
+class myclass
+{
+
+};
 
 int main()
 {
@@ -288,5 +292,28 @@ int main()
 
 
 	// begin / end -> return un iterator ? = un pointeur ?
+
+	// ##############################   Reverse Iterator   #################################
+	print_title_1("REVERSE ITERATOR");	
+	ft::vector<int> vec_reverse_iterator_operator_A(1, 3);
+	vec_reverse_iterator_operator_A.push_back(5);
+	vec_reverse_iterator_operator_A.push_back(6);
+	vec_reverse_iterator_operator_A.push_back(9);
+	print_myvector2<int>(vec_reverse_iterator_operator_A);
+	ft::vector<int>::reverse_iterator rev_iterator_vec_iterator_operator_plus = vec_reverse_iterator_operator_A.rbegin();
+	rev_iterator_vec_iterator_operator_plus--;
+	std::cout << *rev_iterator_vec_iterator_operator_plus << std::endl;
+	rev_iterator_vec_iterator_operator_plus--;
+	std::cout << *rev_iterator_vec_iterator_operator_plus << std::endl;
+	ft::vector<int>::reverse_iterator rev_iterator_vec_iterator_operator_plus_B = vec_reverse_iterator_operator_A.rend(); // autre test
+	std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl;
+	rev_iterator_vec_iterator_operator_plus_B++;
+	std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl;
+
+
+
+
+
+
 
 	}
