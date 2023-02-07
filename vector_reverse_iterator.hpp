@@ -101,7 +101,7 @@ namespace ft
 				current++;
 				return (*this);
 			}
-			reverse_iterator  operator--(int)
+			reverse_iterator operator--(int)
 			{
 				reverse_iterator it_copy = *this;
 				current++;
@@ -116,12 +116,15 @@ namespace ft
 
 			pointer operator->() const
 			{
-				return(this->current);
+				Iterator tmp = this->current;
+				tmp--;
+				return (&(*tmp));
+				//return &(operator*());
 			}
 
 			reference operator[] (difference_type n) const
 			{
-				return (*(this->current - n));
+				return (*(this->current - n - 1));
 			}
 
 	};
@@ -196,25 +199,25 @@ namespace ft
 	template <typename iterator1, typename iterator2>
 	bool operator<(const reverse_iterator<iterator1> &lhs, const reverse_iterator<iterator2> &rhs)
 	{
-		return (lhs.base() < rhs.base());
+		return (lhs.base() > rhs.base());
 	}
 
 	template <typename iterator1, typename iterator2>
 	bool operator>(const reverse_iterator<iterator1> &lhs, const reverse_iterator<iterator2> &rhs)
 	{
-		return (lhs.base() > rhs.base());
+		return (lhs.base() < rhs.base());
 	}
 
 	template <typename iterator1, typename iterator2>
 	bool operator<=(const reverse_iterator<iterator1> &lhs, const reverse_iterator<iterator2> &rhs)
 	{
-		return (lhs.base() <= rhs.base());
+		return (lhs.base() >= rhs.base());
 	}
 
 	template <typename iterator1, typename iterator2>
 	bool operator>=(const reverse_iterator<iterator1> &lhs, const reverse_iterator<iterator2> &rhs)
 	{
-		return (lhs.base() >= rhs.base());
+		return (lhs.base() <= rhs.base());
 	}
 
 	template <typename iterator1, typename iterator2>

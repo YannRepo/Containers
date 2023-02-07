@@ -294,21 +294,37 @@ int main()
 	// begin / end -> return un iterator ? = un pointeur ?
 
 	// ##############################   Reverse Iterator   #################################
-	print_title_1("REVERSE ITERATOR");	
+	print_title_1("REVERSE ITERATOR");
+	print_title_2("rbegin, rend");	
 	ft::vector<int> vec_reverse_iterator_operator_A(1, 3);
 	vec_reverse_iterator_operator_A.push_back(5);
 	vec_reverse_iterator_operator_A.push_back(6);
 	vec_reverse_iterator_operator_A.push_back(9);
 	print_myvector2<int>(vec_reverse_iterator_operator_A);
 	ft::vector<int>::reverse_iterator rev_iterator_vec_iterator_operator_plus = vec_reverse_iterator_operator_A.rbegin();
-	rev_iterator_vec_iterator_operator_plus--;
 	std::cout << *rev_iterator_vec_iterator_operator_plus << std::endl;
-	rev_iterator_vec_iterator_operator_plus--;
+	rev_iterator_vec_iterator_operator_plus++;
 	std::cout << *rev_iterator_vec_iterator_operator_plus << std::endl;
 	ft::vector<int>::reverse_iterator rev_iterator_vec_iterator_operator_plus_B = vec_reverse_iterator_operator_A.rend(); // autre test
 	std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl;
-	rev_iterator_vec_iterator_operator_plus_B++;
+	rev_iterator_vec_iterator_operator_plus_B--;
 	std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl;
+
+	print_title_2("access []");	
+	ft::vector<int> vec_reverse_iterator_operator_C(1, 3);
+	vec_reverse_iterator_operator_C.push_back(5);
+	vec_reverse_iterator_operator_C.push_back(6);
+	vec_reverse_iterator_operator_C.push_back(9);
+	ft::vector<int>::reverse_iterator rev_iterator_vec_iterator_access = vec_reverse_iterator_operator_C.rbegin(); // autre test
+	print_myvector2<int>(vec_reverse_iterator_operator_C);
+	rev_iterator_vec_iterator_access++;
+	//std::cout << *rev_iterator_vec_iterator_access << std::endl;
+	std::cout << rev_iterator_vec_iterator_access[0] << std::endl;
+	std::cout << rev_iterator_vec_iterator_access[1] << std::endl;
+	std::cout << rev_iterator_vec_iterator_access[2] << std::endl;
+	rev_iterator_vec_iterator_access++;
+	std::cout << rev_iterator_vec_iterator_access[-1] << std::endl;
+
 
 
 

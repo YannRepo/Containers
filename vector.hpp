@@ -172,21 +172,23 @@ namespace ft
 		// Reverse Iterator
 		reverse_iterator rbegin()
 		{
-			return (reverse_iterator(_vector_pointer));
+			return (reverse_iterator(&this->_vector_pointer[this->_vector_size]));
 		}
 
 		const_reverse_iterator rbegin() const
 		{
-			return (const_reverse_iterator(_vector_pointer));
+			return (const_reverse_iterator(&this->_vector_pointer[this->_vector_size]));
 		}
 
 		reverse_iterator rend()
 		{
-				return (reverse_iterator(&this->_vector_pointer[this->_vector_size]));
+			return (reverse_iterator(_vector_pointer));
+
 		}
 		const_reverse_iterator rend() const
 		{
-			return (const_reverse_iterator(&this->_vector_pointer[this->_vector_size]));
+			return (const_reverse_iterator(_vector_pointer));
+
 		}
 
 		// -----------------------------------------------------------------------------------------------------------
