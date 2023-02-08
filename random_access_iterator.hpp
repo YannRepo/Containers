@@ -6,41 +6,27 @@
 
 namespace ft
 {
-// ###########################################################################################################
-// #########################################   random_access_iterator   ####################################################
-// ###########################################################################################################
-
 	template <typename T>
 	class random_access_iterator
 	{
 		public:
-		// TBD check si les typedef commentes ne sont pas utilises
 			typedef T											value_type;
-			//typedef const T*									const_pointer;
-			//typedef T*											pointer;
-			//typedef Allocator									allocator_type;
-			//typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
-			//typedef value_type&									reference;
-			//typedef	const value_type&							const_reference;
 			typedef std::random_access_iterator_tag				iterator_category;
+			typedef T*											pointer;
+			typedef T&											reference;
 
-
-// ajout
-			typedef T*												pointer;
-
-			typedef T&										reference;
-
-		public: // public pour debug TBD
+		protected:
 			pointer _pointer;
-			// int	_size; // TBD a sup
 			
 		public:
-			// constructor / detructor
+
+// ###########################################################################################################
+// ##################################   Constructeurs / destructeurs   #######################################
+// ###########################################################################################################
 			random_access_iterator()
 			{
 				this->_pointer = NULL;
-				// this->_size = 0;
 			}
 			random_access_iterator(pointer vector_pt)
 			{
@@ -50,10 +36,11 @@ namespace ft
 			{
 				this->_pointer = src._pointer;
 			}
-			
 			~random_access_iterator() {}
 
-			// // functions
+// ###########################################################################################################
+// ##################################   Fonctions membres   ##################################################
+// ###########################################################################################################
 			void advance(random_access_iterator &it, int n)
 			{
 				it._pointer += n;
@@ -71,20 +58,12 @@ namespace ft
 				return (this->_pointer);
 			}
 
-			// // operator overload
+			// operator overload
 			random_access_iterator& operator=(const random_access_iterator &rhs)
 			{
 				this->_pointer = rhs._pointer;
 				return (*this);
 			}
-			//bool operator==(const random_access_iterator &src)
-			//{
-			//	return (this->_pointer == src._pointer);
-			//}
-			//bool operator!=(const random_access_iterator &src)
-			//{
-			//	return (this->_pointer != src._pointer);
-			//}
 			value_type& operator*(void) const
 			{
 				return (*this->_pointer);
@@ -131,22 +110,6 @@ namespace ft
 			{
 				return (this->_pointer - it._pointer);
 			}
-			//bool operator<(const random_access_iterator &compared) const
-			//{
-			//	return (this->_pointer < compared._pointer);
-			//}
-			//bool operator>(const random_access_iterator &compared) const
-			//{
-			//	return (this->_pointer > compared._pointer);
-			//}
-			//bool operator<=(const random_access_iterator &compared) const
-			//{
-			//	return (this->_pointer <= compared._pointer);
-			//}
-			//bool operator>=(const random_access_iterator &compared) const
-			//{
-			//	return (this->_pointer >= compared._pointer);
-			//}
 			random_access_iterator &operator+=(int n)
 			{
 				advance(*this, n);
@@ -162,35 +125,21 @@ namespace ft
 			{
 				return (*(this->_pointer + n));
 			}
-
-			// TBD check ces lignes
 			operator random_access_iterator<const T>() const
 			{
 				return random_access_iterator<const T>(this->_pointer);
 			}
-
-
 	};
 
-
 // ###########################################################################################################
-// #########################################   Surcharge hors class vector / iterator   ######################################################
+// ################################   Fonctions non membres (surcharges operator)  ###########################
 // ###########################################################################################################
-	
-	// TBD verif si cette surcharge est tjr utile ?
 	template <class InputIterator>
 	InputIterator operator+(int lhs, InputIterator rhs)
 	{
 		return (rhs + lhs);
 	}
 
-
-
-	//template <typename T1>
-	//bool operator==(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T1> &rhs)
-	//{
-	//	return (lhs.base() == rhs.base());
-	//}
 	template <typename T1, typename T2>
 	bool operator==(const ft::random_access_iterator<T1> &lhs, const ft::random_access_iterator<T2> &rhs)
 	{
@@ -233,61 +182,6 @@ namespace ft
 	{
 		return lhs.base() - rhs.base();
 	}
-
-// ###########################################################################################################
-// #########################################   const_random_access_iterator   ####################################################
-// ###########################################################################################################
-
-	//template <typename T, typename Allocator = std::allocator<T> >
-	//class const_random_access_iterator : public ft::random_access_iterator<T>
-	//{
-	//	public:
-	//		typedef T											value_type;
-	//		typedef const T*									const_pointer;
-	//		typedef T*											pointer;
-	//		typedef Allocator									allocator_type;
-	//		typedef std::size_t									size_type;
-	//		typedef std::ptrdiff_t								difference_type;
-	//		typedef value_type&									reference;
-	//		typedef	const value_type&							const_reference;
-	//	public:
-	//		// constructor / detructor
-	//		const_random_access_iterator()
-	//		{
-	//			this->_pointer = NULL;
-	//			// this->_size = 0;
-	//		}
-	//		const_random_access_iterator(pointer vector_pt)
-	//		{
-	//			this->_pointer = vector_pt;
-	//		}
-	//		const_random_access_iterator(const_random_access_iterator &src)
-	//		{
-	//			this->_pointer = src._pointer;
-	//		}
-	//		// TBD destruct ?
-	//		~const_random_access_iterator() {}
-	//		// surcharge operateur * pour return const
-	//		const value_type &operator*(void) const
-	//		{
-	//			return (*this->_pointer);
-	//		}
-	//		const_pointer operator->() const
-	//		{
-	//			//std::cout << "check2" << std::endl;
-	//			const pointer tmp = this->_pointer;
-	//			return (tmp);
-	//		}
-	//		const_reference operator[](int n) const
-	//		{
-	//			return (*(this->_pointer + n));
-	//		}
-			
-	//	};
-
-	// TBD ajouter les surcharges pour toutes les combinaisons const / not const 
 }
-
-
 
 #endif

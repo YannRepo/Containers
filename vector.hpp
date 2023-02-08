@@ -13,11 +13,8 @@
 # include "is_integral.hpp"
 # include "enable_if.hpp"
 
-// TBD voir comment interdire les modf de variable sur des *const_iterator
 namespace ft
 {
-	//class random_access_iterator;
-
 	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
@@ -30,17 +27,13 @@ namespace ft
 			typedef std::ptrdiff_t									difference_type;
 			typedef T&												reference;
 			typedef	const value_type&								const_reference;
-		// typedef Allocator::pointer						pointer;
-		// typedef Allocator::const_pointer				const_pointer;
-		// //typedef iterator
-		// //typedef const_iterator
-		typedef ft::random_access_iterator<T>					iterator;
-		typedef ft::random_access_iterator<const T>				const_iterator;
-		 typedef ft::reverse_iterator<iterator>					reverse_iterator;
-		 typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef ft::random_access_iterator<T>					iterator;
+			typedef ft::random_access_iterator<const T>				const_iterator;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			
 
-	public: // public pour debug TBD repasser en private
+	protected:
 		Allocator myAllocator;
 
 		T *_vector_pointer;
@@ -50,7 +43,7 @@ namespace ft
 	// ###########################################################################################################
 	// #########################################   UTILS   #######################################################
 	// ###########################################################################################################
-	public: // publiv pour debug, repasser en private TBD
+	private:
 		void check_vector_capacity_and_allocate_and_copy(size_type size)
 		{
 			if (size <= this->_vector_capacity)
@@ -90,7 +83,7 @@ namespace ft
 		}
 
 	// ###########################################################################################################
-	// #########################################   VECTOR   ######################################################
+	// #########################################   Fonctions membres   ###########################################
 	// ###########################################################################################################
 	// -----------------------------------------------------------------------------------------------------------
 	// ------------------------------------ constructor / destructor --------------------------------------------------
@@ -115,8 +108,7 @@ namespace ft
 				// this->_vector_pointer[i] = val;
 			}
 		}
-		// version simplifiee
-		//vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
@@ -143,7 +135,6 @@ namespace ft
 		~vector()
 		{
 			delete this->_vector_pointer;
-			// this->_vector_pointer = NULL;
 		}
 
 		// -----------------------------------------------------------------------------------------------------------
@@ -239,6 +230,8 @@ namespace ft
 			//__throw_length_error(__N("vector::reserve"));
 			if (n > _vector_capacity)
 			{
+				if (n > this->max_size())
+					std::length_error(__N("vector::reserve"));
 				value_type *new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type));
 				if (this->_vector_size > 0)
 				{
@@ -255,14 +248,6 @@ namespace ft
 			}
 		}
 
-		// --- TBD
-		// max_size
-		// resize
-		// capacity
-		// empty
-		// reserve
-		// X shrink_to_fit-- (pas a faire car c++11)
-
 		// -----------------------------------------------------------------------------------------------------------
 		// ------------------------------------------ Element access -------------------------------------------------------
 		// -----------------------------------------------------------------------------------------------------------
@@ -274,7 +259,6 @@ namespace ft
 		{
 			return (this->_vector_pointer[n]);
 		}
-		// TBD changer check ppour prendre >0 (faire fct in range)
 		reference at(size_type n)
 		{
 			if (n >= this->size())
@@ -300,29 +284,17 @@ namespace ft
 		reference back()
 		{
 			return (*(this->end()-1));
-
 		}
 		const_reference back() const
 		{
 			return (*(this->end()-1));
-
 		}
-
-		//--- TBD
-		//*operator[]
-		// *at
-		// front
-		// back
-		// X data (pas a faire)
 
 		// -----------------------------------------------------------------------------------------------------------
 		// ------------------------------------------ Modifier -------------------------------------------------------
 		// -----------------------------------------------------------------------------------------------------------
-
-		// surcharge operateur
 		vector &operator=(const vector &src)
 		{
-			// TBD check fct
 			this->myAllocator = src.myAllocator;
 			this->_vector_size = src._vector_size;
 			this->_vector_capacity = src._vector_capacity;
@@ -364,9 +336,9 @@ namespace ft
 				this->myAllocator.construct(&this->_vector_pointer[i], val);
 			}
 		}
+
 		void push_back(const T value)
 		{
-			// T*		previous_vector_pointer = this->_vector_pointer;
 			if (this->_vector_size + 1 > this->_vector_capacity)
 			{
 				if (this->_vector_capacity == 0)
@@ -376,14 +348,8 @@ namespace ft
 			}
 			this->myAllocator.construct(&this->_vector_pointer[this->_vector_size], value);
 			this->_vector_size += 1;
-
-			// this->_vector_pointer = myAllocator.allocate((_vector_size + 1) * sizeof(T));
-			// for (size_t i = 0; i < this->_vector_size; i++)
-			//	this->_vector_pointer[i] = previous_vector_pointer[i];
-			//(this->_vector_pointer)[_vector_size - 1] = value;
-			// std::cout << "_vector_pointer:"  << (this->_vector_pointer)[_vector_size - 1] << std::endl;
-			// this->myAllocator.destroy(&previous_vector_pointer);
 		}
+
 		void pop_back()
 		{
 			if (this->_vector_size > 0)
@@ -391,16 +357,7 @@ namespace ft
 				this->myAllocator.destroy(&this->_vector_pointer[this->_vector_size]);
 				this->_vector_size--;
 			}
-			// T	pop_element = this->_vector_pointer[this->_vector_size - 1];
-			// T*		previous_vector_pointer = this->_vector_pointer;
-			// this->_vector_pointer = myAllocator.allocate((_vector_size - 1) * sizeof(T));
-			// for (size_t i = 0; i < this->_vector_size - 1; i++)
-			//	this->_vector_pointer[i] = previous_vector_pointer[i];
-			// this->_vector_size -= 1;
-			// delete previous_vector_pointer;
-			// return (pop_element);
 		}
-
 
 		iterator insert (iterator position, const value_type& val)
 		{
@@ -444,10 +401,6 @@ namespace ft
 			if (this->_vector_size + this->distance(first, last) > this->_vector_capacity)
 			{
 				this->reserve(this->_vector_size + this->distance(first, last));
-				//if (this->_vector_capacity == 0)
-				//	this->reserve(1);
-				//else
-				//	this->reserve(this->_vector_capacity * 2);
 			}
 			this->_vector_size += insertion_size;
 			// copie des valeurs apres position, a la fin du vecteur
@@ -473,7 +426,6 @@ namespace ft
 		{
 			iterator it = position;
 			this->myAllocator.destroy(&(*position));
-			//this->myAllocator.destroy(&this->_vector_pointer[this->_vector_size]);
 			while (it + 1 != this->end())
 			{
 				*(it) = *(it + 1); 
@@ -481,8 +433,8 @@ namespace ft
 			}
 			this->_vector_size--;
 			return (position);
-			
 		}
+
 		iterator erase (iterator first, iterator last)
 		{
 			while (first != last)
@@ -512,22 +464,10 @@ namespace ft
 		{
 			this->resize(0);
 		}
-
-
-
-
-		// ajouter ?
-		//_start
-		//_finish
-		//_end_of_storage
 	};
 
-	// surcharge affichage // TBD check cas erreur sur class
-	// template<typename T>
-	// const
-
 // ###########################################################################################################
-// #########################################   Fonctions non membres   ######################################################
+// #########################################   Fonctions non membres   #######################################
 // ###########################################################################################################
 // surcharges faites en dehors de la classe car ce sont des fct non membres sur les vectors
 	template< class T, class Alloc >
@@ -572,7 +512,6 @@ namespace ft
 	{
 		return (!(lhs < rhs));
 	}
-
 
 	template <class T, class Alloc>
 	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
