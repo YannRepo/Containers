@@ -6,12 +6,11 @@
 # include <memory>
 
 # include "random_access_iterator.hpp"
-# include "vector_reverse_iterator.hpp"
-# include "iterator_traits.hpp"
-# include "lexicographical_compare.hpp"
-
-# include "is_integral.hpp"
-# include "enable_if.hpp"
+# include "../10_Tools/reverse_iterator.hpp"
+# include "../10_Tools/iterator_traits.hpp"
+# include "../10_Tools/lexicographical_compare.hpp"
+# include "../10_Tools/is_integral.hpp"
+# include "../10_Tools/enable_if.hpp"
 
 namespace ft
 {

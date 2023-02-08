@@ -1,8 +1,14 @@
 #include <vector>
-#include "vector.hpp"
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include "vector.hpp"
+# include "random_access_iterator.hpp"
+# include "../10_Tools/reverse_iterator.hpp"
+# include "../10_Tools/iterator_traits.hpp"
+# include "../10_Tools/lexicographical_compare.hpp"
+# include "../10_Tools/is_integral.hpp"
+# include "../10_Tools/enable_if.hpp"
 
 
 // print title tool
@@ -94,12 +100,6 @@ void print_size_capacity(ft::vector<T>& vector_to_print)
 // ###########################################################################################################
 // #########################################   DEBUT MAIN   #######################################################
 // ###########################################################################################################
-
-class myclass
-{
-
-};
-
 int main()
 {
 	// ##############################   Vector   #################################3
@@ -324,12 +324,4 @@ int main()
 	std::cout << rev_iterator_vec_iterator_access[2] << std::endl;
 	rev_iterator_vec_iterator_access++;
 	std::cout << rev_iterator_vec_iterator_access[-1] << std::endl;
-
-
-
-
-
-
-
-
 	}
