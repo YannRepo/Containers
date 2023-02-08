@@ -13,6 +13,9 @@ HEADER += ../10_Tools/lexicographical_compare.hpp
 HEADER += ../10_Tools/is_integral.hpp
 HEADER += ../10_Tools/enable_if.hpp
 
+HEADER += pair.hpp
+
+
 INCLUDES_DIR =
 
 LIB_INCLUDE =

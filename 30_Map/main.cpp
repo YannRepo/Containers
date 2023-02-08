@@ -10,6 +10,9 @@
 # include "../10_Tools/is_integral.hpp"
 # include "../10_Tools/enable_if.hpp"
 
+# include "pair.hpp"
+
+
 
 // print title tool
 # define COLOR_NORMAL  "\x1B[0m"
@@ -67,7 +70,22 @@ void print_title_3(std::string str)
 // ###########################################################################################################
 int main()
 {
-	// ##############################   Map   #################################3
+	// ##############################   Pair / make pair  ###################################
+	print_title_1("Pair / make pair ");
+	std::string str_A = "Hello";
+	float float_A = 1.5;
+	ft::pair<std::string, float> pair_A(str_A, float_A);
+	std::cout << "pair_A : first = " << pair_A.first << " - second = " << pair_A.second << std::endl;
+	ft::pair<float, std::string> pair_B = ft::make_pair(float_A, str_A);
+	//auto pair_B = ft::make_pair(float_A, str_A); // version simplifiee;
+	std::cout << "pair_B : first = " << pair_B.first << " - second = " << pair_B.second << std::endl;
+
+
+
+
+	
+	
+	// ##############################   Map   ###################################
 	// ------------------------------------------ Constructor destructor -------------------------------------------------------
 	print_title_1("Map - Constructor destructor");
 	
