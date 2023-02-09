@@ -370,7 +370,7 @@ namespace ft
 			}
 			this->_vector_size++;
 			iterator it_end = this->end() - 1;
-			size_t i = this->_vector_size - 1;
+			difference_type i = this->_vector_size - 1;
 			while (i != insertion_distance)
 			{
 				*it_end = *(it_end - 1);
@@ -404,7 +404,7 @@ namespace ft
 			this->_vector_size += insertion_size;
 			// copie des valeurs apres position, a la fin du vecteur
 			iterator it_end = this->end() - 1;
-			size_t i = this->_vector_size - 1;
+			difference_type i = this->_vector_size - 1;
 			while (i != insertion_distance + insertion_size - 1)
 			{
 				*it_end = *(it_end - insertion_size);

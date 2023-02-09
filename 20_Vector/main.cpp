@@ -40,7 +40,6 @@ void print_title_1(std::string str)
 
 void print_title_2(std::string str)
 {
-	int width = DEBUG_WIDTH;
 	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
 	std::cout <<std::endl;
 	std::cout << COLOR_MAGENTA;
@@ -52,7 +51,6 @@ void print_title_2(std::string str)
 
 void print_title_3(std::string str)
 {
-	int width = DEBUG_WIDTH;
 	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
 	std::cout << COLOR_BLUE;
 	std::cout << std::setfill('-') << std::setw(fill) << "";
@@ -268,7 +266,7 @@ int main()
 	//*it = 4; // decommenter cette ligne doit generer une erreur comme pour la std ci-dessous
 
 	std::vector<int> vec3(5, 22);
-	std::vector<int>::const_iterator it2 = vec3.begin();
+	//std::vector<int>::const_iterator it2 = vec3.begin();
 	//*it2 = 4; 
 
 

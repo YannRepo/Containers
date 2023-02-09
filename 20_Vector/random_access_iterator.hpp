@@ -41,18 +41,6 @@ namespace ft
 // ###########################################################################################################
 // ##################################   Fonctions membres   ##################################################
 // ###########################################################################################################
-			void advance(random_access_iterator &it, int n)
-			{
-				it._pointer += n;
-			}
-			random_access_iterator prev(random_access_iterator first, int n)
-			{
-				return (random_access_iterator(*this)--);
-			}
-			random_access_iterator next(random_access_iterator first, int n)
-			{
-				return (random_access_iterator(*this)++);
-			}
 			pointer base() const
 			{
 				return (this->_pointer);
