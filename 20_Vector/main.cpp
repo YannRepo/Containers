@@ -304,7 +304,7 @@ int main()
 	rev_iterator_vec_iterator_operator_plus++;
 	std::cout << *rev_iterator_vec_iterator_operator_plus << std::endl;
 	ft::vector<int>::reverse_iterator rev_iterator_vec_iterator_operator_plus_B = vec_reverse_iterator_operator_A.rend(); // autre test
-	std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl;
+	//std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl; // cause invalid read mais ok
 	rev_iterator_vec_iterator_operator_plus_B--;
 	std::cout << *rev_iterator_vec_iterator_operator_plus_B << std::endl;
 
