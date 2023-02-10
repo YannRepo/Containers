@@ -231,7 +231,7 @@ namespace ft
 			{
 				if (n > this->max_size())
 					std::length_error(__N("vector::reserve"));
-				value_type *new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type));
+				value_type *new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type)); // TBD juste taille n
 				if (this->_vector_size > 0)
 				{
 					for (size_t i = 0; i < this->_vector_size; i++)

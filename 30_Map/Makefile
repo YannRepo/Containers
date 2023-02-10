@@ -14,7 +14,7 @@ HEADER += ../10_Tools/is_integral.hpp
 HEADER += ../10_Tools/enable_if.hpp
 
 HEADER += pair.hpp
-
+HEADER += red_black_tree.hpp
 
 INCLUDES_DIR =
 

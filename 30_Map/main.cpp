@@ -3,14 +3,16 @@
 #include <string>
 #include <iomanip>
 
-#include "map.hpp"
 # include "../10_Tools/reverse_iterator.hpp"
 # include "../10_Tools/iterator_traits.hpp"
 # include "../10_Tools/lexicographical_compare.hpp"
 # include "../10_Tools/is_integral.hpp"
 # include "../10_Tools/enable_if.hpp"
 
+# include "map.hpp"
 # include "pair.hpp"
+# include "red_black_tree.hpp"
+
 
 
 
@@ -51,6 +53,7 @@ void print_title_2(std::string str)
 	std::cout << "  " + str + "  ";
 	std::cout << std::setfill('*') << std::setw(fill) << "";
 	std::cout << COLOR_NORMAL <<std::endl;
+	
 }
 
 void print_title_3(std::string str)
@@ -81,6 +84,12 @@ int main()
 	std::cout << "pair_B : first = " << pair_B.first << " - second = " << pair_B.second << std::endl;
 
 
+	// ##############################   RBT  ##################################
+	print_title_1("RBT");
+	// --------------------- Constructor destructor -------------------------------------------------------
+	print_title_2("Constructor destructor");
+	ft::Red_black_tree<int, int> rbt1;
+	rbt1.insert_node(rbt1.tree_head);//, ft::make_pair(1,42));
 
 
 	
@@ -90,7 +99,7 @@ int main()
 	print_title_1("Test compare");
 	
 
-	print_title_1("Map - Constructor destructor");
+	print_title_2("Map - Constructor destructor");
 
 	
 }
