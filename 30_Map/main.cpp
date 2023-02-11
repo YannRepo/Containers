@@ -87,9 +87,13 @@ int main()
 	// ##############################   RBT  ##################################
 	print_title_1("RBT");
 	// --------------------- Constructor destructor -------------------------------------------------------
-	print_title_2("Constructor destructor");
+	print_title_2("Insert et print");
 	ft::Red_black_tree<int, int> rbt1;
-	rbt1.insert_node(rbt1.tree_head);//, ft::make_pair(1,42));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(1,42));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(2,43));
+
+	rbt1.print();
+
 
 
 	
