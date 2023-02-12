@@ -91,6 +91,13 @@ int main()
 	ft::Red_black_tree<int, int> rbt1;
 	rbt1.insert_node(rbt1.tree_head, ft::make_pair(1,42));
 	rbt1.insert_node(rbt1.tree_head, ft::make_pair(2,43));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(8,45));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(4,46));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(20,47));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(-5,48));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(-4,49));
+	rbt1.insert_node(rbt1.tree_head, ft::make_pair(-6,50));
+
 
 	rbt1.print();
 
