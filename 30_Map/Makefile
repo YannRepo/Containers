@@ -15,6 +15,7 @@ HEADER += ../10_Tools/enable_if.hpp
 
 HEADER += pair.hpp
 HEADER += red_black_tree.hpp
+HEADER += red_black_tree_iterator.hpp
 
 INCLUDES_DIR =
 

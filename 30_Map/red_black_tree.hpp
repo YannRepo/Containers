@@ -45,6 +45,56 @@ namespace ft
 
 				Node(): value(mapped_type()), left(NULL), right(NULL), parent(NULL), color(RED){}
 				Node(key_type key_, mapped_type value_): key (key_), value(value_), left(NULL), right(NULL), parent(NULL), color(RED){}
+				
+				bool has_right_child()
+				{
+					if (this->right)
+						return (true);
+					return (false);
+				}
+				node_pointer get_right_child()
+				{
+					return (this->right);
+				}
+				bool has_left_child()
+				{
+					if (this->left)
+						return (true);
+					return (false);
+				}
+				node_pointer get_left_child()
+				{
+					return (this->left);
+				}
+				bool has_parent()
+				{
+					if (this->parent)
+						return (true);
+					return (false);
+				}
+				node_pointer get_parent()
+				{
+					return (this->parent);
+				}
+				bool is_left_child() // return false si pas de parent
+				{
+					if (!this->has_parent())
+						return (false);
+					if (this == this->get_parent()->get_left_child())
+						return (true);
+					return (false);
+				}
+				bool is_right_child() // return false si pas de parent
+				{
+					if (!this->has_parent())
+						return (false);
+					if (this == this->get_parent()->get_right_child())
+						return (true);
+					return (false);
+				}
+
+	// get_tree_root
+
 			};
 
 		// TBD check si ca corrige pb
@@ -71,7 +121,11 @@ namespace ft
 // ###########################################################################################################
 // #########################################   Fonctions membres   #######################################################
 // ###########################################################################################################
-
+	public: // TBD voir les fct a repasser en private
+	node_pointer get_tree_head()
+	{
+		return (this->tree_head);
+	}
 	void insert_node(node_pointer insert_position, pair<key_type, mapped_type> added_pair)
 	{	
 		if (this->tree_head == NULL)
@@ -100,7 +154,9 @@ namespace ft
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
 					this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second));
+					new_node->parent = insert_position;
 					insert_position->left = new_node;
+
 				}
 				return;
 			}
@@ -112,6 +168,7 @@ namespace ft
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
 					this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second));
+					new_node->parent = insert_position;
 					insert_position->right = new_node;
 				}
 				return;

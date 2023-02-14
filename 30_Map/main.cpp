@@ -1,4 +1,5 @@
 #include <vector>
+#include <map>
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -12,6 +13,7 @@
 # include "map.hpp"
 # include "pair.hpp"
 # include "red_black_tree.hpp"
+# include "red_black_tree_iterator.hpp"
 
 
 
@@ -86,7 +88,6 @@ int main()
 
 	// ##############################   RBT  ##################################
 	print_title_1("RBT");
-	// --------------------- Constructor destructor -------------------------------------------------------
 	print_title_2("Insert et print");
 	ft::Red_black_tree<int, int> rbt1;
 	rbt1.insert_node(rbt1.tree_head, ft::make_pair(1,42));
@@ -97,9 +98,38 @@ int main()
 	rbt1.insert_node(rbt1.tree_head, ft::make_pair(-5,48));
 	rbt1.insert_node(rbt1.tree_head, ft::make_pair(-4,49));
 	rbt1.insert_node(rbt1.tree_head, ft::make_pair(-6,50));
-
-
 	rbt1.print();
+	
+	print_title_1("RBT iterator ");
+	print_title_2("operator++");
+	ft::Red_black_tree<int, int> rbt2;
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(1,42));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(2,43));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(8,45));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(4,46));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(20,47));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(-5,48));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(-4,49));
+	rbt2.insert_node(rbt2.tree_head, ft::make_pair(-6,50));
+	
+	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_insert_print_A(rbt2.get_tree_head());
+	//std::cout << "check: " << it_insert_print_A.has_right_child() << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	++it_insert_print_A;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	++it_insert_print_A;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	++it_insert_print_A;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+
+
+	std::map<int, int> mymap;
+	mymap.insert(std::make_pair(1, 42));
+	mymap.insert(std::make_pair(2, 43));
+	mymap.insert(std::make_pair(3, 44));
+	std::map<int, int>::iterator it = mymap.end();
+	//it--;
+	std::cout << "check end std: " << it->second << std::endl;
 
 
 
