@@ -101,46 +101,62 @@ int main()
 	//rbt1.print();
 	
 	print_title_1("RBT iterator ");
-	print_title_2("operator++");
+	print_title_2("operator++ / --");
 	ft::Red_black_tree<int, int> rbt2;
 	rbt2.insert_node(ft::make_pair(1,42));
-	rbt2.print();
-
 	rbt2.insert_node(ft::make_pair(2,43));
-	rbt2.print();
-
 	rbt2.insert_node(ft::make_pair(8,45));
-	rbt2.print();
-
 	rbt2.insert_node(ft::make_pair(4,46));
-	rbt2.print();
-
 	rbt2.insert_node(ft::make_pair(20,47));
-	rbt2.print();
-
 	rbt2.insert_node(ft::make_pair(-5,48));
-	rbt2.print();
-	rbt2.insert_node(ft::make_pair(-4,49)); // pb
-	rbt2.print();
+	rbt2.insert_node(ft::make_pair(-4,49));
 	rbt2.insert_node(ft::make_pair(-6,50));
-	rbt2.print();
 
-	
+	print_title_3("check operation ++ ");
 	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_insert_print_A(rbt2.get_tree_head());
 	//std::cout << "check: " << it_insert_print_A.has_right_child() << std::endl;
 	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	++it_insert_print_A;
+	//++it_insert_print_A;
+	it_insert_print_A++;
 	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	++it_insert_print_A;
+	//++it_insert_print_A;
+	it_insert_print_A++;
 	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	++it_insert_print_A;
+	//++it_insert_print_A;
+	it_insert_print_A++;
 	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	++it_insert_print_A;
+	//++it_insert_print_A;
+	it_insert_print_A++;
 	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	++it_insert_print_A;
+	//++it_insert_print_A;
+	it_insert_print_A++;
 	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "key/value begin: " << rbt2.tree_begin->key << "/" << rbt2.tree_begin->value << std::endl;
+	
+	print_title_3("check operation -- ");
+		std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	//--it_insert_print_A;
+	it_insert_print_A--;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	//--it_insert_print_A;
+	it_insert_print_A--;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	//--it_insert_print_A;
+	it_insert_print_A--;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	//--it_insert_print_A;
+	it_insert_print_A--;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	//--it_insert_print_A;
+	it_insert_print_A--;
+	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "key/value begin: " << rbt2.tree_begin->key << "/" << rbt2.tree_begin->value << std::endl;
+	
+	
+	
+	print_title_2("check return");
 
-
+	// test avec STD pour comparaison
 	//std::map<int, int> mymap;
 	//mymap.insert(std::make_pair(1, 42));
 	//mymap.insert(std::make_pair(2, 43));

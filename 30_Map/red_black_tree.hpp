@@ -52,35 +52,35 @@ namespace ft
 						return (true);
 					return (false);
 				}
-				node_pointer get_right_child()
-				{
-					return (this->right);
-				}
+				//node_pointer get_right_child()
+				//{
+				//	return (this->right);
+				//}
 				bool has_left_child()
 				{
 					if (this->left)
 						return (true);
 					return (false);
 				}
-				node_pointer get_left_child()
-				{
-					return (this->left);
-				}
+				//node_pointer get_left_child()
+				//{
+				//	return (this->left);
+				//}
 				bool has_parent()
 				{
 					if (this->parent)
 						return (true);
 					return (false);
 				}
-				node_pointer get_parent()
-				{
-					return (this->parent);
-				}
+				//node_pointer get_parent()
+				//{
+				//	return (this->parent);
+				//}
 				bool is_left_child() // return false si pas de parent
 				{
 					if (!this->has_parent())
 						return (false);
-					if (this == this->get_parent()->get_left_child())
+					if (this == this->parent->left)
 						return (true);
 					return (false);
 				}
@@ -88,7 +88,7 @@ namespace ft
 				{
 					if (!this->has_parent())
 						return (false);
-					if (this == this->get_parent()->get_right_child())
+					if (this == this->parent->right)
 						return (true);
 					return (false);
 				}
@@ -105,6 +105,7 @@ namespace ft
 		public: // public pour debug, repasser en private
 			node_pointer	tree_head;
 			node_pointer	tree_end;
+			node_pointer	tree_begin;
 			node_allocator	myAllocator;
 			Compare			mycompare;
 		
@@ -118,6 +119,7 @@ namespace ft
 		this->tree_head = myAllocator.allocate(1);
 		this->myAllocator.construct(this->tree_head, node(666, 777)); // 666 et 777 valeurs random pour debug du noeud fantome
 		this->tree_end = tree_head;
+		this->tree_begin = NULL;
 		this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
 
 	}
@@ -138,6 +140,17 @@ namespace ft
 			//while ()
 		}
 
+		// TBD check si utilise (non testee encore)
+		void update_begin()
+		{
+			// pour retrouver begin depuis racine (moins opti)
+			tree_begin  = tree_head;
+			while (tree_begin->left)
+			{
+				tree_begin = tree_begin->left;
+			}
+		}
+
 // ###########################################################################################################
 // #########################################   Fonctions membres   #######################################################
 // ###########################################################################################################
@@ -149,13 +162,15 @@ namespace ft
 		}
 		void insert_node(pair<key_type, mapped_type> added_pair)
 		{
-			if (this->tree_head == this->tree_end)
+			if (this->tree_head == this->tree_end) // 1er insertion
 			{
 				//this->myAllocator.construct(tree_head, node());
 				node_pointer new_node = this->myAllocator.allocate(1);
 				this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second)); // TBD check construction
 				this->tree_head = new_node;
 				update_end(new_node);
+				this->tree_begin = new_node;
+
 			}
 			else
 				insert_node_algo(this->tree_head, added_pair);
@@ -178,7 +193,8 @@ namespace ft
 					this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second));
 					new_node->parent = insert_position;
 					insert_position->left = new_node;
-
+					if (insert_position == this->tree_begin)
+						this->tree_begin = new_node;
 				}
 				return;
 			}

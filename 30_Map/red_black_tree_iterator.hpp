@@ -53,57 +53,71 @@ namespace ft
 
 			if (this->current_node->has_right_child())
 			{
-				this->current_node = this->current_node->get_right_child();
+				this->current_node = this->current_node->right;
 				while (this->current_node->has_left_child())
 				{
-					this->current_node = this->current_node->get_left_child();
+					this->current_node = this->current_node->left;
 				}
 				return (*this);
 			}
 			else
 			{
 				while(this->current_node->has_parent() && this->current_node->is_right_child())
-					this->current_node = this->current_node->get_parent();
+					this->current_node = this->current_node->parent;
 				if (!this->current_node->has_parent())
 				{
-					this->current_node = NULL;
+					this->current_node = NULL; // TBD check return
 					return (*this);
 				}
-				this->current_node = this->current_node->get_parent();
+				this->current_node = this->current_node->parent;
 				return (*this);
-
-
 			}
-
-			// TBD update
-			return (*this);
-
 		}
 
 		Rbt_iterator	operator++(int) // i++
 		{
-			// pour reutilisation
-						Rbt_iterator search_it(this->current_node);
-			//if (search_it.current_node->has_right_child())
-			//{
-			//	search_it.current_node = search_it.current_node->get_right_child();
-			//	while (search_it.current_node->has_left_child())
-			//	{
-			//		search_it.current_node = search_it.current_node->get_left_child();
-			//	}
-			//	return (search_it);
-			//}
-			//else
-			//{
-
-			//}
-
-
+			Rbt_iterator it_copy = *this;
+			++(*this);
+			return(it_copy);
 		}
 
+		Rbt_iterator&	operator--() // --i
+		{
+			// Si un noeud a gauche
+				// descendre noeud
+				// explorer a droite jusque pas d'enfant a droite
+			// Sinon
+				// remonter jusqu'a ce qu'on vienne d'un right child
+				// Si ca n'arrive pas c'est le premier noeud -> renvoyer Null ?
 
-
-
+			if (this->current_node->has_left_child())
+			{
+				this->current_node = this->current_node->left;
+				while (this->current_node->has_right_child())
+				{
+					this->current_node = this->current_node->right;
+				}
+				return (*this);
+			}
+			else
+			{
+				while(this->current_node->has_parent() && this->current_node->is_left_child())
+					this->current_node = this->current_node->parent;
+				if (!this->current_node->has_parent())
+				{
+					this->current_node = NULL; // TBD check return
+					return (*this);
+				}
+				this->current_node = this->current_node->parent;
+				return (*this);
+			}
+		}
+		Rbt_iterator	operator--(int) // i--
+		{
+			Rbt_iterator it_copy = *this;
+			--(*this);
+			return(it_copy);
+		}
 
 	};
 }
