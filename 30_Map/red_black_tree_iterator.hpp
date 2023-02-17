@@ -9,7 +9,7 @@
 
 namespace ft
 {
-	template<typename T, typename node_pointer, class Compare = std::less<T> >
+	template<typename T, typename node_pointer, class Compare>
 	class Rbt_iterator
 	{
 		private:

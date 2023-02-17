@@ -21,31 +21,30 @@ namespace ft
 // ###########################################################################################################
 
 		public:// public pour debug, repasser en private
-			template <typename K, typename V>
+			template <typename V>
 			struct Node;
 
 		public:
 			typedef Key								key_type;
-			typedef Val								mapped_type;
+			typedef Val								value_type;
 			typedef Allocator						allocator_type;
 
 			public:// public pour debug, repasser en private
-			typedef Node<Key, Val>						node;
-			typedef Node<Key, Val>*						node_pointer;
+			typedef Node<Val>						node;
+			typedef Node<Val>*						node_pointer;
 
 		public: // public pour debug, repasser en private
-			template <typename K, typename V>
+			template <typename V>
 			struct Node
 			{
-				K					key;
 				V					value;
 				node_pointer		left;
 				node_pointer		right;
 				node_pointer		parent;
 				int					color;
 
-				Node(): value(mapped_type()), left(NULL), right(NULL), parent(NULL), color(RED){}
-				Node(key_type key_, mapped_type value_): key (key_), value(value_), left(NULL), right(NULL), parent(NULL), color(RED){}
+				Node(): left(NULL), right(NULL), parent(NULL), color(RED){}
+				Node(value_type value_): value(value_), left(NULL), right(NULL), parent(NULL), color(RED){}
 				
 				bool has_right_child()
 				{
@@ -87,9 +86,9 @@ namespace ft
 		//-- Create a new type of allocator that is bound to the 'Node' type and uses the same 
 		//   memory ressource as the original 'allocator_type'.
 		public:
-			typedef typename Allocator::template rebind<Node<Key, Val> >::other		node_allocator;
+			typedef typename Allocator::template rebind<Node<Val> >::other		node_allocator;
 
-			typedef typename ft::Rbt_iterator<Val, node_pointer, Compare>			iterator;
+			typedef typename ft::Rbt_iterator<value_type, node_pointer, Compare>			iterator;
 
 
 		public: // public pour debug, repasser en private
@@ -107,7 +106,7 @@ namespace ft
 	tree_head(NULL), myAllocator(alloc), mycompare(comp)
 	{
 		this->tree_head = myAllocator.allocate(1);
-		this->myAllocator.construct(this->tree_head, node(666, 777)); // 666 et 777 valeurs random pour debug du noeud fantome
+		this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
 		this->tree_end = tree_head;
 		this->tree_begin = NULL;
 		this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
@@ -168,7 +167,7 @@ namespace ft
 					indent += "|  ";
 				}
 				std::string sColor = root->color ? "RED" : "BLACK";
-				std::cout << root->key << "/" << root->value << "(" << sColor << ")" << std::endl;
+				std::cout << root->value.first << "/" << root->value.second << "(" << sColor << ")" << std::endl;
 				this->print_recursive(root->left, indent, false);
 				this->print_recursive(root->right, indent, true);
 			}
@@ -197,13 +196,13 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		void insert_node(pair<key_type, mapped_type> added_pair)
+		void insert_node(value_type added_pair)
 		{
 			if (this->tree_head == this->tree_end) // 1er insertion
 			{
 				//this->myAllocator.construct(tree_head, node());
 				node_pointer new_node = this->myAllocator.allocate(1);
-				this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second)); // TBD check construction
+				this->myAllocator.construct(new_node, node(added_pair)); // TBD check construction
 				this->tree_head = new_node;
 				update_end(new_node);
 				this->tree_begin = new_node;
@@ -212,22 +211,22 @@ namespace ft
 			else
 				insert_node_algo(this->tree_head, added_pair);
 		}
-		void insert_node_algo(node_pointer insert_position, pair<key_type, mapped_type> added_pair)
+		void insert_node_algo(node_pointer insert_position,value_type added_pair)
 		{	
-			if (mycompare(added_pair.first, insert_position->value) == mycompare(insert_position->value, added_pair.first))
+			if (mycompare(added_pair.first, insert_position->value.first) == mycompare(insert_position->value.first, added_pair.first))
 			{
 				std::cout << "ERROR: cle identique lors de l'insertion" << std::endl;
 				return;
 			}
 			// insertion a gauche
-			else if (mycompare(added_pair.first, insert_position->key))
+			else if (mycompare(added_pair.first, insert_position->value.first))
 			{
 				if (insert_position->left)
 					insert_node_algo(insert_position->left, added_pair);
 				else
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
-					this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second));
+					this->myAllocator.construct(new_node, node(added_pair));
 					new_node->parent = insert_position;
 					insert_position->left = new_node;
 					if (insert_position == this->tree_begin)
@@ -236,14 +235,14 @@ namespace ft
 				return;
 			}
 			// insertion a droite
-			else if (mycompare(insert_position->key, added_pair.first))
+			else if (mycompare(insert_position->value.first, added_pair.first))
 			{
 				if (insert_position->right and insert_position->right != this->tree_end)
 					insert_node_algo(insert_position->right, added_pair);
 				else
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
-					this->myAllocator.construct(new_node, node(added_pair.first, added_pair.second));
+					this->myAllocator.construct(new_node, node(added_pair));
 					new_node->parent = insert_position;
 					insert_position->right = new_node;
 					if (this->tree_end->parent == new_node->parent) // update end si on ajoute sous l'element final (a droite)
@@ -262,9 +261,9 @@ namespace ft
 			node_pointer search_node = tree_head;
 			while (search_node && search_node != this->tree_end)
 			{
-				if (!mycompare(search_node->key, k) && !mycompare(k, search_node->key))
+				if (!mycompare(search_node->value.first, k) && !mycompare(k, search_node->value.first))
 					return (search_node);
-				if (mycompare(k, search_node->key))
+				if (mycompare(k, search_node->value.first))
 					search_node = search_node->left;
 				else
 					search_node = search_node->right;

@@ -69,9 +69,9 @@ void print_title_3(std::string str)
 	std::cout << COLOR_NORMAL <<std::endl;
 }
 
-ft::Red_black_tree<int, int> create_rbt_A()
+ft::Red_black_tree<int, ft::pair <int, int> > create_rbt_A()
 {
-	ft::Red_black_tree<int, int> rbt;
+	ft::Red_black_tree<int, ft::pair <int, int> > rbt;
 	rbt.insert_node(ft::make_pair(1,42));
 	rbt.insert_node(ft::make_pair(2,43));
 	rbt.insert_node(ft::make_pair(8,45));
@@ -103,118 +103,110 @@ int main()
 	// ##############################   RBT  ##################################
 	print_title_1("RBT");
 	print_title_2("Insert et print");
-	ft::Red_black_tree<int, int> rbt1;
-	rbt1.insert_node(ft::make_pair(1,42));
-	rbt1.insert_node(ft::make_pair(2,43));
-	rbt1.insert_node(ft::make_pair(8,45));
-	rbt1.insert_node(ft::make_pair(4,46));
-	rbt1.insert_node(ft::make_pair(20,47));
-	rbt1.insert_node(ft::make_pair(-5,48));
-	rbt1.insert_node(ft::make_pair(-4,49));
-	rbt1.insert_node(ft::make_pair(-6,50));
+	ft::Red_black_tree<int, ft::pair <int, int> > rbt1 = create_rbt_A();
+
 	//rbt1.print();
 	
 	print_title_1("RBT iterator ");
 	print_title_2("operator++ / --");
-	ft::Red_black_tree<int, int> rbt2;
-	rbt2.insert_node(ft::make_pair(1,42));
-	rbt2.insert_node(ft::make_pair(2,43));
-	rbt2.insert_node(ft::make_pair(8,45));
-	rbt2.insert_node(ft::make_pair(4,46));
-	rbt2.insert_node(ft::make_pair(20,47));
-	rbt2.insert_node(ft::make_pair(-5,48));
-	rbt2.insert_node(ft::make_pair(-4,49));
-	rbt2.insert_node(ft::make_pair(-6,50));
-	//rbt2.print();
+	ft::Red_black_tree<int, ft::pair <int, int> > rbt2 = create_rbt_A();
+
+	rbt2.print();
 
 	print_title_3("check operation ++ ");
-	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_insert_print_A(rbt2.get_tree_head());
-	//std::cout << "check: " << it_insert_print_A.has_right_child() << std::endl;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_insert_print_A(rbt2.get_tree_head());
+	//ft::Rbt_iterator<int, ft::Red_black_tree<int, ft::pair <int, int> >::Node<ft::pair <int, int> >* > it_insert_print_A(rbt2.get_tree_head());
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
+	++it_insert_print_A;
+	it_insert_print_A++;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//++it_insert_print_A;
 	it_insert_print_A++;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//++it_insert_print_A;
 	it_insert_print_A++;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//++it_insert_print_A;
 	it_insert_print_A++;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//++it_insert_print_A;
-	it_insert_print_A++;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	//++it_insert_print_A;
-	it_insert_print_A++;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	std::cout << "key/value begin: " << rbt2.tree_begin->key << "/" << rbt2.tree_begin->value << std::endl;
+	//it_insert_print_A++;
+	//std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.first << std::endl;
+	//std::cout << "key/value begin: " << rbt2.tree_begin->value.first << "/" << rbt2.tree_begin->value.first << std::endl;
 	
 	print_title_3("check operation -- ");
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//--it_insert_print_A;
 	it_insert_print_A--;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//--it_insert_print_A;
 	it_insert_print_A--;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//--it_insert_print_A;
 	it_insert_print_A--;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//--it_insert_print_A;
 	it_insert_print_A--;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//--it_insert_print_A;
 	it_insert_print_A--;
-	std::cout << "it key/value: " << it_insert_print_A.base()->key << "/" << it_insert_print_A.base()->value << std::endl;
-	std::cout << "key/value begin: " << rbt2.tree_begin->key << "/" << rbt2.tree_begin->value << std::endl;
+	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
+	std::cout << "key/value begin: " << rbt2.tree_begin->value.first << "/" << rbt2.tree_begin->value.second << std::endl;
 	
 	
 	print_title_2("check return");
 	//rbt2.print();
-	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_insert_print_C(rbt2.get_tree_head());
-	std::cout << "-it key : " << (it_insert_print_A).base()->key << std::endl;
-	std::cout << "it key: " << (it_insert_print_A++).base()->key << std::endl;
-	std::cout << "it key: " << (it_insert_print_A++).base()->key << std::endl;
-	std::cout << "it key: " << (++it_insert_print_A).base()->key << std::endl;
-	std::cout << "-it key: " << (it_insert_print_A).base()->key << std::endl;
-	std::cout << "it key: " << (it_insert_print_A--).base()->key << std::endl;
-	std::cout << "-it key: " << (it_insert_print_A).base()->key << std::endl;
-	std::cout << "it key: " << (--it_insert_print_A).base()->key << std::endl;
+	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_insert_print_C(rbt2.get_tree_head());
+	std::cout << "-it key : " << (it_insert_print_A).base()->value.first << std::endl;
+	std::cout << "it key: " << (it_insert_print_A++).base()->value.first << std::endl;
+	std::cout << "it key: " << (it_insert_print_A++).base()->value.first << std::endl;
+	std::cout << "it key: " << (++it_insert_print_A).base()->value.first << std::endl;
+	std::cout << "-it key: " << (it_insert_print_A).base()->value.first << std::endl;
+	std::cout << "it key: " << (it_insert_print_A--).base()->value.first << std::endl;
+	std::cout << "-it key: " << (it_insert_print_A).base()->value.first << std::endl;
+	std::cout << "it key: " << (--it_insert_print_A).base()->value.first << std::endl;
+	//std::cout << "it found: " << (*it_insert_print_A).first << std::endl;
 	
 	print_title_2("find");
-	ft::Red_black_tree<int, int> rbt3 = create_rbt_A();
+	ft::Red_black_tree<int, ft::pair <int, int> > rbt3 = create_rbt_A();
 	rbt3.print();
-	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_found;
+	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_found;
 	it_found = rbt3.find(-7);
-	std::cout << "it found: " << *it_found << std::endl;
+	//std::cout << "it found: " << *it_found.base()->value.first << std::endl;
+
+
+	// test creation iterator avec node_pointer (2e ligne ne marche pas ?)
+	ft::Red_black_tree<int, ft::pair <int, int> >::iterator 	testA(rbt2.get_tree_head());
+	ft::map<int, int>::iterator 								testB;
+	ft::map<int, int>::iterator 								testC(rbt2.get_tree_head());
 
 
 
 
-
-	// test avec STD pour comparaison
-	std::map<int, int> mymap;
-	mymap.insert(std::make_pair(1, 42));
-	mymap.insert(std::make_pair(2, 43));
-	mymap.insert(std::make_pair(3, 44));
-	std::map<int, int>::iterator it = mymap.end();
-	it--;
-	//it++;
+	//// test avec STD pour comparaison
+	//std::map<int, int> mymap;
+	//mymap.insert(std::make_pair(1, 42));
+	//mymap.insert(std::make_pair(2, 43));
+	//mymap.insert(std::make_pair(3, 44));
+	//std::map<int, int>::iterator it = mymap.end();
 	//it--;
-	//it++;
-	std::cout << "check end std: " << (*it).second << std::endl;
+	////it++;
+	////it--;
+	////it++;
+	//std::cout << "check end std: " << (*it).second << std::endl;
 
-	std::cout << "check end std: " << it->first << " - " << it->second << std::endl;
+	//std::cout << "check end std: " << it->first << " - " << it->second << std::endl;
 
 
 
 	
 	
-	// ##############################   Map   ###################################
-	// ------------------------------------------ Constructor destructor -------------------------------------------------------
-	print_title_1("Test compare");
+	//// ##############################   Map   ###################################
+	//// ------------------------------------------ Constructor destructor -------------------------------------------------------
+	//print_title_1("Test compare");
 	
 
-	print_title_2("Map - Constructor destructor");
+	//print_title_2("Map - Constructor destructor");
 
 	
 }
