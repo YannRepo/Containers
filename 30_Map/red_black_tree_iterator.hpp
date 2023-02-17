@@ -12,7 +12,14 @@ namespace ft
 	template<typename T, typename node_pointer, class Compare = std::less<T> >
 	class Rbt_iterator
 	{
-		typedef T											value_type;
+		private:
+			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>	iterator;
+		public:
+			typedef T											value_type;
+			typedef typename std::bidirectional_iterator_tag	iterator_category;
+			typedef typename iterator::difference_type			difference_type;
+			typedef typename iterator::pointer					pointer;
+			typedef typename iterator::reference				reference;
 
 		public: //TBD remettre en protected
 			node_pointer	current_node;
@@ -40,7 +47,13 @@ namespace ft
 			return (this->current_node);
 		}
 
-		Rbt_iterator&	operator++() // ++i
+		Rbt_iterator& operator=(const Rbt_iterator& rhs)
+		{
+			this->current_node = rhs.current_node;
+			return (*this);
+		}
+
+		Rbt_iterator& operator++() // ++i
 		{
 			// Si un noeud a droite
 				// descendre noeud
@@ -73,14 +86,14 @@ namespace ft
 			}
 		}
 
-		Rbt_iterator	operator++(int) // i++
+		Rbt_iterator operator++(int) // i++
 		{
 			Rbt_iterator it_copy = *this;
 			++(*this);
 			return(it_copy);
 		}
 
-		Rbt_iterator&	operator--() // --i
+		Rbt_iterator& operator--() // --i
 		{
 			// Si un noeud a gauche
 				// descendre noeud
@@ -111,11 +124,31 @@ namespace ft
 				return (*this);
 			}
 		}
-		Rbt_iterator	operator--(int) // i--
+		Rbt_iterator operator--(int) // i--
 		{
 			Rbt_iterator it_copy = *this;
 			--(*this);
 			return(it_copy);
+		}
+
+		reference operator*()
+		{
+			return (this->current_node->value);
+		}
+
+		pointer operator->()
+		{
+			return (&(this->current_node->value));
+		}
+
+		bool operator==(Rbt_iterator& rhs)
+		{
+			return (this->current_node == rhs.current_node);
+		}
+
+		bool operator!=(Rbt_iterator& rhs)
+		{
+			return (this->current_node != rhs.current_node);
 		}
 
 	};

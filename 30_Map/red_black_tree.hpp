@@ -5,6 +5,7 @@
 # include <memory>
 
 # include "pair.hpp"
+# include "red_black_tree_iterator.hpp"
 
 # define BLACK 0
 # define RED 1
@@ -85,7 +86,11 @@ namespace ft
 		// TBD check si ca corrige pb
 		//-- Create a new type of allocator that is bound to the 'Node' type and uses the same 
 		//   memory ressource as the original 'allocator_type'.
-		typedef typename Allocator::template rebind<Node<Key, Val> >::other   node_allocator;
+		public:
+			typedef typename Allocator::template rebind<Node<Key, Val> >::other		node_allocator;
+
+			typedef typename ft::Rbt_iterator<Val, node_pointer, Compare>			iterator;
+
 
 		public: // public pour debug, repasser en private
 			node_pointer	tree_head;
@@ -252,16 +257,22 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		//iterator find (const key_type& k)
-		//{
-		//	node_pointer search_node = tree_head;
-		//	while (search_node->key != k)
-		//	{
-		//		// TBD
-		//	}
+		iterator find (const key_type& k)
+		{
+			node_pointer search_node = tree_head;
+			while (search_node && search_node != this->tree_end)
+			{
+				if (!mycompare(search_node->key, k) && !mycompare(k, search_node->key))
+					return (search_node);
+				if (mycompare(k, search_node->key))
+					search_node = search_node->left;
+				else
+					search_node = search_node->right;
+			}
+			return (this->tree_end);
 
-		//	// TBD en cours
-		//}
+			// TBD en cours
+		}
 
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Observers --------------------------------------------------

@@ -6,6 +6,7 @@
 
 # include "pair.hpp"
 # include "red_black_tree.hpp"
+# include "red_black_tree_iterator.hpp"
 
 
 
@@ -29,10 +30,7 @@ namespace ft
 			typedef const value_type&						const_reference;
 			typedef value_type*								pointer;
 			typedef const value_type*						const_pointer;
-			//typedef iterator								
-			//typedef	const_iterator							
-			//typedef reverse_iterator						
-			//typedef const_reverse_iterator					
+			
 			typedef std::ptrdiff_t							difference_type;
 			typedef size_t									size_type;
 
@@ -52,7 +50,10 @@ namespace ft
 
 		public:
 			typedef typename ft::Red_black_tree< key_type, mapped_type, value_compare, allocator_type>	tree_type;
-
+			typedef typename tree_type::iterator														iterator;								
+			//typedef	const_iterator							
+			//typedef reverse_iterator						
+			//typedef const_reverse_iterator					
 
 
 		public: // pour debug TBD remettre en protected a la fin
@@ -109,10 +110,10 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-			//iterator find (const key_type& k)
-			//{
-			//	return (this->tree.find(key));
-			//}
+			iterator find (const key_type& k)
+			{
+				return (this->tree.find(k));
+			}
 			//const_iterator find (const key_type& k) const
 			//{
 			//	return (this->tree.find(key));

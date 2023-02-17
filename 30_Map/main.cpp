@@ -69,6 +69,20 @@ void print_title_3(std::string str)
 	std::cout << COLOR_NORMAL <<std::endl;
 }
 
+ft::Red_black_tree<int, int> create_rbt_A()
+{
+	ft::Red_black_tree<int, int> rbt;
+	rbt.insert_node(ft::make_pair(1,42));
+	rbt.insert_node(ft::make_pair(2,43));
+	rbt.insert_node(ft::make_pair(8,45));
+	rbt.insert_node(ft::make_pair(4,46));
+	rbt.insert_node(ft::make_pair(20,47));
+	rbt.insert_node(ft::make_pair(-5,48));
+	rbt.insert_node(ft::make_pair(-4,49));
+	rbt.insert_node(ft::make_pair(-6,50));
+	return (rbt);
+}
+
 
 // ###########################################################################################################
 // #########################################   DEBUT MAIN   #######################################################
@@ -155,7 +169,7 @@ int main()
 	
 	
 	print_title_2("check return");
-	rbt2.print();
+	//rbt2.print();
 	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_insert_print_C(rbt2.get_tree_head());
 	std::cout << "-it key : " << (it_insert_print_A).base()->key << std::endl;
 	std::cout << "it key: " << (it_insert_print_A++).base()->key << std::endl;
@@ -166,20 +180,30 @@ int main()
 	std::cout << "-it key: " << (it_insert_print_A).base()->key << std::endl;
 	std::cout << "it key: " << (--it_insert_print_A).base()->key << std::endl;
 	
+	print_title_2("find");
+	ft::Red_black_tree<int, int> rbt3 = create_rbt_A();
+	rbt3.print();
+	ft::Rbt_iterator<int, ft::Red_black_tree<int, int>::Node<int, int>* > it_found;
+	it_found = rbt3.find(-7);
+	std::cout << "it found: " << *it_found << std::endl;
+
+
 
 
 
 	// test avec STD pour comparaison
-	//std::map<int, int> mymap;
-	//mymap.insert(std::make_pair(1, 42));
-	//mymap.insert(std::make_pair(2, 43));
-	//mymap.insert(std::make_pair(3, 44));
-	//std::map<int, int>::iterator it = mymap.end();
-	//it--;
+	std::map<int, int> mymap;
+	mymap.insert(std::make_pair(1, 42));
+	mymap.insert(std::make_pair(2, 43));
+	mymap.insert(std::make_pair(3, 44));
+	std::map<int, int>::iterator it = mymap.end();
+	it--;
 	//it++;
 	//it--;
 	//it++;
-	//std::cout << "check end std: " << it->first << " - " << it->second << std::endl;
+	std::cout << "check end std: " << (*it).second << std::endl;
+
+	std::cout << "check end std: " << it->first << " - " << it->second << std::endl;
 
 
 
