@@ -35,8 +35,11 @@ namespace ft
 			typedef size_t									size_type;
 
 		public:
-			class value_compare
+			class value_compare: public std::binary_function<value_type, value_type, bool>
 			{
+				// pour que map puisse utiliser les elements protected de cette classe
+				friend class map<key_type, mapped_type, key_compare, allocator_type>;
+
 				protected:
 					Compare comp;
 				protected:
@@ -46,6 +49,19 @@ namespace ft
 					{
 						return (comp(lhs.first, rhs.first));
 					}
+					bool operator()(const key_type& lhs, const key_type& rhs) const
+					{
+						return (comp(lhs, rhs));
+					}
+					// TBD a voir si c'est utile
+					//bool operator()(const key_type& lhs, const value_type& rhs) const
+					//{ 
+					//	return comp(lhs, rhs.first); 
+					//}
+					//bool operator()(const value_type& lhs, const key_type& rhs) const
+					//{ 
+					//	return comp(lhs.first, rhs); 
+					//}
 			};
 
 		public:
@@ -64,6 +80,10 @@ namespace ft
 // #########################################   Utils  #######################################################
 // ###########################################################################################################
 		public: //TBD repasser en protected
+			void print()
+			{
+				this->tree.print();
+			}
 
 
 // ###########################################################################################################
@@ -106,7 +126,10 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-
+			ft::pair<iterator, bool> insert(const value_type& value)
+			{
+				return(this->tree.insert(value));
+			}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------

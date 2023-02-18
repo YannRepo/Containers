@@ -18,14 +18,14 @@ begin / end
 rbegin / rend
 
 // --- Capacity
-insert
+//insert
 empty
 size
 max_size
 
 // --- Modifiers
 clear
-insert *** // avec reequilibrage de l'arbre
+insert *** // sans reequilibrage de l'arbre
 erase ***
 swap
 

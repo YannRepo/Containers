@@ -72,15 +72,58 @@ void print_title_3(std::string str)
 ft::Red_black_tree<int, ft::pair <int, int> > create_rbt_A()
 {
 	ft::Red_black_tree<int, ft::pair <int, int> > rbt;
-	rbt.insert_node(ft::make_pair(1,42));
-	rbt.insert_node(ft::make_pair(2,43));
-	rbt.insert_node(ft::make_pair(8,45));
-	rbt.insert_node(ft::make_pair(4,46));
-	rbt.insert_node(ft::make_pair(20,47));
-	rbt.insert_node(ft::make_pair(-5,48));
-	rbt.insert_node(ft::make_pair(-4,49));
-	rbt.insert_node(ft::make_pair(-6,50));
+	rbt.insert(ft::make_pair(1,42));
+	rbt.insert(ft::make_pair(2,43));
+	rbt.insert(ft::make_pair(8,45));
+	rbt.insert(ft::make_pair(4,46));
+	rbt.insert(ft::make_pair(20,47));
+	rbt.insert(ft::make_pair(-5,48));
+	rbt.insert(ft::make_pair(-4,49));
+	rbt.insert(ft::make_pair(-6,50));
 	return (rbt);
+}
+
+ft::map<int, int>& create_Map_A() // enlever & qd constructeurs ok
+{
+	ft::map<int, int> map_;
+	map_.insert(ft::make_pair(1,42));
+	map_.insert(ft::make_pair(2,43));
+	map_.insert(ft::make_pair(8,45));
+	map_.insert(ft::make_pair(4,46));
+	map_.insert(ft::make_pair(20,47));
+	map_.insert(ft::make_pair(-5,48));
+	map_.insert(ft::make_pair(-4,49));
+	map_.insert(ft::make_pair(-6,50));
+
+	return (map_);
+}
+
+ft::map<int, int>& create_Map_B() // enlever & qd constructeurs ok
+{
+	ft::map<int, int> map_;
+	map_.insert(ft::make_pair(1,42));
+	map_.insert(ft::make_pair(2,43));
+	map_.insert(ft::make_pair(8,45));
+	map_.insert(ft::make_pair(4,46));
+	map_.insert(ft::make_pair(20,47));
+	map_.insert(ft::make_pair(-5,48));
+	map_.insert(ft::make_pair(-4,49));
+	map_.insert(ft::make_pair(30,50));
+	map_.insert(ft::make_pair(52,51));
+	map_.insert(ft::make_pair(24,52));
+	map_.insert(ft::make_pair(33,53));
+	map_.insert(ft::make_pair(26,54));
+	map_.insert(ft::make_pair(32,55));
+	map_.insert(ft::make_pair(55,56));
+	map_.insert(ft::make_pair(3,57));
+	int i = 100;
+	while (i < 200)
+	{
+		map_.insert(ft::make_pair(i,57));
+		map_.insert(ft::make_pair(i+1000,58));
+		i++;
+	}
+	return (map_);
 }
 
 
@@ -127,8 +170,6 @@ int main()
 	it_insert_print_A++;
 	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//++it_insert_print_A;
-	it_insert_print_A++;
-	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	//++it_insert_print_A;
 	//it_insert_print_A++;
 	//std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.first << std::endl;
@@ -175,10 +216,10 @@ int main()
 	//std::cout << "it found: " << *it_found.base()->value.first << std::endl;
 
 
-	// test creation iterator avec node_pointer (2e ligne ne marche pas ?)
-	ft::Red_black_tree<int, ft::pair <int, int> >::iterator 	testA(rbt2.get_tree_head());
-	ft::map<int, int>::iterator 								testB;
-	ft::map<int, int>::iterator 								testC(rbt2.get_tree_head());
+	//// test creation iterator avec node_pointer (2e ligne ne marche pas ?)
+	//ft::Red_black_tree<int, ft::pair <int, int> >::iterator 	testA(rbt2.get_tree_head());
+	//ft::map<int, int>::iterator 								testB;
+	//ft::map<int, int>::iterator 								testC(rbt2.get_tree_head());
 
 
 
@@ -203,10 +244,18 @@ int main()
 	
 	//// ##############################   Map   ###################################
 	//// ------------------------------------------ Constructor destructor -------------------------------------------------------
-	//print_title_1("Test compare");
-	
+	print_title_2("Map - Constructor destructor");
+	ft::map<int, int> map_A;
 
-	//print_title_2("Map - Constructor destructor");
+	print_title_1("Insert");
+	map_A.insert(ft::make_pair(5,42));
+	map_A.insert(ft::make_pair(6,43));
+	map_A.insert(ft::make_pair(6,43));
+	map_A.print();
+
+	print_title_1("_____");
+	//map_A = create_Map_B();
+	map_A.print();
 
 	
 }

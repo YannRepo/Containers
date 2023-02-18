@@ -45,6 +45,7 @@ namespace ft
 
 				Node(): left(NULL), right(NULL), parent(NULL), color(RED){}
 				Node(value_type value_): value(value_), left(NULL), right(NULL), parent(NULL), color(RED){}
+				Node(value_type value_, bool col): value(value_), left(NULL), right(NULL), parent(NULL), color(col){}
 				
 				bool has_right_child()
 				{
@@ -101,21 +102,25 @@ namespace ft
 // ###########################################################################################################
 // #########################################   Constructeur / destructeur  #######################################################
 // ###########################################################################################################
+	public:
+		Red_black_tree(const Compare& comp = Compare(), const allocator_type &alloc = allocator_type()):
+		tree_head(NULL), myAllocator(alloc), mycompare(comp)
+		{
+			this->tree_head = myAllocator.allocate(1);
+			this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
+			this->tree_end = tree_head;
+			this->tree_begin = NULL;
+			this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
 
-	Red_black_tree(const Compare& comp = Compare(), const allocator_type &alloc = allocator_type()):
-	tree_head(NULL), myAllocator(alloc), mycompare(comp)
-	{
-		this->tree_head = myAllocator.allocate(1);
-		this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
-		this->tree_end = tree_head;
-		this->tree_begin = NULL;
-		this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
-
-	}
+		}
 
 // ###########################################################################################################
 // #########################################   Utils RBT   #######################################################
 // ###########################################################################################################
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Divers--------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
 	private:
 		void update_end(node_pointer last_elemement)
 		{
@@ -151,6 +156,7 @@ namespace ft
 		{
 			print_recursive(this->tree_head, "", false);
 		}
+
 		void print_recursive(node_pointer root, std::string indent, bool last)
 		{
 			if (root != 0)// and root != tree_head)
@@ -166,11 +172,131 @@ namespace ft
 					std::cout << "L---- ";
 					indent += "|  ";
 				}
-				std::string sColor = root->color ? "RED" : "BLACK";
+				std::string sColor = root->color ? "\x1B[31mRED\x1B[0m" : "\x1b[30mBLACK\x1B[0m";
 				std::cout << root->value.first << "/" << root->value.second << "(" << sColor << ")" << std::endl;
 				this->print_recursive(root->left, indent, false);
 				this->print_recursive(root->right, indent, true);
 			}
+		}
+
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Rotations--------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
+		void rotate_left(node_pointer x)
+		{
+//			(x)          (y)
+//			  \    =>    /
+//			  (y)      (x)
+			node_pointer y = x->right;
+			x->right = y->left;
+			if (y->left != NULL)
+			{
+				y->left->parent = x;
+			}
+			y->parent = x->parent;
+			if (x->parent == NULL)
+			{
+				this->tree_head = y;
+			}
+			else if (x == x->parent->left)
+			{
+				x->parent->left = y;
+			}
+			else
+			{
+				x->parent->right = y;
+			}
+			y->left = x;
+			x->parent = y;
+		}
+
+		void rotate_right(node_pointer x)
+		{
+//			  (y)       (x)
+//			  /      =>   \
+//			(x)           (y)
+			node_pointer y = x->left;
+			x->left = y->right;
+			if (y->right != NULL)
+			{
+				y->right->parent = x;
+			}
+			y->parent = x->parent;
+			if (x->parent == NULL)
+			{
+				this->tree_head = y;
+			}
+			else if (x == x->parent->right)
+			{
+				x->parent->right = y;
+			}
+			else
+			{
+				x->parent->left = y;
+			}
+			y->right = x;
+			x->parent = y;
+		}
+
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Insert ------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+		void fix_insertion(node_pointer k)
+		{
+			node_pointer u;
+			while (k->parent->color == RED)
+			{
+				if (k->parent == k->parent->parent->right)
+				{
+					u = k->parent->parent->left;
+					if (u != NULL && u->color == RED) //SF
+					{
+						u->color = BLACK;
+						k->parent->color = BLACK;
+						k->parent->parent->color = RED;
+						k = k->parent->parent;
+					}
+					else
+					{
+						if (k == k->parent->left)
+						{
+							k = k->parent;
+							rotate_right(k);
+						}
+						k->parent->color = BLACK;
+						k->parent->parent->color = RED;
+						rotate_left(k->parent->parent);
+					}
+				}
+				else
+				{
+					u = k->parent->parent->right;
+					if (u != NULL && u->color == RED)
+					{
+						u->color = BLACK;
+						k->parent->color = BLACK;
+						k->parent->parent->color = RED;
+						k = k->parent->parent;
+					}
+					else
+					{
+						if (k == k->parent->right)
+						{
+							k = k->parent;
+							rotate_left(k);
+						}
+						k->parent->color = BLACK;
+						k->parent->parent->color = RED;
+						rotate_right(k->parent->parent);
+					}
+				}
+				if (k == tree_head)
+				{
+					break;
+				}
+			}
+			tree_head->color = BLACK;
 		}
 
 // ###########################################################################################################
@@ -196,33 +322,35 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		void insert_node(value_type added_pair)
+		ft::pair<iterator, bool> insert(const value_type added_pair)
 		{
 			if (this->tree_head == this->tree_end) // 1er insertion
 			{
 				//this->myAllocator.construct(tree_head, node());
 				node_pointer new_node = this->myAllocator.allocate(1);
-				this->myAllocator.construct(new_node, node(added_pair)); // TBD check construction
+				this->myAllocator.construct(new_node, node(added_pair, BLACK)); // TBD check construction
 				this->tree_head = new_node;
 				update_end(new_node);
 				this->tree_begin = new_node;
+				return (ft::make_pair(iterator(new_node), true));
 
 			}
 			else
-				insert_node_algo(this->tree_head, added_pair);
+				return(insert_algo(this->tree_head, added_pair));
 		}
-		void insert_node_algo(node_pointer insert_position,value_type added_pair)
+
+		ft::pair<iterator, bool> insert_algo(node_pointer insert_position,const value_type added_pair)
 		{	
 			if (mycompare(added_pair.first, insert_position->value.first) == mycompare(insert_position->value.first, added_pair.first))
 			{
 				std::cout << "ERROR: cle identique lors de l'insertion" << std::endl;
-				return;
+				return (ft::make_pair(iterator(insert_position), false));
 			}
 			// insertion a gauche
 			else if (mycompare(added_pair.first, insert_position->value.first))
 			{
 				if (insert_position->left)
-					insert_node_algo(insert_position->left, added_pair);
+					return (insert_algo(insert_position->left, added_pair));
 				else
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
@@ -231,14 +359,16 @@ namespace ft
 					insert_position->left = new_node;
 					if (insert_position == this->tree_begin)
 						this->tree_begin = new_node;
+					fix_insertion(new_node);
+					return (ft::make_pair(iterator(new_node), true));
 				}
-				return;
 			}
 			// insertion a droite
 			else if (mycompare(insert_position->value.first, added_pair.first))
 			{
 				if (insert_position->right and insert_position->right != this->tree_end)
-					insert_node_algo(insert_position->right, added_pair);
+					return (insert_algo(insert_position->right, added_pair));
+					
 				else
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
@@ -247,11 +377,12 @@ namespace ft
 					insert_position->right = new_node;
 					if (this->tree_end->parent == new_node->parent) // update end si on ajoute sous l'element final (a droite)
 						update_end(new_node);
-
+					fix_insertion(new_node);
+					return (ft::make_pair(iterator(new_node), true));
 				}
-				return;
 			}
 			std::cout << "DEBUG ERROR : cas inconnnu : cette ligne ne devrait pas etre executee " << std::endl;
+			return(ft::make_pair(iterator(), false)); // inutile, juste pour warning compilation
 		}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
