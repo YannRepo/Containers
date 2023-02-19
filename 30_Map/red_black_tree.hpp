@@ -456,7 +456,7 @@ namespace ft
 				y = minimum_subtree(z->right);
 				y_original_color = y->color;
 				x = y->right;
-				if (y->parent == z)
+				if (y->parent == z && x)
 				{
 					x->parent = y;
 				}
@@ -464,7 +464,8 @@ namespace ft
 				{
 					replace_node(y, y->right);
 					y->right = z->right;
-					y->right->parent = y;
+					if (y->right)
+						y->right->parent = y;
 				}
 
 				replace_node(z, y);
