@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <cstdlib>
 
 # include "../10_Tools/reverse_iterator.hpp"
 # include "../10_Tools/iterator_traits.hpp"
@@ -123,6 +124,45 @@ ft::map<int, int>& create_Map_B() // enlever & qd constructeurs ok
 		map_.insert(ft::make_pair(i+1000,58));
 		i++;
 	}
+	return (map_);
+}
+
+ft::map<int, int>& create_Map_R() // enlever & qd constructeurs ok
+{
+	ft::map<int, int> map_;
+	map_.insert(ft::make_pair(1,42));
+	int i = 0;
+	int number;
+	// segfault a partir de 1110
+	while (i < 50000)
+	//while (i < 1150)
+	{
+		number = rand() % 1000;
+		std::cout << "insert:" << number << std::endl;
+		map_.insert(ft::make_pair(number,42));
+
+		number = rand() % 1000;
+
+
+		//	number++;
+		std::cout << "insert:" << number << std::endl;
+		map_.insert(ft::make_pair(number,42));
+		
+		number = rand() % 1000; 
+		std::cout <<  "erase:" <<number << std::endl;
+		map_.erase(number);
+
+		i++;
+
+		//map_.print();
+		//print_title_3("--");
+		//std::cout << "i: " << i << std::endl;
+
+
+		
+
+	}
+
 	return (map_);
 }
 
@@ -251,20 +291,22 @@ int main()
 	map_A.insert(ft::make_pair(5,42));
 	map_A.insert(ft::make_pair(6,43));
 	map_A.insert(ft::make_pair(6,43));
-	map_A.print();
+	//map_A.print();
 
 	print_title_1("Erase");
 	map_A = create_Map_B();
 	map_A.print();
 	map_A.erase(32);
-	print_title_3("-32");
 	map_A.print();
-	map_A.erase(-4);
-	print_title_3("- -4");
+	//map_A.erase(-4);
+	//map_A.print();
+	//map_A.erase(8);
+	//map_A.print();
+
+	print_title_1("Insert / Erase big random");
+	map_A = create_Map_R();
 	map_A.print();
-	map_A.erase(8);
-	print_title_3("-8");
-	map_A.print();
+
 
 
 	
