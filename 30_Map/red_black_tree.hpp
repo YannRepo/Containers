@@ -28,6 +28,8 @@ namespace ft
 			typedef Key								key_type;
 			typedef Val								value_type;
 			typedef Allocator						allocator_type;
+			typedef size_t							size_type;
+
 
 			public:// public pour debug, repasser en private
 			typedef Node<Val>						node;
@@ -299,6 +301,7 @@ namespace ft
 			tree_head->color = BLACK;
 		}
 
+
 // ###########################################################################################################
 // #############################   Fonctions membres de map   #######################################################
 // ###########################################################################################################
@@ -354,7 +357,7 @@ namespace ft
 				else
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
-					this->myAllocator.construct(new_node, node(added_pair));
+					this->myAllocator.construct(new_node, node(added_pair, RED));
 					new_node->parent = insert_position;
 					insert_position->left = new_node;
 					if (insert_position == this->tree_begin)
@@ -372,7 +375,7 @@ namespace ft
 				else
 				{
 					node_pointer new_node = this->myAllocator.allocate(1);
-					this->myAllocator.construct(new_node, node(added_pair));
+					this->myAllocator.construct(new_node, node(added_pair, RED));
 					new_node->parent = insert_position;
 					insert_position->right = new_node;
 					if (this->tree_end->parent == new_node->parent) // update end si on ajoute sous l'element final (a droite)
@@ -384,6 +387,103 @@ namespace ft
 			std::cout << "DEBUG ERROR : cas inconnnu : cette ligne ne devrait pas etre executee " << std::endl;
 			return(ft::make_pair(iterator(), false)); // inutile, juste pour warning compilation
 		}
+
+// supression element sur arbre binaire normal
+// 0 enfant -> suppression directe
+// 1 enfant -> on le remplace par l'enfant
+// 2 enfants ->	a. inordeur predecessor : on le remplace par le plus grand element de l'arbre left
+//				b. inorder succecessor : on le remplace par le plus petit element de l'arbre right (methode utilisee ici)
+// La suppression des noeuds se fait toujours sur les derniers noeuds s(leaf)
+
+// Suppression sur rbt (prise en compte des couleurs)
+// Si le noeud a supprimer est rouge - > supprimer le noeud
+// Si le noeud a supprimer est noir:
+//		Si le noeud avec qui il est remplacé est rouge -> faire le remplacement sans echanger les couleurs
+
+		void replace_node(node_pointer old_node, node_pointer new_node)
+		{
+			// remplace u par v (u hors de l'arbre apres)
+			if (old_node->parent == NULL)
+			{
+				this->tree_head = new_node;
+			}
+			else if (old_node == old_node->parent->left)
+			{
+				old_node->parent->left = new_node;
+			}
+			else
+			{
+				old_node->parent->right = new_node;
+			}
+			if (new_node)
+				new_node->parent = old_node->parent;
+		}
+
+		node_pointer minimum_subtree(node_pointer start_node)
+		{
+			while (start_node->left != NULL)
+			{
+				start_node = start_node->left;
+			}
+			return (start_node);
+		}
+
+		size_type erase( const key_type& key )
+		{
+			// recherche du noeud a supprimer
+			node_pointer z = this->find(key).base();
+			if (z == this->tree_end)
+				return (0);
+			this->tree_end->parent->right = NULL;
+			node_pointer x, y;
+
+			y = z;
+			int y_original_color = y->color;
+			// si un cote sans enfant remonter noeud a la place du noeud a sup
+			if (z->left == NULL)
+			{
+				x = z->right;
+				replace_node(z, z->right);
+			}
+			else if (z->right == NULL)
+			{
+				x = z->left;
+				replace_node(z, z->left);
+			}
+			// sinon on va cherche le mini du sous arbre de droite (<=> noeud suivant dans rbt)
+			else
+			{
+				y = minimum_subtree(z->right);
+				y_original_color = y->color;
+				x = y->right;
+				if (y->parent == z)
+				{
+					x->parent = y;
+				}
+				else
+				{
+					replace_node(y, y->right);
+					y->right = z->right;
+					y->right->parent = y;
+				}
+
+				replace_node(z, y);
+				y->left = z->left;
+				y->left->parent = y;
+				y->color = z->color;
+			}
+			// suppression du noeud
+			this->myAllocator.destroy(z);
+			this->myAllocator.deallocate(z, 1);
+			// fix suppression
+			if (y_original_color == 0)
+			{
+				//deleteFix(x);
+			}
+			// update tree_head, begin, end, noeud fantome
+			return (1);
+		}
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------

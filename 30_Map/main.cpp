@@ -117,7 +117,7 @@ ft::map<int, int>& create_Map_B() // enlever & qd constructeurs ok
 	map_.insert(ft::make_pair(55,56));
 	map_.insert(ft::make_pair(3,57));
 	int i = 100;
-	while (i < 200)
+	while (i < 20)
 	{
 		map_.insert(ft::make_pair(i,57));
 		map_.insert(ft::make_pair(i+1000,58));
@@ -253,9 +253,19 @@ int main()
 	map_A.insert(ft::make_pair(6,43));
 	map_A.print();
 
-	print_title_1("_____");
-	//map_A = create_Map_B();
+	print_title_1("Erase");
+	map_A = create_Map_B();
 	map_A.print();
+	map_A.erase(32);
+	print_title_3("-32");
+	map_A.print();
+	map_A.erase(-4);
+	print_title_3("- -4");
+	map_A.print();
+	map_A.erase(8);
+	print_title_3("-8");
+	map_A.print();
+
 
 	
 }
