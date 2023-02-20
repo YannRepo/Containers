@@ -25,13 +25,13 @@ max_size
 
 // --- Modifiers
 clear
-//insert ***
+insert ***
 erase ***
 swap
 
 // --- Operations / look up
 Count
-//find  ***
+find  ***
 equal_range
 lower_bound
 upper_bound
@@ -70,8 +70,8 @@ swap
 
 Count
 //find
-lower_bound
-upper_bound
+lower_bound**
+upper_bound**
 equal_range
 key_comp
 

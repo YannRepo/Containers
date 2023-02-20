@@ -91,7 +91,12 @@ namespace ft
 		public:
 			typedef typename Allocator::template rebind<Node<Val> >::other		node_allocator;
 
-			typedef typename ft::Rbt_iterator<value_type, node_pointer, Compare>			iterator;
+			//typedef typename ft::Rbt_iterator<value_type, node_pointer, Compare>		iterator;
+
+			typedef ft::Rbt_iterator<value_type, node_pointer, Compare>					iterator;
+            typedef ft::Rbt_iterator<const value_type, node_pointer, Compare>			const_iterator;
+            //typedef ft::reverse_Iterator<iterator>			            reverse_iterator;
+	        //typedef ft::reverse_Iterator<const_iterator>	            const_reverse_iterator;
 
 
 		public: // public pour debug, repasser en private
@@ -254,7 +259,7 @@ namespace ft
 		}
 
 // -----------------------------------------------------------------------------------------------------------
-// ------------------------------------ Insert ------------------------------------------------------------
+// ------------------------------------ Insert fix ------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 		void fix_insertion(node_pointer k)
 		{
@@ -313,6 +318,226 @@ namespace ft
 			tree_head->color = BLACK;
 		}
 
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Erase fix ------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
+// version 1 : algo du ste + ajout conditions pour les segfault
+//		void fix_deletion_old(node_pointer x)
+//{
+//			node_pointer s;
+//			while (x != this->tree_head && x->color == 0)
+//			{
+//				//493/128
+//				//std::cout << "check: " << x->value.first << std::endl;
+//				//std::cout << "check: " << this->tree_head->value.first << std::endl;
+
+
+//				if (x->parent->right && x->parent->left && x == x->parent->left)
+//				{
+//					s = x->parent->right;
+//					if (s->color == 1)
+//					{
+//						s->color = 0;
+//						x->parent->color = 1;
+//						rotate_left(x->parent);
+//						s = x->parent->right;
+//					}
+
+//					if (s->left && s->right && s->left->color == 0 && s->right->color == 0)
+//					{
+//						s->color = 1;
+//						x = x->parent;
+//					}
+//					else
+//					{
+//						if (s->right && s->right->color == 0)
+//						{
+//							s->left->color = 0;
+//							s->color = 1;
+//							rotate_right(s);
+//							s = x->parent->right;
+//						}
+
+//						s->color = x->parent->color;
+//						x->parent->color = 0;
+//						if (s->right)
+//							s->right->color = 0;
+//						rotate_left(x->parent);
+//						x = this->tree_head;
+//					}
+//				}
+//				else if (x->parent->left && x->parent->right)
+//				{
+//					s = x->parent->left;
+//					if (s->color == 1)
+//					{
+//						s->color = 0;
+//						x->parent->color = 1;
+//						rotate_right(x->parent);
+//						s = x->parent->left;
+//					}
+
+//					if (s->right && s->right->color == 0 && s->right->color == 0)
+//					{
+//						s->color = 1;
+//						x = x->parent;
+//					}
+//					else
+//					{
+//						if (s->left && s->left->color == 0)
+//						{
+//							s->right->color = 0;
+//							s->color = 1;
+//							rotate_left(s);
+//							s = x->parent->left;
+//						}
+
+//						s->color = x->parent->color;
+//						x->parent->color = 0;
+//						if (s->left)
+//							s->left->color = 0;
+//						rotate_right(x->parent);
+//						x = this->tree_head;
+//					}
+//				}
+//			}
+//			x->color = 0;
+//}
+
+// version 2: Julia avec adaptation code
+		//void fix_deletion(node_pointer x)
+		//{
+		//	node_pointer s;
+		//	while (x != 0 and x != tree_head and x->parent != 0 and x->color == BLACK)
+		//	{
+		//		if (x == x->parent->left)
+		//		{
+		//			s = x->parent->right;
+		//			if (s->color == RED)
+		//			{
+		//				s->color = BLACK;
+		//				x->parent->color = RED;
+		//				rotate_left(x->parent);
+		//				s = x->parent->right;
+		//			}
+		//			if (s->left->color == BLACK and s->right->color == BLACK)
+		//			{
+		//				s->color = RED;
+		//				x = x->parent;
+		//			}
+		//			else
+		//			{
+		//				if (s->right->color == BLACK)
+		//				{
+		//					s->left->color = BLACK;
+		//					s->color = RED;
+		//					rotate_right(s);
+		//					s = x->parent->right;
+		//				}
+		//				s->color = x->parent->color;
+		//				x->parent->color = BLACK;
+		//				s->right->color = BLACK;
+		//				rotate_left(x->parent);
+		//				x = tree_head;
+		//				//x = _root->parent;
+		//			}
+		//		}
+		//		else if (x == x->parent->right)
+		//		{
+		//			s = x->parent->left;
+		//			if (s->color == RED)
+		//			{
+		//				s->color = BLACK;
+		//				x->parent->color = RED;
+		//				rotate_right(x->parent);
+		//				s = x->parent->left;
+		//				break;
+		//			}
+		//			if (s->left->color == BLACK and s->right->color == BLACK)
+		//			{
+		//				s->color = RED;
+		//				x = x->parent;
+		//				break;
+		//			}
+		//			else
+		//			{
+		//				if (s->left->color == BLACK)
+		//				{
+		//					s->right->color = BLACK;
+		//					s->color = RED;
+		//					rotate_left(s);
+		//					s = x->parent->left;
+		//					break;
+		//				}
+		//				s->color = x->parent->color;
+		//				x->parent->color = BLACK;
+		//				s->left->color = BLACK;
+		//				rotate_right(x->parent);
+		//				x = tree_head;
+		//				//x = _root->parent;
+		//			}
+		//		}
+		//		if (x)
+		//			x->color = BLACK;
+		//		//if (_size == 0)
+		//		//	clear();
+		//	}
+		//}
+
+// version 3 :
+		void fix_deletion(node_pointer node)
+		{
+			while((node != tree_head) && (node->color != BLACK) && node->parent && node->parent->color == RED)
+			{
+				node_pointer uncle = NULL;
+				if(node->parent == node->parent->parent->left)
+				{
+					uncle = node->parent->parent->right;
+					if (uncle && uncle->color == RED)
+					{
+						node->parent->color = BLACK;
+						uncle->color = BLACK;
+						node->parent->parent->color = RED;
+						node = node->parent->parent;
+					}
+					else
+					{
+						if (node == node->parent->right)
+						{
+							node = node->parent;
+							rotate_left(node);
+						}
+						node->parent->color = BLACK;
+						node->parent->parent->color = RED;
+						rotate_right(node->parent->parent);
+					}
+				}
+				else
+				{
+					uncle = node->parent->parent->left;
+					if (uncle && uncle->color == RED)
+					{
+						node->parent->color = BLACK;
+						uncle->color = BLACK;
+						node->parent->parent->color = RED;
+						node = node->parent->parent;
+					}
+					else
+					{
+						if (node == node->parent->left)
+					{
+						node = node->parent;
+						rotate_right(node);
+					}
+						node->parent->color = BLACK;
+						node->parent->parent->color = RED;
+						rotate_left(node->parent->parent);
+					}
+				}
+			}
+			tree_head->color = BLACK;
+		}
 
 // ###########################################################################################################
 // #############################   Fonctions membres de map   #######################################################
@@ -411,7 +636,6 @@ namespace ft
 // Si le noeud a supprimer est rouge - > supprimer le noeud
 // Si le noeud a supprimer est noir:
 //		Si le noeud avec qui il est remplacé est rouge -> faire le remplacement sans echanger les couleurs
-
 		void replace_node(node_pointer old_node, node_pointer new_node)
 		{
 			// remplace u par v (u hors de l'arbre apres)
@@ -447,169 +671,6 @@ namespace ft
 				start_node = start_node->right;
 			}
 			return start_node;
-		}
-
-// version 1 : algo du ste + ajout conditions pour les segfault
-//		void fix_deletion_old(node_pointer x)
-//{
-//			node_pointer s;
-//			while (x != this->tree_head && x->color == 0)
-//			{
-//				//493/128
-//				//std::cout << "check: " << x->value.first << std::endl;
-//				//std::cout << "check: " << this->tree_head->value.first << std::endl;
-
-
-//				if (x->parent->right && x->parent->left && x == x->parent->left)
-//				{
-//					s = x->parent->right;
-//					if (s->color == 1)
-//					{
-//						s->color = 0;
-//						x->parent->color = 1;
-//						rotate_left(x->parent);
-//						s = x->parent->right;
-//					}
-
-//					if (s->left && s->right && s->left->color == 0 && s->right->color == 0)
-//					{
-//						s->color = 1;
-//						x = x->parent;
-//					}
-//					else
-//					{
-//						if (s->right && s->right->color == 0)
-//						{
-//							s->left->color = 0;
-//							s->color = 1;
-//							rotate_right(s);
-//							s = x->parent->right;
-//						}
-
-//						s->color = x->parent->color;
-//						x->parent->color = 0;
-//						if (s->right)
-//							s->right->color = 0;
-//						rotate_left(x->parent);
-//						x = this->tree_head;
-//					}
-//				}
-//				else if (x->parent->left && x->parent->right)
-//				{
-//					s = x->parent->left;
-//					if (s->color == 1)
-//					{
-//						s->color = 0;
-//						x->parent->color = 1;
-//						rotate_right(x->parent);
-//						s = x->parent->left;
-//					}
-
-//					if (s->right && s->right->color == 0 && s->right->color == 0)
-//					{
-//						s->color = 1;
-//						x = x->parent;
-//					}
-//					else
-//					{
-//						if (s->left && s->left->color == 0)
-//						{
-//							s->right->color = 0;
-//							s->color = 1;
-//							rotate_left(s);
-//							s = x->parent->left;
-//						}
-
-//						s->color = x->parent->color;
-//						x->parent->color = 0;
-//						if (s->left)
-//							s->left->color = 0;
-//						rotate_right(x->parent);
-//						x = this->tree_head;
-//					}
-//				}
-//			}
-//			x->color = 0;
-//}
-
-// version 2: Julia avec adaptation code
-		void checkNodeDeletion(node_pointer x)
-		{
-			node_pointer s;
-			while (x != 0 and x != tree_head and x->parent != 0 and x->color == BLACK)
-			{
-				if (x == x->parent->left)
-				{
-					s = x->parent->right;
-					if (s->color == RED)
-					{
-						s->color = BLACK;
-						x->parent->color = RED;
-						rotate_left(x->parent);
-						s = x->parent->right;
-					}
-					if (s->left->color == BLACK and s->right->color == BLACK)
-					{
-						s->color = RED;
-						x = x->parent;
-					}
-					else
-					{
-						if (s->right->color == BLACK)
-						{
-							s->left->color = BLACK;
-							s->color = RED;
-							rotate_right(s);
-							s = x->parent->right;
-						}
-						s->color = x->parent->color;
-						x->parent->color = BLACK;
-						s->right->color = BLACK;
-						rotate_left(x->parent);
-						x = tree_head;
-						//x = _root->parent;
-					}
-				}
-				else if (x == x->parent->right)
-				{
-					s = x->parent->left;
-					if (s->color == RED)
-					{
-						s->color = BLACK;
-						x->parent->color = RED;
-						rotate_right(x->parent);
-						s = x->parent->left;
-						break;
-					}
-					if (s->left->color == BLACK and s->right->color == BLACK)
-					{
-						s->color = RED;
-						x = x->parent;
-						break;
-					}
-					else
-					{
-						if (s->left->color == BLACK)
-						{
-							s->right->color = BLACK;
-							s->color = RED;
-							rotate_left(s);
-							s = x->parent->left;
-							break;
-						}
-						s->color = x->parent->color;
-						x->parent->color = BLACK;
-						s->left->color = BLACK;
-						rotate_right(x->parent);
-						x = tree_head;
-						//x = _root->parent;
-					}
-				}
-				if (x)
-					x->color = BLACK;
-				//if (_size == 0)
-				//	clear();
-			}
 		}
 
 		size_type erase( const key_type& key )
@@ -664,11 +725,10 @@ namespace ft
 			// fix suppression
 			if (y_original_color == BLACK && x)
 			{
-				//fix_deletion(x);
+				fix_deletion(x);
 			}
 			// update tree_head, begin, end, noeud fantome
 			update_end_erase();
-
 			return (1);
 		}
 

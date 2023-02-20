@@ -134,21 +134,21 @@ ft::map<int, int>& create_Map_R() // enlever & qd constructeurs ok
 	int i = 0;
 	int number;
 	// segfault a partir de 1110
-	while (i < 80000)
+	while (i < 2000)
 	//while (i < 1150)
 	{
-		number = rand() % 1000;
+		number = rand() % 10000;
 		std::cout << "insert:" << number << std::endl;
 		map_.insert(ft::make_pair(number,42));
 
-		number = rand() % 1000;
+		number = rand() % 10000;
 
 
 		//	number++;
 		std::cout << "insert:" << number << std::endl;
 		map_.insert(ft::make_pair(number,42));
 		
-		number = rand() % 1000; 
+		number = rand() % 10000; 
 		std::cout <<  "erase:" <<number << std::endl;
 		map_.erase(number);
 
