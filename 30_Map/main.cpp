@@ -134,7 +134,7 @@ ft::map<int, int>& create_Map_R() // enlever & qd constructeurs ok
 	int i = 0;
 	int number;
 	// segfault a partir de 1110
-	while (i < 50000)
+	while (i < 80000)
 	//while (i < 1150)
 	{
 		number = rand() % 1000;

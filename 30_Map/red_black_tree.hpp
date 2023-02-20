@@ -449,6 +449,7 @@ namespace ft
 			return start_node;
 		}
 
+// version 1 : algo du ste + ajout conditions pour les segfault
 //		void fix_deletion_old(node_pointer x)
 //{
 //			node_pointer s;
@@ -530,83 +531,86 @@ namespace ft
 //			}
 //			x->color = 0;
 //}
-////TBD code jb
-//		void checkNodeDeletion(node x)
-//		{
-//			node s;
-//			while (x != 0 and x != _root and x->parent != 0 and x->color == BLACK)
-//			{
-//				if (x == x->parent->left)
-//				{
-//					s = x->parent->right;
-//					if (s->color == RED)
-//					{
-//						s->color = BLACK;
-//						x->parent->color = RED;
-//						rotateLeft(x->parent);
-//						s = x->parent->right;
-//					}
-//					if (s->left->color == BLACK and s->right->color == BLACK)
-//					{
-//						s->color = RED;
-//						x = x->parent;
-//					}
-//					else
-//					{
-//						if (s->right->color == BLACK)
-//						{
-//							s->left->color = BLACK;
-//							s->color = RED;
-//							rotateRight(s);
-//							s = x->parent->right;
-//						}
-//						s->color = x->parent->color;
-//						x->parent->color = BLACK;
-//						s->right->color = BLACK;
-//						rotateLeft(x->parent);
-//						x = _root->parent;
-//					}
-//				}
-//				else if (x == x->parent->right)
-//				{
-//					s = x->parent->left;
-//					if (s->color == RED)
-//					{
-//						s->color = BLACK;
-//						x->parent->color = RED;
-//						rotateRight(x->parent);
-//						s = x->parent->left;
-//						break;
-//					}
-//					if (s->left->color == BLACK and s->right->color == BLACK)
-//					{
-//						s->color = RED;
-//						x = x->parent;
-//						break;
-//					}
-//					else
-//					{
-//						if (s->left->color == BLACK)
-//						{
-//							s->right->color = BLACK;
-//							s->color = RED;
-//							rotateLeft(s);
-//							s = x->parent->left;
-//							break;
-//						}
-//						s->color = x->parent->color;
-//						x->parent->color = BLACK;
-//						s->left->color = BLACK;
-//						rotateRight(x->parent);
-//						x = _root->parent;
-//					}
-//				}
-//				if (x)
-//					x->color = BLACK;
-//				if (_size == 0)
-//					clear();
-//			}
-//		}
+
+// version 2: Julia avec adaptation code
+		void checkNodeDeletion(node_pointer x)
+		{
+			node_pointer s;
+			while (x != 0 and x != tree_head and x->parent != 0 and x->color == BLACK)
+			{
+				if (x == x->parent->left)
+				{
+					s = x->parent->right;
+					if (s->color == RED)
+					{
+						s->color = BLACK;
+						x->parent->color = RED;
+						rotate_left(x->parent);
+						s = x->parent->right;
+					}
+					if (s->left->color == BLACK and s->right->color == BLACK)
+					{
+						s->color = RED;
+						x = x->parent;
+					}
+					else
+					{
+						if (s->right->color == BLACK)
+						{
+							s->left->color = BLACK;
+							s->color = RED;
+							rotate_right(s);
+							s = x->parent->right;
+						}
+						s->color = x->parent->color;
+						x->parent->color = BLACK;
+						s->right->color = BLACK;
+						rotate_left(x->parent);
+						x = tree_head;
+						//x = _root->parent;
+					}
+				}
+				else if (x == x->parent->right)
+				{
+					s = x->parent->left;
+					if (s->color == RED)
+					{
+						s->color = BLACK;
+						x->parent->color = RED;
+						rotate_right(x->parent);
+						s = x->parent->left;
+						break;
+					}
+					if (s->left->color == BLACK and s->right->color == BLACK)
+					{
+						s->color = RED;
+						x = x->parent;
+						break;
+					}
+					else
+					{
+						if (s->left->color == BLACK)
+						{
+							s->right->color = BLACK;
+							s->color = RED;
+							rotate_left(s);
+							s = x->parent->left;
+							break;
+						}
+						s->color = x->parent->color;
+						x->parent->color = BLACK;
+						s->left->color = BLACK;
+						rotate_right(x->parent);
+						x = tree_head;
+						//x = _root->parent;
+					}
+				}
+				if (x)
+					x->color = BLACK;
+				//if (_size == 0)
+				//	clear();
+			}
+		}
 
 		size_type erase( const key_type& key )
 		{
