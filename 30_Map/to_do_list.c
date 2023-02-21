@@ -33,8 +33,8 @@ swap
 Count
 find  ***
 equal_range
-lower_bound
-upper_bound
+//lower_bound
+//upper_bound
 
 // --- observers
 key_comp
@@ -70,8 +70,8 @@ swap
 
 Count
 //find
-lower_bound**
-upper_bound**
+//lower_bound**
+//upper_bound**
 equal_range
 key_comp
 

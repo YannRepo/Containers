@@ -303,9 +303,31 @@ int main()
 	//map_A.erase(8);
 	//map_A.print();
 
-	print_title_1("Insert / Erase big random");
-	map_A = create_Map_R();
-	map_A.print();
+	print_title_1("Insert / Erase big random"); // enlever comment pour test
+	//map_A = create_Map_R();
+	//map_A.print();
+
+	print_title_1("lower / uper bond");
+	ft::map<int, int> map_lower_uper_bond;
+	map_lower_uper_bond = create_Map_B();
+	map_lower_uper_bond.print();
+	int search_key = 24;
+	ft::map<int, int>::iterator lower_bond = map_lower_uper_bond.lower_bound(search_key);
+	std::cout << "lowerbond: " << lower_bond->first << std::endl;
+	ft::map<int, int>::const_iterator lower_bond_const = map_lower_uper_bond.lower_bound(search_key);
+	std::cout << "lowerbond: " << lower_bond_const->first << std::endl;
+
+	ft::map<int, int>::iterator upper_bond = map_lower_uper_bond.upper_bound(search_key);
+	std::cout << "lowerbond: " << upper_bond->first << std::endl;
+	ft::map<int, int>::const_iterator upper_bond_const = map_lower_uper_bond.upper_bound(search_key);
+	std::cout << "lowerbond: " << upper_bond_const->first << std::endl;
+	std::cout << "lowerbond: " << upper_bond_const->first << std::endl;
+	// check const
+	(*upper_bond).second = 2;
+	//(*upper_bond_const).second = 2; // ne compile pas
+
+
+
 
 
 

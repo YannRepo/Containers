@@ -198,6 +198,52 @@ namespace ft
 			}
 		}
 
+		ft::pair<iterator, bool> insert_algo(node_pointer insert_position,const value_type added_pair)
+		{	
+			if (mycompare(added_pair.first, insert_position->value.first) == mycompare(insert_position->value.first, added_pair.first))
+			{
+				std::cout << "ERROR: cle identique lors de l'insertion" << std::endl;
+				return (ft::make_pair(iterator(insert_position), false));
+			}
+			// insertion a gauche
+			else if (mycompare(added_pair.first, insert_position->value.first))
+			{
+				if (insert_position->left)
+					return (insert_algo(insert_position->left, added_pair));
+				else
+				{
+					node_pointer new_node = this->myAllocator.allocate(1);
+					this->myAllocator.construct(new_node, node(added_pair, RED));
+					new_node->parent = insert_position;
+					insert_position->left = new_node;
+					if (insert_position == this->tree_begin)
+						this->tree_begin = new_node;
+					fix_insertion(new_node);
+					return (ft::make_pair(iterator(new_node), true));
+				}
+			}
+			// insertion a droite
+			else if (mycompare(insert_position->value.first, added_pair.first))
+			{
+				if (insert_position->right and insert_position->right != this->tree_end)
+					return (insert_algo(insert_position->right, added_pair));
+					
+				else
+				{
+					node_pointer new_node = this->myAllocator.allocate(1);
+					this->myAllocator.construct(new_node, node(added_pair, RED));
+					new_node->parent = insert_position;
+					insert_position->right = new_node;
+					if (this->tree_end->parent == new_node->parent) // update end si on ajoute sous l'element final (a droite)
+						update_end(new_node);
+					fix_insertion(new_node);
+					return (ft::make_pair(iterator(new_node), true));
+				}
+			}
+			std::cout << "DEBUG ERROR : cas inconnnu : cette ligne ne devrait pas etre executee " << std::endl;
+			return(ft::make_pair(iterator(), false)); // inutile, juste pour warning compilation
+		}
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Rotations--------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -579,51 +625,6 @@ namespace ft
 				return(insert_algo(this->tree_head, added_pair));
 		}
 
-		ft::pair<iterator, bool> insert_algo(node_pointer insert_position,const value_type added_pair)
-		{	
-			if (mycompare(added_pair.first, insert_position->value.first) == mycompare(insert_position->value.first, added_pair.first))
-			{
-				std::cout << "ERROR: cle identique lors de l'insertion" << std::endl;
-				return (ft::make_pair(iterator(insert_position), false));
-			}
-			// insertion a gauche
-			else if (mycompare(added_pair.first, insert_position->value.first))
-			{
-				if (insert_position->left)
-					return (insert_algo(insert_position->left, added_pair));
-				else
-				{
-					node_pointer new_node = this->myAllocator.allocate(1);
-					this->myAllocator.construct(new_node, node(added_pair, RED));
-					new_node->parent = insert_position;
-					insert_position->left = new_node;
-					if (insert_position == this->tree_begin)
-						this->tree_begin = new_node;
-					fix_insertion(new_node);
-					return (ft::make_pair(iterator(new_node), true));
-				}
-			}
-			// insertion a droite
-			else if (mycompare(insert_position->value.first, added_pair.first))
-			{
-				if (insert_position->right and insert_position->right != this->tree_end)
-					return (insert_algo(insert_position->right, added_pair));
-					
-				else
-				{
-					node_pointer new_node = this->myAllocator.allocate(1);
-					this->myAllocator.construct(new_node, node(added_pair, RED));
-					new_node->parent = insert_position;
-					insert_position->right = new_node;
-					if (this->tree_end->parent == new_node->parent) // update end si on ajoute sous l'element final (a droite)
-						update_end(new_node);
-					fix_insertion(new_node);
-					return (ft::make_pair(iterator(new_node), true));
-				}
-			}
-			std::cout << "DEBUG ERROR : cas inconnnu : cette ligne ne devrait pas etre executee " << std::endl;
-			return(ft::make_pair(iterator(), false)); // inutile, juste pour warning compilation
-		}
 
 // supression element sur arbre binaire normal
 // 0 enfant -> suppression directe
@@ -751,7 +752,80 @@ namespace ft
 
 			// TBD en cours
 		}
-
+		iterator lower_bound (const key_type& k) const
+		{
+			node_pointer search_node = this->tree_head;
+			node_pointer return_ptr = NULL;
+			while (search_node && search_node != this->tree_end)
+			{
+				if (!mycompare(search_node->value.first, k)) //elm de recherce >= key -> on le note et on descend
+				{
+					return_ptr = search_node;
+					search_node = search_node->left;
+				}
+				else //elm de recherce < key -> on monte
+					search_node = search_node->right;
+			}
+			if (return_ptr == NULL)
+				return (this->tree_end);
+			return (iterator(return_ptr));
+		}
+		// TBD a voir si besoin d'ajouter pour les const (dans ce cas enlever le const sur les autres)
+		//const_iterator lower_bound (const key_type& k) const
+		//{
+		//	node_pointer search_node = this->tree_head;
+		//	node_pointer return_ptr = NULL;
+		//	while (search_node && search_node != this->tree_end)
+		//	{
+		//		if (!mycompare(search_node->value.first, k)) //elm de recherce >= key -> on le note et on descend
+		//		{
+		//			return_ptr = search_node;
+		//			search_node = search_node->left;
+		//		}
+		//		else //elm de recherce < key -> on monte
+		//			search_node = search_node->right;
+		//	}
+		//	if (return_ptr == NULL)
+		//		return (this->tree_end);
+		//	return (const_iterator(return_ptr));
+		//}
+		iterator upper_bound (const key_type& k) const
+		{
+			node_pointer search_node = this->tree_head;
+			node_pointer return_ptr = NULL;
+			while (search_node && search_node != this->tree_end)
+			{
+				if (mycompare(k, search_node->value.first)) //elm de recherce <= key -> on le note et on descend
+				{
+					return_ptr = search_node;
+					search_node = search_node->left;
+				}
+				else // elm de recherce > key -> on monte
+					search_node = search_node->right;
+			}
+			if (return_ptr == NULL)
+				return (this->tree_end);
+			return (iterator(return_ptr));
+		}
+		// TBD a voir si besoin d'ajouter pour les const (dans ce cas enlever le const sur les autres)
+		//const_iterator upper_bound (const key_type& k) const
+		//{
+		//	node_pointer search_node = this->tree_head;
+		//	node_pointer return_ptr = NULL;
+		//	while (search_node && search_node != this->tree_end)
+		//	{
+		//		if (mycompare(k, search_node->value.first)) //elm de recherce <= key -> on le note et on descend
+		//		{
+		//			return_ptr = search_node;
+		//			search_node = search_node->left;
+		//		}
+		//		else // elm de recherce > key -> on monte
+		//			search_node = search_node->right;
+		//	}
+		//	if (return_ptr == NULL)
+		//		return (this->tree_end);
+		//	return (const_iterator(return_ptr));
+		//}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Observers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------

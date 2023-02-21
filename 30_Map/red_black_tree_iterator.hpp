@@ -33,6 +33,10 @@ namespace ft
 			Rbt_iterator(node_pointer ptr): current_node(ptr){}
 			~Rbt_iterator(){}
 
+			operator Rbt_iterator<const T, node_pointer, Compare>() const 
+			{
+				return Rbt_iterator<const T, node_pointer, Compare>(current_node);
+			}
 
 	// ###########################################################################################################
 	// #########################################   Tools  #######################################################

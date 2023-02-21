@@ -147,6 +147,23 @@ namespace ft
 				return (this->tree.erase(key));
 			}
 
+			iterator lower_bound (const key_type& k)
+			{
+				return(this->tree.lower_bound(k));
+			}
+			const_iterator lower_bound (const key_type& k) const
+			{
+				return(this->tree.lower_bound(k));
+			}
+			iterator upper_bound (const key_type& k)
+			{
+				return(this->tree.upper_bound(k));
+			}
+			const_iterator upper_bound (const key_type& k) const
+			{
+				return(this->tree.upper_bound(k));
+			}
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Observers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
