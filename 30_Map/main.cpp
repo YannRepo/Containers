@@ -325,7 +325,7 @@ int main()
 	std::cout << "lowerbond: " << upper_bond_const->first << std::endl;
 	// check const
 	(*upper_bond).second = 2;
-	//(*upper_bond_const).second = 2; // ne compile pas
+	//(*+).second = 2; // ne compile pas
 
 	print_title_2("Map - begin / end");
 	ft::map<int, int> map_begin_end;

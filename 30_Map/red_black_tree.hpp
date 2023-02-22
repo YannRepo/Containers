@@ -112,14 +112,27 @@ namespace ft
 // ###########################################################################################################
 	public:
 		Red_black_tree(const Compare& comp = Compare(), const allocator_type &alloc = allocator_type()):
-		tree_size(0), tree_head(NULL), myAllocator(alloc), mycompare(comp)
+		tree_head(NULL),tree_size(0), myAllocator(alloc), mycompare(comp)
 		{
 			this->tree_head = myAllocator.allocate(1);
-			this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
+			this->myAllocator.construct(this->tree_head, Node<Val>()); // 666 et 777 valeurs random pour debug du noeud fantome
+			//this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
 			this->tree_end = tree_head;
 			this->tree_begin = NULL;
 			this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
+		}
 
+		template< class InputIterator >
+		Red_black_tree(InputIterator first, InputIterator last, const Compare& comp, const node_allocator& alloc):
+		tree_size(0), myAllocator(alloc), mycompare(comp)
+		{
+			this->tree_head = myAllocator.allocate(1);
+			this->myAllocator.construct(this->tree_head, Node<Val>()); // 666 et 777 valeurs random pour debug du noeud fantome
+			//this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
+			this->tree_end = tree_head;
+			this->tree_begin = NULL;
+			this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
+			this->insert(first, last);
 		}
 
 // ###########################################################################################################
@@ -203,7 +216,7 @@ namespace ft
 		{	
 			if (mycompare(added_pair.first, insert_position->value.first) == mycompare(insert_position->value.first, added_pair.first))
 			{
-				std::cout << "ERROR: cle identique lors de l'insertion" << std::endl;
+				//std::cout << "ERROR: cle identique lors de l'insertion" << std::endl; // message pour debug
 				return (ft::make_pair(iterator(insert_position), false));
 			}
 			// insertion a gauche
@@ -660,6 +673,8 @@ namespace ft
 		{
 			return (this->myAllocator.max_size());
 		}
+
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -683,7 +698,7 @@ namespace ft
 		iterator insert (iterator position, const value_type& val)
 		{
 			(void)position;
-			this->insert(val);
+			return(this->insert(val).first);
 		}
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last)
@@ -711,7 +726,6 @@ namespace ft
 
 		size_type erase( const key_type& key )
 		{
-			std::cout << "erase asked:" << key << std::endl;
 			// recherche du noeud a supprimer
 			node_pointer z = this->find(key).base();
 			if (z == this->tree_end)
@@ -862,10 +876,26 @@ namespace ft
 		//		return (this->tree_end);
 		//	return (const_iterator(return_ptr));
 		//}
+
+		pair<iterator,iterator> equal_range (const key_type& k)
+		{
+			return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+		}
+		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+		{
+			return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+		}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Observers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Allocator --------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+		allocator_type get_allocator() const
+		{
+			return (myAllocator);
+		}
 
 	};
 // ###########################################################################################################

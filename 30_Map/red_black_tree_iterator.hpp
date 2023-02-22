@@ -136,22 +136,22 @@ namespace ft
 			return(it_copy);
 		}
 
-		reference operator*()
+		reference operator*() const
 		{
 			return (this->current_node->value);
 		}
 
-		pointer operator->()
+		pointer operator->() const
 		{
 			return (&(this->current_node->value));
 		}
 
-		bool operator==(Rbt_iterator& rhs)
+		bool operator==(const Rbt_iterator& rhs) const
 		{
 			return (this->current_node == rhs.current_node);
 		}
 
-		bool operator!=(Rbt_iterator& rhs)
+		bool operator!=(const Rbt_iterator& rhs) const
 		{
 			return (this->current_node != rhs.current_node);
 		}

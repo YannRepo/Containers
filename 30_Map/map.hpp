@@ -3,6 +3,8 @@
 
 # include <iostream>
 # include <memory>
+# include <string>
+
 
 # include "pair.hpp"
 # include "red_black_tree.hpp"
@@ -21,7 +23,7 @@ namespace ft
 		public:
 			typedef Key										key_type;
 			typedef T										mapped_type;
-			typedef pair<const key_type,mapped_type>		value_type;
+			typedef ft::pair<const key_type,mapped_type>	value_type;
 			typedef Compare 								key_compare;
 
 			typedef Allocator								allocator_type;
@@ -97,20 +99,29 @@ namespace ft
 			tree(tree_type(comp, alloc)){}
 
 			template< class InputIterator >
-			map( InputIterator first, InputIterator last, const key_compare& comp = Compare(), const allocator_type& alloc = Allocator())
+			map( InputIterator first, InputIterator last, const key_compare& comp = Compare(), const allocator_type& alloc = Allocator()):
+			tree(first, last, value_compare(comp), alloc)
 			{
-				// TBD avec insert par iterator
+				//this->tree.insert(first, last); TBD voir si constructeur rbt fait le taff
 			}
 
-	 		map(const map& other)
+			//Constructeur par copie
+	 		map(const map<Key, T, Compare, allocator_type>& other): // TBD voir si ok suppression <>
+			tree(other.begin(), other.end(), value_compare(other.value_comp()), other.tree.get_allocator())
+			//tree(other.begin(), other.end(), value_compare(other.value_comp()), other.get_allocator())
 			{
 				// TBD avec insert par iterator
 
 			}
 // -----------------------------------------------------------------------------------------------------------
-// ------------------------------------ operator= / get allcoator--------------------------------------------------
+// ------------------------------------ operator= --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
+			//map& operator= (const map& rhs)
+			//{
+			//	// TBD
+			//}
 
+	
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Element access --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -145,6 +156,15 @@ namespace ft
 			{
 				return (this->tree.max_size());
 			}
+
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Element access --------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+			mapped_type& operator[] (const key_type& k)
+			{
+				return ((this->tree.insert(ft::make_pair(k, mapped_type())).first)->second);
+			}
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -196,11 +216,35 @@ namespace ft
 			{
 				return(this->tree.upper_bound(k));
 			}
+			pair<iterator,iterator> equal_range (const key_type& k)
+			{
+				return (this->tree.equal_range(k));
+			}
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+			{
+				return (this->tree.equal_range(k));
+			}
+
 
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Observers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
+			key_compare key_comp() const
+			{
+				return (key_compare());
+			}
+			value_compare value_comp() const
+			{
+				return (value_compare(key_compare()));
+			}
 
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Allocator --------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+			allocator_type get_allocator() const
+			{
+				return (allocator_type());
+			}
 
 // ###########################################################################################################
 // #################################   Fonctions membres   ###################################################

@@ -5,7 +5,7 @@
 //	Operator()
 // --- Constructeurs/ destructeurs
 Constructeurs (1/3)
-operator=
+operator=***
 get_allocator 
 
 // --- Element access
@@ -13,31 +13,31 @@ at?
 operator[]
 
 // --- Iterators
-//begin / end**
+//begin / end
 //+ en const
 rbegin / rend
 
 // --- Capacity
 //insert
 empty
-//size**
-//max_size**
+//size
+//max_size
 
 // --- Modifiers
-clear
-insert ***
-erase ***
+clear***
+insert **
+erase **
 swap
 
 // --- Operations / look up
 Count
 find  ***
-equal_range
+//equal_range
 //lower_bound
 //upper_bound
 
 // --- observers
-key_comp
+key_comp*
 value_compare
 
 // --- Nom members fct
@@ -48,7 +48,7 @@ Surcharge operator comparaison < > <=.....
 //--------------  Red_black_tree  ---------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------
 Constructeurs
-operator=
+operator=***
 Destructeur
 Rotations
 //Insert node
@@ -62,18 +62,18 @@ rbegin / rend
 empty
 size
 max_size
-clear
+clear***
 
 insert
 erase
 swap
 
 Count
-//find
-//lower_bound**
-//upper_bound**
-equal_range
-key_comp
+find
+//lower_bound
+//upper_bound
+//equal_range
+key_comp*
 
 Surcharge operator comparaison < > <=.....
 
