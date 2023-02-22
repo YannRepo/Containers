@@ -118,17 +118,53 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Iterators --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-
+			iterator begin()
+			{
+				return (this->tree.tree_begin);
+			}
+			const_iterator begin() const
+			{
+				return (this->tree.tree_begin);
+			}
+			iterator end()
+			{
+				return (this->tree.tree_end);
+			}
+			const_iterator end() const
+			{
+				return (this->tree.tree_end);
+			}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Capacity --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-
+			size_type size() const
+			{
+				return (this->tree.size());
+			}
+			size_type max_size() const
+			{
+				return (this->tree.max_size());
+			}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-			ft::pair<iterator, bool> insert(const value_type& value)
+			ft::pair<iterator, bool> insert(const value_type& val)
 			{
-				return(this->tree.insert(value));
+				return(this->tree.insert(val));
+			}
+			iterator insert (iterator position, const value_type& val)
+			{
+				return(this->tree.insert(position, val));
+			}
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last)
+			{
+				this->tree.insert(first, last);
+			}
+
+			size_type erase(const key_type& key)
+			{
+				return (this->tree.erase(key));
 			}
 
 // -----------------------------------------------------------------------------------------------------------
@@ -142,10 +178,7 @@ namespace ft
 			//{
 			//	return (this->tree.find(key));
 			//}
-			size_type erase(const key_type& key)
-			{
-				return (this->tree.erase(key));
-			}
+
 
 			iterator lower_bound (const key_type& k)
 			{

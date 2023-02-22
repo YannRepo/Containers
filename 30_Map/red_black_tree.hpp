@@ -103,6 +103,7 @@ namespace ft
 			node_pointer	tree_head;
 			node_pointer	tree_end;
 			node_pointer	tree_begin;
+			size_type		tree_size;
 			node_allocator	myAllocator;
 			Compare			mycompare;
 		
@@ -111,7 +112,7 @@ namespace ft
 // ###########################################################################################################
 	public:
 		Red_black_tree(const Compare& comp = Compare(), const allocator_type &alloc = allocator_type()):
-		tree_head(NULL), myAllocator(alloc), mycompare(comp)
+		tree_size(0), tree_head(NULL), myAllocator(alloc), mycompare(comp)
 		{
 			this->tree_head = myAllocator.allocate(1);
 			this->myAllocator.construct(this->tree_head, node(make_pair(666,777))); // 666 et 777 valeurs random pour debug du noeud fantome
@@ -218,6 +219,7 @@ namespace ft
 					insert_position->left = new_node;
 					if (insert_position == this->tree_begin)
 						this->tree_begin = new_node;
+					this->tree_size++;
 					fix_insertion(new_node);
 					return (ft::make_pair(iterator(new_node), true));
 				}
@@ -236,13 +238,52 @@ namespace ft
 					insert_position->right = new_node;
 					if (this->tree_end->parent == new_node->parent) // update end si on ajoute sous l'element final (a droite)
 						update_end(new_node);
+					this->tree_size++;
 					fix_insertion(new_node);
 					return (ft::make_pair(iterator(new_node), true));
 				}
 			}
 			std::cout << "DEBUG ERROR : cas inconnnu : cette ligne ne devrait pas etre executee " << std::endl;
-			return(ft::make_pair(iterator(), false)); // inutile, juste pour warning compilation
+			return(ft::make_pair(iterator(), false)); // inutile, juste pour eviter warning compilation
 		}
+
+		void replace_node(node_pointer old_node, node_pointer new_node)
+		{
+			// remplace u par v (u hors de l'arbre apres)
+			if (old_node->parent == NULL)
+			{
+				this->tree_head = new_node;
+			}
+			else if (old_node == old_node->parent->left)
+			{
+				old_node->parent->left = new_node;
+			}
+			else
+			{
+				old_node->parent->right = new_node;
+			}
+			if (new_node)
+				new_node->parent = old_node->parent;
+		}
+
+		node_pointer minimum_subtree(node_pointer start_node)
+		{
+			while (start_node->left != NULL)
+			{
+				start_node = start_node->left;
+			}
+			return (start_node);
+		}
+
+		node_pointer maximum_subtree(node_pointer start_node)
+		{
+			while (start_node->right != NULL)
+			{
+				start_node = start_node->right;
+			}
+			return start_node;
+		}
+
 
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Rotations--------------------------------------------------
@@ -600,11 +641,25 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Iterators --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-
+		iterator begin() const
+		{
+			return (this->tree_begin);
+		}		
+		iterator end() const
+		{
+			return (this->tree_end);
+		}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Capacity --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-
+		size_type size() const
+		{
+			return (this->tree_size);
+		}
+		size_type max_size() const
+		{
+			return (this->myAllocator.max_size());
+		}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Modifiers --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -618,12 +673,28 @@ namespace ft
 				this->tree_head = new_node;
 				update_end(new_node);
 				this->tree_begin = new_node;
+				this->tree_size++;
 				return (ft::make_pair(iterator(new_node), true));
 
 			}
 			else
 				return(insert_algo(this->tree_head, added_pair));
 		}
+		iterator insert (iterator position, const value_type& val)
+		{
+			(void)position;
+			this->insert(val);
+		}
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert (*first);
+				first++;
+			}
+		}
+
 
 
 // supression element sur arbre binaire normal
@@ -637,42 +708,6 @@ namespace ft
 // Si le noeud a supprimer est rouge - > supprimer le noeud
 // Si le noeud a supprimer est noir:
 //		Si le noeud avec qui il est remplacé est rouge -> faire le remplacement sans echanger les couleurs
-		void replace_node(node_pointer old_node, node_pointer new_node)
-		{
-			// remplace u par v (u hors de l'arbre apres)
-			if (old_node->parent == NULL)
-			{
-				this->tree_head = new_node;
-			}
-			else if (old_node == old_node->parent->left)
-			{
-				old_node->parent->left = new_node;
-			}
-			else
-			{
-				old_node->parent->right = new_node;
-			}
-			if (new_node)
-				new_node->parent = old_node->parent;
-		}
-
-		node_pointer minimum_subtree(node_pointer start_node)
-		{
-			while (start_node->left != NULL)
-			{
-				start_node = start_node->left;
-			}
-			return (start_node);
-		}
-
-		node_pointer maximum_subtree(node_pointer start_node)
-		{
-			while (start_node->right != NULL)
-			{
-				start_node = start_node->right;
-			}
-			return start_node;
-		}
 
 		size_type erase( const key_type& key )
 		{
@@ -730,6 +765,7 @@ namespace ft
 			}
 			// update tree_head, begin, end, noeud fantome
 			update_end_erase();
+			this->tree_size--;
 			return (1);
 		}
 

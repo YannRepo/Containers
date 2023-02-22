@@ -13,15 +13,15 @@ at?
 operator[]
 
 // --- Iterators
-begin / end
-+ en const
+//begin / end**
+//+ en const
 rbegin / rend
 
 // --- Capacity
 //insert
 empty
-size
-max_size
+//size**
+//max_size**
 
 // --- Modifiers
 clear
@@ -55,8 +55,8 @@ Rotations
 //fix insertion
 fix deletion
 
-begin / end
-+ en const
+//begin / end
+//+ en const
 rbegin / rend
 
 empty

@@ -284,16 +284,17 @@ int main()
 	
 	//// ##############################   Map   ###################################
 	//// ------------------------------------------ Constructor destructor -------------------------------------------------------
+	print_title_1("Map");
 	print_title_2("Map - Constructor destructor");
 	ft::map<int, int> map_A;
 
-	print_title_1("Insert");
+	print_title_2("Map - Insert");
 	map_A.insert(ft::make_pair(5,42));
 	map_A.insert(ft::make_pair(6,43));
 	map_A.insert(ft::make_pair(6,43));
 	//map_A.print();
 
-	print_title_1("Erase");
+	print_title_2("Map - Erase");
 	map_A = create_Map_B();
 	map_A.print();
 	map_A.erase(32);
@@ -303,11 +304,11 @@ int main()
 	//map_A.erase(8);
 	//map_A.print();
 
-	print_title_1("Insert / Erase big random"); // enlever comment pour test
+	print_title_2("Map - Insert / Erase big random"); // enlever comment pour test
 	//map_A = create_Map_R();
 	//map_A.print();
 
-	print_title_1("lower / uper bond");
+	print_title_2("Map - lower / uper bond");
 	ft::map<int, int> map_lower_uper_bond;
 	map_lower_uper_bond = create_Map_B();
 	map_lower_uper_bond.print();
@@ -326,9 +327,27 @@ int main()
 	(*upper_bond).second = 2;
 	//(*upper_bond_const).second = 2; // ne compile pas
 
+	print_title_2("Map - begin / end");
+	ft::map<int, int> map_begin_end;
+	map_begin_end = create_Map_B();
+	map_begin_end.print();
+	ft::map<int, int>::iterator it_begin = map_begin_end.begin();
+	std::cout << "it_begin: " << it_begin->first << std::endl;
+	ft::map<int, int>::iterator it_end = map_begin_end.end();
+	std::cout << "it_end: " << it_end->first << std::endl;
 
+	ft::map<int, int>::const_iterator it_const_begin = map_begin_end.begin();
+	std::cout << "it_const_begin: " << it_begin->first << std::endl;
+	(*it_begin).second = 2;
+	ft::map<int, int>::iterator it_const_end = map_begin_end.end();
+	std::cout << "it_const_end: " << it_const_end->first << std::endl;
+	//(*it_const_begin).second = 2; // ne compile pas
 
-
+	print_title_2("Size max_size");
+	ft::map<int, int> map_size;
+	map_size = create_Map_B();
+	std::cout << "Size: " << map_size.size() << std::endl;
+	std::cout << "Max size: " << map_size.max_size() << std::endl;
 
 
 	
