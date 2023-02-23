@@ -665,6 +665,10 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Capacity --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
+		bool empty() const
+		{
+			return (this->tree_size == 0);
+		}
 		size_type size() const
 		{
 			return (this->tree_size);
@@ -783,6 +787,29 @@ namespace ft
 			return (1);
 		}
 
+			void clear_node_recursive(node_pointer node)
+			{
+				if (node && node != this->tree_end)
+				{
+					clear_node_recursive(node->left);
+					clear_node_recursive(node->right);
+					myAllocator.destroy(node);
+					myAllocator.deallocate(node, 1);
+
+				}
+			}
+			void clear()
+			{
+				clear_node_recursive(this->tree_head);
+				this->tree_head = tree_end; ;
+				this->tree_head->parent = tree_head; // ref sur lui-meme au depart
+				this->tree_begin = tree_end;
+				this->tree_size = 0;
+				this->tree_head->left = NULL;
+				this->tree_head->right = NULL;
+
+			}
+			
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
