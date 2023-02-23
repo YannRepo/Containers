@@ -99,7 +99,7 @@ ft::map<int, int>& create_Map_A() // enlever & qd constructeurs ok
 	return (map_);
 }
 
-ft::map<int, int>& create_Map_B() // enlever & qd constructeurs ok
+ft::map<int, int> create_Map_B() // enlever & qd constructeurs ok
 {
 	ft::map<int, int> map_;
 	map_.insert(ft::make_pair(1,42));
@@ -307,6 +307,16 @@ int main()
 	print_title_2("Map - Insert / Erase big random"); // enlever comment pour test
 	//map_A = create_Map_R();
 	//map_A.print();
+
+	print_title_2("Erase 1st element"); // enlever comment pour test
+
+	map_A = create_Map_B();
+	map_A.print();
+	//ft_erase(map_A, map_A.begin()->first);
+	int erase_key = map_A.begin()->first;
+	map_A.erase(map_A.begin()->first);
+	map_A.print();
+
 
 	print_title_2("Map - lower / uper bond");
 	ft::map<int, int> map_lower_uper_bond;

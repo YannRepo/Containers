@@ -135,13 +135,17 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 			iterator begin()
 			{
-				return (this->tree.tree_begin);
+				//return (this->tree.tree_begin);// TBD check si updade ok
+				return (this->tree.begin());
+
 			}
 			const_iterator begin() const
 			{
-				return (this->tree.tree_begin);
+				//return (this->tree.tree_begin); // TBD check si updade ok
+				return (this->tree.begin());
+
 			}
-			iterator end()
+			iterator end() // update avec fct end() de tree
 			{
 				return (this->tree.tree_end);
 			}
@@ -190,10 +194,32 @@ namespace ft
 				this->tree.insert(first, last);
 			}
 
+			void erase (iterator position)
+			{
+				this->tree.erase(position);
+			}
 			size_type erase(const key_type& key)
 			{
 				return (this->tree.erase(key));
 			}
+			//void erase (iterator first, iterator last)
+			//{
+			//	this->tree.erase(first, last);
+			//}
+			void erase (iterator first, iterator last)
+			{
+				if (first == begin() && last == end())
+					{
+						this->tree.clear();
+						return ;
+					}
+				while (first != last)
+				{
+					this->tree.erase(first++);
+					//first++; //pas incrementer apres sinon le first n'est plus valide
+				}
+			}
+
 			void clear()
 			{
 				this->tree.clear();
@@ -255,7 +281,9 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 			allocator_type get_allocator() const
 			{
-				return (allocator_type());
+				//return (allocator_type()); // TBD check ancienn version
+				return value_compare(tree.key_comp());
+
 			}
 
 // ###########################################################################################################

@@ -155,16 +155,12 @@ namespace ft
 			//while ()
 		}
 
-		void update_end_erase()
+		void update_end_node()
 		{
 			node_pointer last_elemement;
 			last_elemement = maximum_subtree(this->tree_head);
 			this->tree_end->parent = last_elemement;
 			last_elemement->right = this->tree_end;
-			//// TBD
-			//node_pointer search_ptr;
-			//search_ptr = this->tree_head;
-			//while ()
 		}
 
 		// TBD check si utilise (non testee encore)
@@ -297,6 +293,17 @@ namespace ft
 			return start_node;
 		}
 
+		void clear_node_recursive(node_pointer node)
+		{
+			if (node && node != this->tree_end)
+			{
+				clear_node_recursive(node->left);
+				clear_node_recursive(node->right);
+				myAllocator.destroy(node);
+				myAllocator.deallocate(node, 1);
+
+			}
+		}
 
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Rotations--------------------------------------------------
@@ -585,7 +592,7 @@ namespace ft
 		//	}
 		//}
 
-// version 3 :
+// version 3 (erreur mauvaise copie ?):
 		void fix_deletion(node_pointer node)
 		{
 			while((node != tree_head) && (node->color != BLACK) && node->parent && node->parent->color == RED)
@@ -654,13 +661,26 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Iterators --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		iterator begin() const
+		iterator begin() const // TBD check si tjr ok
 		{
-			return (this->tree_begin);
+			//return (this->tree_begin); // ancienn version
+			node_pointer search_begin  = tree_head;
+			while (search_begin->left)
+			{
+				search_begin = search_begin->left;
+			}
+			return (search_begin);
 		}		
 		iterator end() const
 		{
-			return (this->tree_end);
+			//return (this->tree_end);
+			node_pointer search_end  = tree_head;
+			while (search_end->ritght and search_end != tree_end)
+			{
+				search_end = search_end->right;
+			}
+			return (search_end);
+
 		}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Capacity --------------------------------------------------
@@ -728,87 +748,118 @@ namespace ft
 // Si le noeud a supprimer est noir:
 //		Si le noeud avec qui il est remplacé est rouge -> faire le remplacement sans echanger les couleurs
 
+		void erase (iterator position)
+		{
+			this->erase(position->first);
+		}
+	// erase version 1 (perso)	
+		//size_type erase( const key_type& key )
+		//{
+		//	// recherche du noeud a supprimer
+		//	node_pointer z = this->find(key).base();
+		//	if (z == this->tree_end)
+		//		return (0);
+		//	this->tree_end->parent->right = NULL; // suppression de tree_end pendant la suppression (restauration a la fin)
+		//	node_pointer x, y;
+
+		//	y = z;
+		//	int y_original_color = y->color;
+		//	// si un cote sans enfant remonter noeud a la place du noeud a sup
+		//	if (z->left == NULL)
+		//	{
+		//		if (z == this->tree_head) // changement du head si on supprime le 1er noeud (en cours)
+		//			this->tree_head = z->right;
+		//		if (z == this->tree_begin) // changement du begin si on supprime le 1er noeud (en cours)
+		//			this->tree_begin = z->right;
+		//		x = z->right;
+		//		replace_node(z, z->right);
+		//	}
+		//	else if (z->right == NULL)
+		//	{
+		//		if (z == this->tree_head) // changement du head si on supprime le 1er noeud (en cours)
+		//			this->tree_head = z->left;
+		//		if (z == this->tree_begin) // changement du begin si on supprime le 1er noeud (en cours)
+		//			this->tree_begin = z->left;
+		//		x = z->left;
+		//		replace_node(z, z->left);
+		//	}
+		//	// sinon on va cherche le mini du sous arbre de droite (<=> noeud suivant dans rbt)
+		//	else
+		//	{
+		//		y = minimum_subtree(z->right);
+		//		y_original_color = y->color;
+		//		x = y->right;
+		//		if (y->parent == z && x)
+		//		{
+		//			x->parent = y;
+		//		}
+		//		else
+		//		{
+		//			replace_node(y, y->right);
+		//			y->right = z->right;
+		//			if (y->right)
+		//				y->right->parent = y;
+		//		}
+		//		if (z == this->tree_head) // changement du begin si on supprime le 1er noeud (en cours)
+		//			this->tree_head = y;
+		//		if (z == this->tree_begin) // changement du begin si on supprime le 1er noeud (en cours)
+		//			this->tree_begin = y;
+		//		replace_node(z, y);
+		//		y->left = z->left;
+		//		y->left->parent = y;
+		//		y->color = z->color;
+		//	}
+		//	// suppression du noeud
+		//	this->myAllocator.destroy(z);
+		//	this->myAllocator.deallocate(z, 1);
+		//	// fix suppression
+		//	if (y_original_color == BLACK && x)
+		//	{
+		//		fix_deletion(x);
+		//	}
+		//	// update tree_head, begin, end, noeud fantome
+		//	update_end_node();
+		//	this->tree_size--;
+		//	return (1);
+		//}
+
 		size_type erase( const key_type& key )
 		{
-			// recherche du noeud a supprimer
-			node_pointer z = this->find(key).base();
-			if (z == this->tree_end)
-				return (0);
-			this->tree_end->parent->right = NULL;
-			node_pointer x, y;
+			iterator to_erase;
+			to_erase = this->find(key);
+			if (to_erase.base() != this->tree_end)
+			{
+				this->deleteNode(to_erase.base());
+				return (1);
+			}
+			return (0); // TBD check les returns
+		}		
 
-			y = z;
-			int y_original_color = y->color;
-			// si un cote sans enfant remonter noeud a la place du noeud a sup
-			if (z->left == NULL)
-			{
-				x = z->right;
-				replace_node(z, z->right);
-			}
-			else if (z->right == NULL)
-			{
-				x = z->left;
-				replace_node(z, z->left);
-			}
-			// sinon on va cherche le mini du sous arbre de droite (<=> noeud suivant dans rbt)
-			else
-			{
-				y = minimum_subtree(z->right);
-				y_original_color = y->color;
-				x = y->right;
-				if (y->parent == z && x)
-				{
-					x->parent = y;
-				}
-				else
-				{
-					replace_node(y, y->right);
-					y->right = z->right;
-					if (y->right)
-						y->right->parent = y;
-				}
+		//void erase (iterator first, iterator last)
+		//{
+		//	if (first == begin() && last == end())
+		//		{
+		//			this->clear();
+		//			return ;
+		//		}
+		//	while (first != last)
+		//	{
+		//		this->erase(first);
+		//		first++;
+		//	}
+		//}
 
-				replace_node(z, y);
-				y->left = z->left;
-				y->left->parent = y;
-				y->color = z->color;
-			}
-			// suppression du noeud
-			this->myAllocator.destroy(z);
-			this->myAllocator.deallocate(z, 1);
-			// fix suppression
-			if (y_original_color == BLACK && x)
-			{
-				fix_deletion(x);
-			}
-			// update tree_head, begin, end, noeud fantome
-			update_end_erase();
-			this->tree_size--;
-			return (1);
+		void clear()
+		{
+			clear_node_recursive(this->tree_head);
+			this->tree_head = tree_end; ;
+			this->tree_head->parent = tree_head; // ref sur lui-meme au depart
+			this->tree_begin = tree_end;
+			this->tree_size = 0;
+			this->tree_head->left = NULL;
+			this->tree_head->right = NULL;
+
 		}
-
-			void clear_node_recursive(node_pointer node)
-			{
-				if (node && node != this->tree_end)
-				{
-					clear_node_recursive(node->left);
-					clear_node_recursive(node->right);
-					myAllocator.destroy(node);
-					myAllocator.deallocate(node, 1);
-
-				}
-			}
-			void clear()
-			{
-				clear_node_recursive(this->tree_head);
-				this->tree_head = tree_end; ;
-				this->tree_head->parent = tree_head; // ref sur lui-meme au depart
-				this->tree_begin = tree_end;
-				this->tree_size = 0;
-				this->tree_head->left = NULL;
-				this->tree_head->right = NULL;
-
-			}
 			
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
@@ -923,6 +974,201 @@ namespace ft
 		{
 			return (myAllocator);
 		}
+
+
+
+
+
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ a ranger (fct MI) --------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
+
+
+// erase version MI
+
+			node_pointer deleteNode(node_pointer node)
+			{
+				node_pointer nextNode = replace(node);
+				node_pointer parent = node->parent;
+				node_pointer sibling = GetSibling(node);
+				node_pointer ret = successor(node);
+				
+				if (nextNode == NULL)
+				{
+					if (node == tree_head)
+						tree_head = NULL;
+					else
+					{
+						if (nextNode == NULL || nextNode->color == BLACK)
+							FixViolationsErase(node);
+						else if (sibling != NULL)
+							sibling->color = RED;
+						if (isLeftChild(node))
+							parent->left = NULL;
+						else
+							parent->right = NULL;
+					}
+					freeNode(node);
+					tree_size--;
+					updateEnd();
+					return ret;
+				}
+				if (node->left == NULL || node->right == NULL)
+				{
+					if (node == tree_head)
+					{
+						change_value(node, nextNode);
+						freeNode(nextNode);
+						node->left = NULL;
+						node->right = NULL;
+					}
+					else
+					{
+						if (isLeftChild(node))
+						{
+							parent->left = nextNode;
+						}
+						else
+						{
+							parent->right = nextNode;
+						}
+						freeNode(node);
+						nextNode->parent = parent;
+						if (nextNode == NULL || nextNode->color == BLACK)
+							FixViolationsErase(nextNode);
+						else
+							nextNode->color = BLACK;
+					}
+					tree_size--;
+					updateEnd();
+					return ret;
+				}
+				swap_value(nextNode, node);
+				deleteNode(nextNode);
+				return node;
+			}
+
+
+
+			void swap_value(node_pointer a,node_pointer b)
+			{
+				key_type tmp;
+				key_type *keya = const_cast<key_type *>(&a->value.first);
+				key_type *keyb = const_cast<key_type *>(&b->value.first);
+				value_type	temp;
+
+				tmp = *keya;
+				*keya = *keyb;
+				*keyb = tmp;
+
+				temp.second= a->value.second;
+				a->value.second = b->value.second;
+				b->value.second = temp.second;
+
+			}
+
+			bool isLeftChild(node_pointer node)
+			{
+				return node == node->parent->left;
+			}
+
+			node_pointer GetSibling(node_pointer node)
+			{
+				if (node->parent == NULL)
+					return NULL;
+				if (isLeftChild(node))
+					return node->parent->right;
+				else
+					return node->parent->left;
+			}
+
+
+			void freeNode(node_pointer node)
+			{
+				myAllocator.destroy(node);
+				myAllocator.deallocate(node, RED);
+			}
+
+
+			void updateEnd()
+			{
+				node_pointer max = maximum();
+				max->right = tree_end;
+				tree_end->parent = max;
+				tree_end->left = NULL;
+				tree_end->right = NULL;
+				tree_end->color = BLACK;
+			}
+
+
+			void 	change_value(node_pointer a, node_pointer b)
+			{
+				key_type* kRED;
+				key_type* k2;
+
+				kRED = const_cast<key_type*>(&a->value.first);
+				k2 = const_cast<key_type*>(&b->value.first);
+				
+				*kRED = *k2;
+				a->value.second = b->value.second;
+			}
+
+			node_pointer successor(node_pointer node) 
+			{
+				if (node->right != NULL) 
+				{
+					node = node->right;
+					while(node->left != NULL)
+						node = node->left;
+					return node;
+				}
+				node_pointer parent = node->parent;
+				while (parent != NULL && parent != tree_end && node == parent->right) 
+				{
+					node = parent;
+					parent = parent->parent;
+				}
+				return parent;
+			}
+
+			node_pointer maximum() const
+			{
+				node_pointer max = tree_head;
+				while (max && max->right != NULL && max->right != tree_end) 
+					max = max->right;
+				return max;
+			}
+
+			node_pointer	replace(node_pointer node)
+			{
+				if (node->left != NULL && node->right != NULL && node->right != tree_end)
+					return successor(node);
+				if (!node->left && !node->right)
+					return NULL;
+				if (node->left != NULL)
+					return node->left;
+				return node->right;
+			}
+
+			void FixViolationsErase(node_pointer node)
+			{
+				(void)node;
+				// TBD
+			}
+
+
+
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ a ranger (fct Julia fix rapide) --------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
+		 typedef Compare												key_compare;
+
+        key_compare key_comp() const{
+            return mycompare;
+        }
+
 
 	};
 // ###########################################################################################################
