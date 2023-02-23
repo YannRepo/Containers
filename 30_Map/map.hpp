@@ -37,7 +37,7 @@ namespace ft
 			typedef size_t									size_type;
 
 		public:
-			class value_compare: public std::binary_function<value_type, value_type, bool>
+			class value_compare: public std::less<Key> // sup heritage ?
 			{
 				// pour que map puisse utiliser les elements protected de cette classe
 				friend class map<key_type, mapped_type, key_compare, allocator_type>;
