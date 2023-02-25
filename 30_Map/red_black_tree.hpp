@@ -6,6 +6,9 @@
 
 # include "pair.hpp"
 # include "red_black_tree_iterator.hpp"
+# include "../10_Tools/lexicographical_compare.hpp"
+# include "../10_Tools/reverse_iterator.hpp"
+
 
 # define BLACK 0
 # define RED 1
@@ -94,9 +97,9 @@ namespace ft
 			//typedef typename ft::Rbt_iterator<value_type, node_pointer, Compare>		iterator;
 
 			typedef ft::Rbt_iterator<value_type, node_pointer, Compare>					iterator;
-            typedef ft::Rbt_iterator<const value_type, node_pointer, Compare>			const_iterator;
-            //typedef ft::reverse_Iterator<iterator>			            reverse_iterator;
-	        //typedef ft::reverse_Iterator<const_iterator>	            const_reverse_iterator;
+			typedef ft::Rbt_iterator<const value_type, node_pointer, Compare>			const_iterator;
+			//typedef ft::reverse_iterator<iterator>										reverse_iterator;
+			//typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
 
 		public: // public pour debug, repasser en private
@@ -863,6 +866,29 @@ namespace ft
 		//	}
 		//}
 
+		void swap (Red_black_tree& rbt_to_swap)
+		{
+			node_pointer tmp_tree_head		= rbt_to_swap.tree_head;
+			rbt_to_swap.tree_head 			= this->tree_head;
+			this->tree_head 				= tmp_tree_head;
+
+			node_pointer tmp_tree_end		= rbt_to_swap.tree_end;
+			rbt_to_swap.tree_end			= this->tree_end;
+			this->tree_end					= tmp_tree_end;
+			
+			size_type tmp_tree_size			= rbt_to_swap.tree_size;
+			rbt_to_swap.tree_size			= this->tree_size;
+			this->tree_size					= tmp_tree_size;
+			
+			node_allocator tmp_myAllocator	= rbt_to_swap.myAllocator;
+			rbt_to_swap.myAllocator			= this->myAllocator;
+			this->myAllocator				= tmp_myAllocator;
+			
+			Compare tmp_mycompare			= rbt_to_swap.mycompare;
+			rbt_to_swap.mycompare			= this->mycompare;
+			this->mycompare					= tmp_mycompare;
+		}
+
 		void clear()
 		{
 			clear_node_recursive(this->tree_head);
@@ -878,7 +904,7 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		iterator find (const key_type& k)
+		iterator find (const key_type& k) const
 		{
 			node_pointer search_node = tree_head;
 			while (search_node && search_node != this->tree_end)
@@ -891,9 +917,14 @@ namespace ft
 					search_node = search_node->right;
 			}
 			return (this->tree_end);
-
-			// TBD en cours
 		}
+		size_type count (const key_type& k) const
+		{
+			if (find(k) != this->tree_end)
+				return (1);
+			return (0);
+		}
+
 		iterator lower_bound (const key_type& k) const
 		{
 			node_pointer search_node = this->tree_head;
@@ -1188,7 +1219,65 @@ namespace ft
 // ###########################################################################################################
 // #########################################   Fonctions non membres   #######################################################
 // ###########################################################################################################
-// TBD
+    template <typename _Key, typename _Val, class _Compare, class _Allocator>
+    inline bool
+    operator==(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    {
+		//(void)lhs;
+		//(void)rhs;
+		//return (true); // tmp
+    	////return lhs.size() == rhs.size() // TBD remettre
+    	//	//   and ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+
+		if (lhs.size() != rhs.size())
+			return (false);
+
+		typename ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> begin_1 = lhs.begin();
+		typename ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> begin_2 = rhs.begin();
+	
+		while (begin_1 != lhs.end())
+		{
+			if (begin_1 != begin_2)
+				return (false);
+			begin_1++;
+			begin_2++;
+		}
+		//if (begin_2 != rhs.end())
+		//	return (false);
+		return (true);
+	
+    }
+
+    template <typename _Key, typename _Val, class _Compare, class _Allocator>
+    inline bool
+    operator<(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
+    		  const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    { return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
+
+    template <typename _Key, typename _Val, class _Compare, class _Allocator>
+    inline bool
+    operator!=(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    { return not (lhs == rhs); }
+
+    template <typename _Key, typename _Val, class _Compare, class _Allocator>
+    inline bool
+    operator>(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
+    		  const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    { return rhs < lhs; }
+
+    template <typename _Key, typename _Val, class _Compare, class _Allocator>
+    inline bool
+    operator>=(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    { return not (lhs < rhs); }
+
+    template <typename _Key, typename _Val, class _Compare, class _Allocator>
+    inline bool
+    operator<=(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    { return not (rhs < lhs); }
 
 }
 

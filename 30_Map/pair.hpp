@@ -53,5 +53,56 @@ namespace ft
 	{
 		return (pair<T1, T2>(t, u));
 	}
+
+	//-- Checks if two 'pair' objects have the same value of theirs 'first' and 'second' members.
+	//-- Returns 'true' if there are equal and 'false' if there are not. 
+	template< class T1, class T2 >
+	bool operator==( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ) 
+	{
+		return ( lhs.first == rhs.first && lhs.second == rhs.second );
+	};
+
+	//-- Returns 'true' if the 'first' and 'second' members
+	//-- of the two 'pair' objects are not equal, returns 'false' otherwise. 
+	template <class T1, class T2>
+	bool operator!= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs) 
+	{
+		return !(lhs==rhs);
+	};
+
+	//-- Check if the first element of the left-hand side pair is 
+	//-- smaller than the first element of the right-hand side pair
+	//-- If true : return true 
+	//-- -> left and side pair should come first in the sorted order. 
+	//-- second check is here to stop comparison if there first elems are not equal.
+	//-- If firsts eleme are equal => comparison of second to determine order.
+	template <class T1, class T2>
+        bool operator<(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+        {
+		return ((lhs.first < rhs.first) || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
+	};
+
+	//-- Returns true if left-hand side pair <= to the right-hand side pair
+	//-- Returns true if both the first and second element of the left-hand side pair
+	//-- are equal to the first and second elements og the right-hand side pair. 
+	template <class T1, class T2>
+	bool operator<= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs) 
+	{
+		return !(rhs<lhs);
+	};
+
+	//-- Same as < in the other sens
+	template <class T1, class T2>
+	bool operator>  (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return rhs<lhs;
+	};
+
+	//-- Same as <= in the other sens
+	template <class T1, class T2>
+	bool operator>= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs) 
+	{
+		return !(lhs<rhs);
+	};
 }
 #endif
