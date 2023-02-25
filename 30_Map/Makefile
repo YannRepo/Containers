@@ -4,6 +4,7 @@ NAME = main
 
 # Sources
 SRCS += main.cpp
+#SRCS += main_testeur.cpp
 
 OBJS = ${SRCS:.cpp=.o}
 

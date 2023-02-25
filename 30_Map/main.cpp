@@ -84,7 +84,7 @@ ft::Red_black_tree<int, ft::pair <int, int> > create_rbt_A()
 	return (rbt);
 }
 
-ft::map<int, int>& create_Map_A() // enlever & qd constructeurs ok
+ft::map<int, int> create_Map_A()
 {
 	ft::map<int, int> map_;
 	map_.insert(ft::make_pair(1,42));
@@ -99,7 +99,7 @@ ft::map<int, int>& create_Map_A() // enlever & qd constructeurs ok
 	return (map_);
 }
 
-ft::map<int, int> create_Map_B() // enlever & qd constructeurs ok
+ft::map<int, int> create_Map_B()
 {
 	ft::map<int, int> map_;
 	map_.insert(ft::make_pair(1,42));
@@ -127,7 +127,7 @@ ft::map<int, int> create_Map_B() // enlever & qd constructeurs ok
 	return (map_);
 }
 
-ft::map<int, int>& create_Map_R() // enlever & qd constructeurs ok
+ft::map<int, int> create_Map_R()
 {
 	ft::map<int, int> map_;
 	map_.insert(ft::make_pair(1,42));
@@ -232,7 +232,7 @@ int main()
 	//--it_insert_print_A;
 	it_insert_print_A--;
 	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
-	std::cout << "key/value begin: " << rbt2.tree_begin->value.first << "/" << rbt2.tree_begin->value.second << std::endl;
+	std::cout << "key/value begin: " << rbt2.begin()->first << "/" << rbt2.begin()->second << std::endl;
 	
 	
 	print_title_2("check return");
@@ -305,8 +305,8 @@ int main()
 	//map_A.print();
 
 	print_title_2("Map - Insert / Erase big random"); // enlever comment pour test
-	//map_A = create_Map_R();
-	//map_A.print();
+	map_A = create_Map_R();
+	map_A.print();
 
 	print_title_2("Erase 1st element"); // enlever comment pour test
 

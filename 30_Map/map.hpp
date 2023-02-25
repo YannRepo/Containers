@@ -102,7 +102,7 @@ namespace ft
 			map( InputIterator first, InputIterator last, const key_compare& comp = Compare(), const allocator_type& alloc = Allocator()):
 			tree(first, last, value_compare(comp), alloc)
 			{
-				//this->tree.insert(first, last); TBD voir si constructeur rbt fait le taff
+				//this->tree.insert(first, last); // TBD voir si constructeur rbt fait le taff
 			}
 
 			//Constructeur par copie
@@ -198,26 +198,13 @@ namespace ft
 			{
 				this->tree.erase(position);
 			}
+			void erase (iterator first, iterator last)
+			{
+				this->tree.erase(first, last);
+			}
 			size_type erase(const key_type& key)
 			{
 				return (this->tree.erase(key));
-			}
-			//void erase (iterator first, iterator last)
-			//{
-			//	this->tree.erase(first, last);
-			//}
-			void erase (iterator first, iterator last)
-			{
-				if (first == begin() && last == end())
-					{
-						this->tree.clear();
-						return ;
-					}
-				while (first != last)
-				{
-					this->tree.erase(first++);
-					//first++; //pas incrementer apres sinon le first n'est plus valide
-				}
 			}
 
 			void clear()
