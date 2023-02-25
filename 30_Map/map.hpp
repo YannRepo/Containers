@@ -72,8 +72,8 @@ namespace ft
 			typedef typename ft::Red_black_tree< key_type, value_type, value_compare, allocator_type>	tree_type;
 			typedef typename tree_type::iterator														iterator;	
 			typedef typename tree_type::const_iterator													const_iterator;
-			//typedef typename tree_type::reverse_iterator<iterator>										reverse_iterator;
-			//typedef typename tree_type::reverse_iterator<const_iterator>								const_reverse_iterator;				
+			typedef typename tree_type::reverse_iterator									reverse_iterator; 
+			typedef typename tree_type::const_reverse_iterator								const_reverse_iterator;				
 
 
 		public: // pour debug TBD remettre en protected a la fin
@@ -155,6 +155,15 @@ namespace ft
 			{
 				return (this->tree.tree_end);
 			}
+		// TBD remettre en forme
+
+			reverse_iterator rbegin() { return reverse_iterator(tree.rbegin()); }
+
+			const_reverse_iterator  rbegin() const { return const_reverse_iterator(tree.rbegin()); }
+
+			reverse_iterator rend() { return reverse_iterator(tree.rend()); }
+
+			const_reverse_iterator rend() const { return const_reverse_iterator(tree.rend()); }
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Capacity --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -293,7 +302,7 @@ namespace ft
 	template< class Key, class T, class Compare, class Alloc >
 	void swap( ft::map<Key, T, Compare, Alloc>& lhs, ft::map<Key, T, Compare, Alloc>& rhs )
 	{
-		lhs->swap(rhs);
+		lhs.swap(rhs);
 	}
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Comparison operator  --------------------------------------------------

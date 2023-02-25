@@ -98,8 +98,8 @@ namespace ft
 
 			typedef ft::Rbt_iterator<value_type, node_pointer, Compare>					iterator;
 			typedef ft::Rbt_iterator<const value_type, node_pointer, Compare>			const_iterator;
-			//typedef ft::reverse_iterator<iterator>										reverse_iterator;
-			//typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>										reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
 
 		public: // public pour debug, repasser en private
@@ -664,7 +664,17 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Iterators --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		iterator begin() const // TBD check si tjr ok
+		iterator begin() // TBD check si tjr ok
+		{
+			//return (this->tree_begin); // ancienn version
+			node_pointer search_begin  = tree_head;
+			while (search_begin->left)
+			{
+				search_begin = search_begin->left;
+			}
+			return (search_begin);
+		}	
+		const_iterator begin() const // TBD check si tjr ok
 		{
 			//return (this->tree_begin); // ancienn version
 			node_pointer search_begin  = tree_head;
@@ -674,7 +684,18 @@ namespace ft
 			}
 			return (search_begin);
 		}		
-		iterator end() const
+		
+		iterator end()
+		{
+			//return (this->tree_end);
+			node_pointer search_end  = tree_head;
+			while (search_end->right and search_end != tree_end)
+			{
+				search_end = search_end->right;
+			}
+			return (search_end);
+		}
+		const_iterator end() const
 		{
 			//return (this->tree_end);
 			node_pointer search_end  = tree_head;
@@ -685,6 +706,27 @@ namespace ft
 			return (search_end);
 
 		}
+
+		// TBD remettre en forme
+ reverse_iterator rbegin()
+	    { 
+            return reverse_iterator(end()); 
+        }
+
+	    const_reverse_iterator rbegin() const
+	    { 
+            return const_reverse_iterator(end()); 
+        }
+
+	    reverse_iterator rend()
+        { 
+            return reverse_iterator(begin()); 
+        }
+
+	    const_reverse_iterator rend() const
+        { 
+            return const_reverse_iterator(begin()); 
+        }
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Capacity --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
