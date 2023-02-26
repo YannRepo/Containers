@@ -100,12 +100,12 @@ namespace ft
 			}
 			random_access_iterator &operator+=(int n)
 			{
-				advance(*this, n);
+				this->_pointer += n;
 				return (*this);
 			}
 			random_access_iterator &operator-=(int n)
 			{
-				advance(*this, -n);
+				this->_pointer -= n;
 				return (*this);
 			}
 			
