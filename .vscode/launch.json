@@ -7,7 +7,7 @@
 		"type": "cppdbg",
 		"preLaunchTask": "make_cmd",
 		"request": "launch",
-		"program": "${workspaceFolder}/30_Map/main",
+		"program": "${workspaceFolder}/main",
 		"args": [],
 		"stopAtEntry": false,
 		"cwd": "${workspaceFolder}",

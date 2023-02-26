@@ -356,6 +356,17 @@ int main()
 	std::cout << "Size: " << map_size.size() << std::endl;
 	std::cout << "Max size: " << map_size.max_size() << std::endl;
 
+	//// ------------------------------------------ Empty -------------------------------------------------------
+	print_title_2("Empty");
+	ft::map<char,int> mymap;
+	mymap['a']=10;
+	mymap['b']=20;
+	mymap['c']=30;
+	while (!mymap.empty())
+	{
+		std::cout << mymap.begin()->first << " => " << mymap.begin()->second << '\n';
+		mymap.erase(mymap.begin());
+	}
 
-	
+	return 0;
 }

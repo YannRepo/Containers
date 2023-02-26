@@ -5,7 +5,7 @@
 			"type": "shell",
 			"label": "make_cmd",
 			"command": "make",
-			"args": ["--directory=${workspaceFolder}/30_Map;"],
+			"args": [],
 			"options": {
 				"cwd": "${fileDirname}"
 			},

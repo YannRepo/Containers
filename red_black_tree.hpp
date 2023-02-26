@@ -138,6 +138,14 @@ namespace ft
 			this->insert(first, last);
 		}
 
+		~Red_black_tree()
+		{
+			clear();
+			myAllocator.destroy(this->tree_end);
+			myAllocator.deallocate(this->tree_end, 1);
+		}
+
+
 // ###########################################################################################################
 // #########################################   Utils RBT   #######################################################
 // ###########################################################################################################
@@ -809,17 +817,37 @@ namespace ft
 
 			y = z;
 			int y_original_color = y->color;
+			// Si c'est le dernier noeud a supprimer (c'est a dire le head et rien en right et left)
+			if (z == this->tree_head && z->left == NULL && z->right == NULL)
+			{
+				this->tree_head = this->tree_end;
+				this->tree_size--;
+				this->myAllocator.destroy(z);
+				this->myAllocator.deallocate(z, 1);
+				return (1);
+			}
 			// si un cote sans enfant remonter noeud a la place du noeud a sup
 			if (z->left == NULL)
 			{
 				if (z == this->tree_head) // changement du head si on supprime le 1er noeud (en cours)
-					this->tree_head = z->right;
+					{
+						//if (z->right == NULL) // cas particulier du dernier noeud
+						//{
+						//	this->tree_head = this->tree_end;
+						//	this->tree_size--;
+						//	this->myAllocator.destroy(z);
+						//	this->myAllocator.deallocate(z, 1);
+						//	return (1);
+						//}
+						//else
+							this->tree_head = z->right;
+					}
 				//if (z == this->tree_begin) // changement du begin si on supprime le 1er noeud (en cours)
 				//	this->tree_begin = z->right;
 				x = z->right;
 				replace_node(z, z->right);
 			}
-			else if (z->right == NULL)
+			else if (z->right == NULL || z->right == this->tree_end)
 			{
 				if (z == this->tree_head) // changement du head si on supprime le 1er noeud (en cours)
 					this->tree_head = z->left;
