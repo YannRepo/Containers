@@ -6,8 +6,8 @@
 
 # include "pair.hpp"
 # include "red_black_tree_iterator.hpp"
-# include "../10_Tools/lexicographical_compare.hpp"
-# include "../10_Tools/reverse_iterator.hpp"
+# include "lexicographical_compare.hpp"
+# include "reverse_iterator.hpp"
 
 
 # define BLACK 0

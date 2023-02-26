@@ -5,11 +5,11 @@
 #include <iomanip>
 #include <cstdlib>
 
-# include "../10_Tools/reverse_iterator.hpp"
-# include "../10_Tools/iterator_traits.hpp"
-# include "../10_Tools/lexicographical_compare.hpp"
-# include "../10_Tools/is_integral.hpp"
-# include "../10_Tools/enable_if.hpp"
+# include "reverse_iterator.hpp"
+# include "iterator_traits.hpp"
+# include "lexicographical_compare.hpp"
+# include "is_integral.hpp"
+# include "enable_if.hpp"
 
 # include "map.hpp"
 # include "pair.hpp"
@@ -48,7 +48,6 @@ void print_title_1(std::string str)
 
 void print_title_2(std::string str)
 {
-	int width = DEBUG_WIDTH;
 	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
 	std::cout <<std::endl;
 	std::cout << COLOR_MAGENTA;
@@ -61,7 +60,6 @@ void print_title_2(std::string str)
 
 void print_title_3(std::string str)
 {
-	int width = DEBUG_WIDTH;
 	int fill = (DEBUG_WIDTH - 4 - str.length()) / 2;
 	std::cout << COLOR_BLUE;
 	std::cout << std::setfill('-') << std::setw(fill) << "";
@@ -313,7 +311,6 @@ int main()
 	map_A = create_Map_B();
 	map_A.print();
 	//ft_erase(map_A, map_A.begin()->first);
-	int erase_key = map_A.begin()->first;
 	map_A.erase(map_A.begin()->first);
 	map_A.print();
 
