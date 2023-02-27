@@ -220,14 +220,15 @@ namespace ft
 				pointer new_pt_tmp = this->myAllocator.allocate(n);
 				if (this->_vector_size > 0)
 				{
+				std::cout << "check capa\n";
 					for (size_t i = 0; i < this->_vector_size; i++)
 					{
 						this->myAllocator.construct(&new_pt_tmp[i], this->_vector_pointer[i]);
 						this->myAllocator.destroy(&this->_vector_pointer[i]);
 					}
-					if (this->_vector_pointer) // peut etre inutil car redondant avec test size > 0. Mais a garder au cas ou pour le vecteur est vide
-						this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
+					//if (this->_vector_pointer) // peut etre inutil car redondant avec test size > 0. Mais a garder au cas ou pour le vecteur est vide
 				}
+				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 				this->_vector_capacity = n;
 				this->_vector_pointer = new_pt_tmp;
 			}
@@ -315,12 +316,14 @@ namespace ft
 
 		void assign(size_type n, const value_type &val)
 		{
+			(void)val;
+			(void)n;
 			//this->clear();
 			this->reserve(n);
 			this->_vector_size = n;
 			for (size_t i = 0; i < n; i++)
 			{
-				this->myAllocator.construct(&this->_vector_pointer[i], val);
+				this->myAllocator.construct(&(this->_vector_pointer[i]), val);
 			}
 		}
 
