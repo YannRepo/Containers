@@ -215,9 +215,9 @@ namespace ft
 	    		throw std::length_error("vector::reserve");
 			if (n > _vector_capacity)
 			{
-				if (n > this->max_size())
-					std::length_error(__N("vector::reserve"));
-				value_type *new_pt_tmp = this->myAllocator.allocate(n);
+				//if (n > this->max_size())
+				//	std::length_error(__N("vector::reserve")); // TBD check testeur sans ces lignes
+				pointer new_pt_tmp = this->myAllocator.allocate(n);
 				if (this->_vector_size > 0)
 				{
 					for (size_t i = 0; i < this->_vector_size; i++)
@@ -280,6 +280,7 @@ namespace ft
 		// -----------------------------------------------------------------------------------------------------------
 		vector &operator=(const vector &src)
 		{
+			clear();
 			this->myAllocator = src.myAllocator;
 			this->_vector_size = src._vector_size;
 			this->_vector_capacity = src._vector_capacity;
@@ -314,6 +315,7 @@ namespace ft
 
 		void assign(size_type n, const value_type &val)
 		{
+			//this->clear();
 			this->reserve(n);
 			this->_vector_size = n;
 			for (size_t i = 0; i < n; i++)
@@ -339,7 +341,7 @@ namespace ft
 		{
 			if (this->_vector_size > 0)
 			{
-				this->myAllocator.destroy(&this->_vector_pointer[this->_vector_size]);
+				this->myAllocator.destroy(&(this->_vector_pointer[this->_vector_size - 1]));
 				this->_vector_size--;
 			}
 		}
@@ -378,22 +380,41 @@ namespace ft
 		void insert (iterator position, InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
+			// marchhe pas car le insert casse les iterators
+			//while (first != last)
+			//{
+			//	std::cout << "check: " << *(first) << std::endl;
+			//	this->insert(position, *(first++));
+			//	position++;
+			//}
+
+			//// 
+
 			difference_type insertion_distance = distance(this->begin(), position);
+				std::cout << "insertion_distance " << insertion_distance << std::endl;
+
 			difference_type insertion_size = distance(first, last);
  			if (insertion_size == 0)
 				return;
 
 			if (this->_vector_size + this->distance(first, last) > this->_vector_capacity)
 			{
+				std::cout << "size et dist "<< this->_vector_size << " - " << this->distance(first, last) << std::endl;
 				this->reserve(this->_vector_size + this->distance(first, last));
+				std::cout << "capacity " << this->_vector_capacity << std::endl;
+
 			}
 			this->_vector_size += insertion_size;
 			// copie des valeurs apres position, a la fin du vecteur
 			iterator it_end = this->end() - 1;
 			difference_type i = this->_vector_size - 1;
+				//std::cout << "it end " << *it_end << std::endl;
+				//std::cout << "i " << i << std::endl;
 			while (i != insertion_distance + insertion_size - 1)
 			{
-				*it_end = *(it_end - insertion_size);
+				this->myAllocator.construct(&(*it_end), *(it_end - insertion_size));
+
+				//*it_end = *(it_end - insertion_size);
 				it_end--;
 				i--;
 			}
@@ -401,11 +422,61 @@ namespace ft
 			iterator it = this->begin() + insertion_distance;
 			while (first != last)
 			{
-				*it = *first;
+				this->myAllocator.construct(&(*it), *first);
+				//this->myAllocator.construct(&this->_vector_pointer[i], *it);
+
+
+				//*it = *first;
 				it++;
 				first++;
 			}
 		}
+
+// template <class InputIterator>    
+//        void insert (iterator position, InputIterator first, InputIterator last,
+//        typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = 0)
+//        {
+
+//            //-- STEP 0)
+//            //-- Save numbers of elements to be added to the vector.
+//            //-- Save numbers of elements from position to vector end.
+//            //-- Save content of elements from position to vector end.
+//            size_type inputRange = distance(first, last);
+//            size_type distanceFromEnd = distance(position, end());
+//            ft::vector<value_type> save(position, end());
+
+//            //-- STEP 1)
+//            //-- If vector capacity if not sufficient to hold new elements
+//            //  --> reserve much more memory (memory needed x2)
+//            if (capacity() < size() + inputRange)
+//            {
+//          	    if (size() == 0)
+//          	    	reserve(inputRange);
+//          	    else
+//          	    {
+//          	    	size_type i = 2;
+//          	    	while (size() * i < inputRange + size())
+//          	    		i++;
+//          	    	reserve(size() * i);
+//          	    }
+//            }
+//            //-- STEP 2)
+//            //-- Erase elements from end to position to insert new ones.
+//            for (size_type i = 0; i < distanceFromEnd; i++)
+//            	erase(end() - 1);
+
+//            //-- STEP 3)
+//            //-- Add new range of element at from first to last at `position`
+//            for (size_type i = 0; i < inputRange; i++)
+//            {
+//            	push_back(*first);
+//            	first++;
+//            }
+//            //-- STEP 4)
+//            //-- Add old elements stocked in `save` vector at vector end.
+//            for (iterator it = save.begin(); it < save.end(); it++)
+//            	push_back(*it);
+//        } 
 
 		iterator erase (iterator position)
 		{

@@ -52,7 +52,7 @@ namespace ft
 				this->_pointer = rhs._pointer;
 				return (*this);
 			}
-			value_type& operator*(void) const
+			reference operator*(void) const
 			{
 				return (*this->_pointer);
 			}

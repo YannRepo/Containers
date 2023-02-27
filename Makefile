@@ -3,10 +3,10 @@
 NAME = main
 
 # Sources
-SRCS += main_vector.cpp
+#SRCS += main_vector.cpp
 #SRCS += main_map.cpp
 #SRCS += main_sujet.cpp
-#SRCS += main_mazoise_reserve.cpp
+SRCS += main_mazoise_reserve.cpp
 
 OBJS = ${SRCS:.cpp=.o}
 
