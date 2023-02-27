@@ -28,8 +28,8 @@ LIB_INCLUDE =
 # Compilateurs
 CC = c++
 #CFLAGS = -g3 -std=c++98
-#CFLAGS = -g3 -Wall -Wextra -std=c++98
- CFLAGS = -g3 -Wall -Wextra -Werror -std=c++98
+CFLAGS = -g3 -Wall -Wextra -std=c++98
+# CFLAGS = -g3 -Wall -Wextra -Werror -std=c++98
 
 ##########   RULES   ##########
 

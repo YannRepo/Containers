@@ -316,9 +316,6 @@ namespace ft
 
 		void assign(size_type n, const value_type &val)
 		{
-			(void)val;
-			(void)n;
-			//this->clear();
 			this->reserve(n);
 			this->_vector_size = n;
 			for (size_t i = 0; i < n; i++)
@@ -374,6 +371,14 @@ namespace ft
 
 		void insert (iterator position, size_type n, const value_type& val)
 		{
+			//this->reserve(n);
+			//size_t i = 0;
+			//while (i < n)
+			//{
+			//	this->insert(position, val);
+			//	i++;
+			//	position++;
+			//}
 			ft::vector<value_type> tmp_vec(n, val);
 			this->insert(position, tmp_vec.begin(), tmp_vec.end());
 			
@@ -413,9 +418,10 @@ namespace ft
 			difference_type i = this->_vector_size - 1;
 				//std::cout << "it end " << *it_end << std::endl;
 				//std::cout << "i " << i << std::endl;
-			while (i != insertion_distance + insertion_size - 1)
+			while (i != (insertion_distance + insertion_size - 1))
 			{
 				this->myAllocator.construct(&(*it_end), *(it_end - insertion_size));
+				this->myAllocator.destroy(&(*(it_end - insertion_size)));
 
 				//*it_end = *(it_end - insertion_size);
 				it_end--;
@@ -426,6 +432,8 @@ namespace ft
 			while (first != last)
 			{
 				this->myAllocator.construct(&(*it), *first);
+				//this->myAllocator.destroy(&(*(first)));
+
 				//this->myAllocator.construct(&this->_vector_pointer[i], *it);
 
 
