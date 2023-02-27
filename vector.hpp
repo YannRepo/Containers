@@ -112,7 +112,7 @@ namespace ft
 		{
 			//*this = src;
 			this->myAllocator = src.myAllocator;
-			this->_vector_pointer = this->myAllocator.allocate(src.size());
+			this->_vector_pointer = NULL;// this->myAllocator.allocate(src.size());
 			this->_vector_size = 0;
 			this->_vector_capacity = 0;
 			this->insert(this->begin(), src.begin(), src.end());
@@ -283,7 +283,7 @@ namespace ft
 			this->myAllocator = src.myAllocator;
 			this->_vector_size = src._vector_size;
 			this->_vector_capacity = src._vector_capacity;
-			this->_vector_pointer = this->myAllocator.allocate((_vector_capacity) * sizeof(value_type));
+			this->_vector_pointer = this->myAllocator.allocate(_vector_capacity);
 			for (size_type i = 0; i < this->_vector_size; i++)
 			{
 				this->_vector_pointer[i] = src._vector_pointer[i];
