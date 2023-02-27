@@ -818,6 +818,7 @@ namespace ft
 			y = z;
 			int y_original_color = y->color;
 			// Si c'est le dernier noeud a supprimer (c'est a dire le head et rien en right et left)
+			// on le supprime directement
 			if (z == this->tree_head && z->left == NULL && z->right == NULL)
 			{
 				this->tree_head = this->tree_end;
