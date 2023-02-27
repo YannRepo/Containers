@@ -1,20 +1,21 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if 1 //CREATE A REAL STL EXAMPLE
+#if 0 //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
 	namespace ft = std;
 #else
-	#include <map.hpp>
-	#include <stack.hpp>
-	#include <vector.hpp>
+	#include "map.hpp"
+	#include "stack.hpp"
+	#include "vector.hpp"
 #endif
 
 #include <stdlib.h>
 
-#define MAX_RAM 4294967296
+//#define MAX_RAM 4294967296
+#define MAX_RAM 100000000
 #define BUFFER_SIZE 4096
 struct Buffer
 {
@@ -45,14 +46,16 @@ public:
 };
 
 int main(int argc, char** argv) {
-	if (argc != 2)
-	{
-		std::cerr << "Usage: ./test seed" << std::endl;
-		std::cerr << "Provide a seed please" << std::endl;
-		std::cerr << "Count value:" << COUNT << std::endl;
-		return 1;
-	}
-	const int seed = atoi(argv[1]);
+	(void)argc;
+	(void)argv;
+	//if (argc != 2)
+	//{
+	//	std::cerr << "Usage: ./test seed" << std::endl;
+	//	std::cerr << "Provide a seed please" << std::endl;
+	//	std::cerr << "Count value:" << COUNT << std::endl;
+	//	return 1;
+	//}
+	const int seed = 1;//atoi(argv[1]);
 	srand(seed);
 
 	ft::vector<std::string> vector_str;

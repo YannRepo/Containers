@@ -43,25 +43,6 @@ namespace ft
 	// #########################################   UTILS   #######################################################
 	// ###########################################################################################################
 	private:
-		void check_vector_capacity_and_allocate_and_copy(size_type size)
-		{
-			if (size <= this->_vector_capacity)
-			{
-				return;
-			}
-			else
-			{
-				size_type previous_capacity = _vector_capacity;
-				if (_vector_capacity == 0)
-					_vector_capacity = 1;
-				else
-					_vector_capacity *= 2;
-				value_type *previous_vector = this->_vector_pointer;
-				this->_vector_pointer = this->myAllocator.allocate((size) * sizeof(value_type));
-				copy_vector(previous_capacity, previous_vector, this->_vector_pointer);
-				delete this->_vector_pointer;
-			}
-		}
 		void copy_vector(size_type len_to_copy, value_type *src, value_type *dest)
 		{
 			for (size_type i = 0; i < len_to_copy; i++)
@@ -98,7 +79,7 @@ namespace ft
 		explicit vector(size_type size, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 		{
 			this->myAllocator = alloc;
-			this->_vector_pointer = this->myAllocator.allocate((size) * sizeof(value_type));
+			this->_vector_pointer = this->myAllocator.allocate(size); // TBD check size
 			this->_vector_size = size;
 			this->_vector_capacity = size;
 			for (size_t i = 0; i < size; i++)
@@ -129,11 +110,17 @@ namespace ft
 		}
 		vector(const vector &src)
 		{
-			*this = src;
+			//*this = src;
+			this->myAllocator = src.myAllocator;
+			this->_vector_pointer = this->myAllocator.allocate(src.size());
+			this->_vector_size = 0;
+			this->_vector_capacity = 0;
+			this->insert(this->begin(), src.begin(), src.end());
 		}
 		~vector()
 		{
-			delete this->_vector_pointer;
+			this->clear();
+			this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 		}
 
 		// -----------------------------------------------------------------------------------------------------------
@@ -199,7 +186,7 @@ namespace ft
 		{
 			if (n > max_size())
 				throw (std::length_error("vector::resize"));
-			if (n < this->_vector_size)
+			if (n <= this->_vector_size)
 			{
 				size_type i = n;
 				while (i < this->_vector_size)
@@ -224,14 +211,13 @@ namespace ft
 		}
 		void reserve(size_type n)
 		{
-			// a ajouter (ligne issues du .h de la std)
-			//if (__n > this->max_size())
-			//__throw_length_error(__N("vector::reserve"));
+			if (n > this->max_size())
+	    		throw std::length_error("vector::reserve");
 			if (n > _vector_capacity)
 			{
 				if (n > this->max_size())
 					std::length_error(__N("vector::reserve"));
-				value_type *new_pt_tmp = this->myAllocator.allocate((n) * sizeof(value_type)); // TBD juste taille n
+				value_type *new_pt_tmp = this->myAllocator.allocate(n);
 				if (this->_vector_size > 0)
 				{
 					for (size_t i = 0; i < this->_vector_size; i++)
@@ -468,6 +454,7 @@ namespace ft
 // ###########################################################################################################
 // #########################################   Fonctions non membres   #######################################
 // ###########################################################################################################
+
 // surcharges faites en dehors de la classe car ce sont des fct non membres sur les vectors
 	template< class T, class Alloc >
 	bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
@@ -481,6 +468,17 @@ namespace ft
 		}
 		return (true);
 	}
+
+	//	{
+	//		while (first1 != last1)
+	//		{
+	//			if (*first1 != *first2)
+	//				return (false);
+	//			++first1;
+	//			++first2;
+	//		}
+	//		return (true);
+	//}
 
 	template< class T, class Alloc >
 	bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
