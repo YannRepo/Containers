@@ -285,6 +285,8 @@ namespace ft
 			this->myAllocator = src.myAllocator;
 			this->_vector_size = src._vector_size;
 			this->_vector_capacity = src._vector_capacity;
+			if (this->_vector_pointer)
+				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 			this->_vector_pointer = this->myAllocator.allocate(_vector_capacity);
 			for (size_type i = 0; i < this->_vector_size; i++)
 			{
