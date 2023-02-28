@@ -19,11 +19,10 @@ namespace ft
 		protected:
 			pointer _pointer;
 			
-		public:
-
 // ###########################################################################################################
 // ##################################   Constructeurs / destructeurs   #######################################
 // ###########################################################################################################
+		public:
 			random_access_iterator()
 			{
 				this->_pointer = NULL;
@@ -41,12 +40,11 @@ namespace ft
 // ###########################################################################################################
 // ##################################   Fonctions membres   ##################################################
 // ###########################################################################################################
+		public:
 			pointer base() const
 			{
 				return (this->_pointer);
 			}
-
-			// operator overload
 			random_access_iterator& operator=(const random_access_iterator &rhs)
 			{
 				this->_pointer = rhs._pointer;
@@ -108,7 +106,6 @@ namespace ft
 				this->_pointer -= n;
 				return (*this);
 			}
-			
 			reference operator[](int n) const
 			{
 				return (*(this->_pointer + n));

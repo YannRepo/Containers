@@ -34,7 +34,6 @@ namespace ft
 
 	protected:
 		Allocator myAllocator;
-
 		T *_vector_pointer;
 		size_t _vector_size;
 		size_t _vector_capacity;
@@ -66,7 +65,7 @@ namespace ft
 	// #########################################   Fonctions membres   ###########################################
 	// ###########################################################################################################
 	// -----------------------------------------------------------------------------------------------------------
-	// ------------------------------------ constructor / destructor --------------------------------------------------
+	// ------------------------------------ constructor / destructor ---------------------------------------------
 	// -----------------------------------------------------------------------------------------------------------
 	public:
 		explicit vector(const allocator_type &alloc = allocator_type())
@@ -79,16 +78,14 @@ namespace ft
 		explicit vector(size_type size, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 		{
 			this->myAllocator = alloc;
-			this->_vector_pointer = this->myAllocator.allocate(size); // TBD check size
+			this->_vector_pointer = this->myAllocator.allocate(size);
 			this->_vector_size = size;
 			this->_vector_capacity = size;
 			for (size_t i = 0; i < size; i++)
 			{
 				this->myAllocator.construct(&_vector_pointer[i], val);
-				// this->_vector_pointer[i] = val;
 			}
 		}
-
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
@@ -110,9 +107,8 @@ namespace ft
 		}
 		vector(const vector &src)
 		{
-			//*this = src;
 			this->myAllocator = src.myAllocator;
-			this->_vector_pointer = NULL;// this->myAllocator.allocate(src.size());
+			this->_vector_pointer = NULL;
 			this->_vector_size = 0;
 			this->_vector_capacity = 0;
 			this->insert(this->begin(), src.begin(), src.end());
@@ -123,10 +119,10 @@ namespace ft
 			this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 		}
 
-		// -----------------------------------------------------------------------------------------------------------
-		// ------------------------------------------ Iterators -------------------------------------------------------
-		// -----------------------------------------------------------------------------------------------------------
-		// Iterator
+	// -----------------------------------------------------------------------------------------------------------
+	// ------------------------------------------ Iterators -------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
+	// Iterator
 		iterator begin()
 		{
 			return (iterator(_vector_pointer));
@@ -146,7 +142,7 @@ namespace ft
 			return (const_iterator(&this->_vector_pointer[this->_vector_size]));
 		}
 
-		// Reverse Iterator
+	// Reverse Iterator
 		reverse_iterator rbegin()
 		{
 			return (reverse_iterator(&this->_vector_pointer[this->_vector_size]));
@@ -168,9 +164,9 @@ namespace ft
 
 		}
 
-		// -----------------------------------------------------------------------------------------------------------
-		// ------------------------------------------ Capacity -------------------------------------------------------
-		// -----------------------------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
+	// ------------------------------------------ Capacity -------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
 	public:
 		size_t size() const
 		{
@@ -215,18 +211,14 @@ namespace ft
 	    		throw std::length_error("vector::reserve");
 			if (n > _vector_capacity)
 			{
-				//if (n > this->max_size())
-				//	std::length_error(__N("vector::reserve")); // TBD check testeur sans ces lignes
 				pointer new_pt_tmp = this->myAllocator.allocate(n);
 				if (this->_vector_size > 0)
 				{
-				//std::cout << "check capa\n";
 					for (size_t i = 0; i < this->_vector_size; i++)
 					{
 						this->myAllocator.construct(&new_pt_tmp[i], this->_vector_pointer[i]);
 						this->myAllocator.destroy(&this->_vector_pointer[i]);
 					}
-					//if (this->_vector_pointer) // peut etre inutil car redondant avec test size > 0. Mais a garder au cas ou pour le vecteur est vide
 				}
 				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
 				this->_vector_capacity = n;
@@ -234,9 +226,9 @@ namespace ft
 			}
 		}
 
-		// -----------------------------------------------------------------------------------------------------------
-		// ------------------------------------------ Element access -------------------------------------------------------
-		// -----------------------------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
+	// ------------------------------------------ Element access -------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
 		reference operator[](size_t n)
 		{
 			return (this->_vector_pointer[n]);
@@ -256,8 +248,7 @@ namespace ft
 			if (n >= this->size())
 				throw(std::out_of_range("out of range"));
 			return (this->_vector_pointer[n]);
-		}
-		
+		}	
 		reference front()
 		{
 			return (*this->begin());
@@ -266,7 +257,6 @@ namespace ft
 		{
 			return (*this->begin());
 		}
-
 		reference back()
 		{
 			return (*(this->end()-1));
@@ -276,9 +266,19 @@ namespace ft
 			return (*(this->end()-1));
 		}
 
-		// -----------------------------------------------------------------------------------------------------------
-		// ------------------------------------------ Modifier -------------------------------------------------------
-		// -----------------------------------------------------------------------------------------------------------
+		value_type* data()
+		{
+			return(_vector_pointer);
+		}
+		
+		const value_type* data() const
+		{
+			return(_vector_pointer);
+		}
+
+	// -----------------------------------------------------------------------------------------------------------
+	// ------------------------------------------ Modifier -------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
 		vector &operator=(const vector &src)
 		{
 			clear();
@@ -373,14 +373,6 @@ namespace ft
 
 		void insert (iterator position, size_type n, const value_type& val)
 		{
-			//this->reserve(n);
-			//size_t i = 0;
-			//while (i < n)
-			//{
-			//	this->insert(position, val);
-			//	i++;
-			//	position++;
-			//}
 			ft::vector<value_type> tmp_vec(n, val);
 			this->insert(position, tmp_vec.begin(), tmp_vec.end());
 			
@@ -390,42 +382,23 @@ namespace ft
 		void insert (iterator position, InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			// marchhe pas car le insert casse les iterators
-			//while (first != last)
-			//{
-			//	std::cout << "check: " << *(first) << std::endl;
-			//	this->insert(position, *(first++));
-			//	position++;
-			//}
-
-			//// 
-
 			difference_type insertion_distance = distance(this->begin(), position);
-				//std::cout << "insertion_distance " << insertion_distance << std::endl;
-
 			difference_type insertion_size = distance(first, last);
  			if (insertion_size == 0)
 				return;
 
 			if (this->_vector_size + this->distance(first, last) > this->_vector_capacity)
 			{
-				//std::cout << "size et dist "<< this->_vector_size << " - " << this->distance(first, last) << std::endl;
 				this->reserve(this->_vector_size + this->distance(first, last));
-				//std::cout << "capacity " << this->_vector_capacity << std::endl;
-
 			}
 			this->_vector_size += insertion_size;
 			// copie des valeurs apres position, a la fin du vecteur
 			iterator it_end = this->end() - 1;
 			difference_type i = this->_vector_size - 1;
-				//std::cout << "it end " << *it_end << std::endl;
-				//std::cout << "i " << i << std::endl;
 			while (i != (insertion_distance + insertion_size - 1))
 			{
 				this->myAllocator.construct(&(*it_end), *(it_end - insertion_size));
 				this->myAllocator.destroy(&(*(it_end - insertion_size)));
-
-				//*it_end = *(it_end - insertion_size);
 				it_end--;
 				i--;
 			}
@@ -434,62 +407,10 @@ namespace ft
 			while (first != last)
 			{
 				this->myAllocator.construct(&(*it), *first);
-				//this->myAllocator.destroy(&(*(first)));
-
-				//this->myAllocator.construct(&this->_vector_pointer[i], *it);
-
-
-				//*it = *first;
 				it++;
 				first++;
 			}
 		}
-
-// template <class InputIterator>    
-//        void insert (iterator position, InputIterator first, InputIterator last,
-//        typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = 0)
-//        {
-
-//            //-- STEP 0)
-//            //-- Save numbers of elements to be added to the vector.
-//            //-- Save numbers of elements from position to vector end.
-//            //-- Save content of elements from position to vector end.
-//            size_type inputRange = distance(first, last);
-//            size_type distanceFromEnd = distance(position, end());
-//            ft::vector<value_type> save(position, end());
-
-//            //-- STEP 1)
-//            //-- If vector capacity if not sufficient to hold new elements
-//            //  --> reserve much more memory (memory needed x2)
-//            if (capacity() < size() + inputRange)
-//            {
-//          	    if (size() == 0)
-//          	    	reserve(inputRange);
-//          	    else
-//          	    {
-//          	    	size_type i = 2;
-//          	    	while (size() * i < inputRange + size())
-//          	    		i++;
-//          	    	reserve(size() * i);
-//          	    }
-//            }
-//            //-- STEP 2)
-//            //-- Erase elements from end to position to insert new ones.
-//            for (size_type i = 0; i < distanceFromEnd; i++)
-//            	erase(end() - 1);
-
-//            //-- STEP 3)
-//            //-- Add new range of element at from first to last at `position`
-//            for (size_type i = 0; i < inputRange; i++)
-//            {
-//            	push_back(*first);
-//            	first++;
-//            }
-//            //-- STEP 4)
-//            //-- Add old elements stocked in `save` vector at vector end.
-//            for (iterator it = save.begin(); it < save.end(); it++)
-//            	push_back(*it);
-//        } 
 
 		iterator erase (iterator position)
 		{
@@ -552,17 +473,6 @@ namespace ft
 		}
 		return (true);
 	}
-
-	//	{
-	//		while (first1 != last1)
-	//		{
-	//			if (*first1 != *first2)
-	//				return (false);
-	//			++first1;
-	//			++first2;
-	//		}
-	//		return (true);
-	//}
 
 	template< class T, class Alloc >
 	bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
