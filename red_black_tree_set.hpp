@@ -1,5 +1,5 @@
-#ifndef RED_BLACK_TREE_HPP
-# define RED_BLACK_TREE_HPP
+#ifndef RED_BLACK_TREE_SET_HPP
+# define RED_BLACK_TREE_SET_HPP
 
 # include <iostream>
 # include <memory>
@@ -17,7 +17,7 @@ namespace ft
 {
 
 	template <typename Key, typename Val , class Compare = std::less<Key>, class Allocator = std::allocator<Val> >
-	class Red_black_tree
+	class Red_black_tree_set
 	{
 // ###########################################################################################################
 // #########################################   typedef, class Node, attributs   #######################################################
@@ -96,9 +96,9 @@ namespace ft
 
 			//typedef typename ft::Rbt_iterator<value_type, node_pointer, Compare>		iterator;
 
-			typedef ft::Rbt_iterator<value_type, node_pointer, Compare>					iterator;
+			typedef ft::Rbt_iterator<const value_type, node_pointer, Compare>					iterator;
 			typedef ft::Rbt_iterator<const value_type, node_pointer, Compare>			const_iterator;
-			typedef ft::reverse_iterator<iterator>										reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>										reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
 
@@ -114,7 +114,7 @@ namespace ft
 // #########################################   Constructeur / destructeur  #######################################################
 // ###########################################################################################################
 	public:
-		Red_black_tree(const Compare& comp = Compare(), const allocator_type &alloc = allocator_type()):
+		Red_black_tree_set(const Compare& comp = Compare(), const allocator_type &alloc = allocator_type()):
 		tree_head(NULL),tree_size(0), myAllocator(alloc), mycompare(comp)
 		{
 			this->tree_head = myAllocator.allocate(1);
@@ -126,7 +126,7 @@ namespace ft
 		}
 
 		template< class InputIterator >
-		Red_black_tree(InputIterator first, InputIterator last, const Compare& comp, const node_allocator& alloc):
+		Red_black_tree_set(InputIterator first, InputIterator last, const Compare& comp, const node_allocator& alloc):
 		tree_size(0), myAllocator(alloc), mycompare(comp)
 		{
 			this->tree_head = myAllocator.allocate(1);
@@ -138,7 +138,7 @@ namespace ft
 			this->insert(first, last);
 		}
 
-		~Red_black_tree()
+		~Red_black_tree_set()
 		{
 			clear();
 			myAllocator.destroy(this->tree_end);
@@ -213,7 +213,7 @@ namespace ft
 					indent += "|  ";
 				}
 				std::string sColor = root->color ? "\x1B[31mRED\x1B[0m" : "\x1b[30mBLACK\x1B[0m";
-				std::cout << root->value.first << "/" << root->value.second << "(" << sColor << ")" << std::endl;
+				std::cout << root->value << "/" << root->value.second << "(" << sColor << ")" << std::endl;
 				this->print_recursive(root->left, indent, false);
 				this->print_recursive(root->right, indent, true);
 			}
@@ -221,13 +221,13 @@ namespace ft
 
 		ft::pair<iterator, bool> insert_algo(node_pointer insert_position,const value_type added_pair)
 		{	
-			if (mycompare(added_pair.first, insert_position->value.first) == mycompare(insert_position->value.first, added_pair.first))
+			if (mycompare(added_pair, insert_position->value) == mycompare(insert_position->value, added_pair))
 			{
 				//std::cout << "ERROR: cle identique lors de l'insertion" << std::endl; // message pour debug
 				return (ft::make_pair(iterator(insert_position), false));
 			}
 			// insertion a gauche
-			else if (mycompare(added_pair.first, insert_position->value.first))
+			else if (mycompare(added_pair, insert_position->value))
 			{
 				if (insert_position->left)
 					return (insert_algo(insert_position->left, added_pair));
@@ -245,7 +245,7 @@ namespace ft
 				}
 			}
 			// insertion a droite
-			else if (mycompare(insert_position->value.first, added_pair.first))
+			else if (mycompare(insert_position->value, added_pair))
 			{
 				if (insert_position->right and insert_position->right != this->tree_end)
 					return (insert_algo(insert_position->right, added_pair));
@@ -672,16 +672,16 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Iterators --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
-		iterator begin() // TBD check si tjr ok
-		{
-			//return (this->tree_begin); // ancienn version
-			node_pointer search_begin  = tree_head;
-			while (search_begin->left)
-			{
-				search_begin = search_begin->left;
-			}
-			return (search_begin);
-		}	
+		//iterator begin() // TBD check si tjr ok
+		//{
+		//	//return (this->tree_begin); // ancienn version
+		//	node_pointer search_begin  = tree_head;
+		//	while (search_begin->left)
+		//	{
+		//		search_begin = search_begin->left;
+		//	}
+		//	return (search_begin);
+		//}	
 		const_iterator begin() const // TBD check si tjr ok
 		{
 			//return (this->tree_begin); // ancienn version
@@ -693,16 +693,16 @@ namespace ft
 			return (search_begin);
 		}		
 		
-		iterator end()
-		{
-			//return (this->tree_end);
-			node_pointer search_end  = tree_head;
-			while (search_end->right and search_end != tree_end)
-			{
-				search_end = search_end->right;
-			}
-			return (search_end);
-		}
+		//iterator end()
+		//{
+		//	//return (this->tree_end);
+		//	node_pointer search_end  = tree_head;
+		//	while (search_end->right and search_end != tree_end)
+		//	{
+		//		search_end = search_end->right;
+		//	}
+		//	return (search_end);
+		//}
 		const_iterator end() const
 		{
 			//return (this->tree_end);
@@ -775,7 +775,7 @@ namespace ft
 		iterator insert (iterator position, const value_type& val)
 		{
 			(void)position;
-			return(this->insert(val).first);
+			return(this->insert(val));
 		}
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last)
@@ -937,7 +937,7 @@ namespace ft
 		//	}
 		//}
 
-		void swap (Red_black_tree& rbt_to_swap)
+		void swap (Red_black_tree_set& rbt_to_swap)
 		{
 			node_pointer tmp_tree_head		= rbt_to_swap.tree_head;
 			rbt_to_swap.tree_head 			= this->tree_head;
@@ -980,9 +980,9 @@ namespace ft
 			node_pointer search_node = tree_head;
 			while (search_node && search_node != this->tree_end)
 			{
-				if (!mycompare(search_node->value.first, k) && !mycompare(k, search_node->value.first))
+				if (!mycompare(search_node->value, k) && !mycompare(k, search_node->value))
 					return (search_node);
-				if (mycompare(k, search_node->value.first))
+				if (mycompare(k, search_node->value))
 					search_node = search_node->left;
 				else
 					search_node = search_node->right;
@@ -1002,7 +1002,7 @@ namespace ft
 			node_pointer return_ptr = NULL;
 			while (search_node && search_node != this->tree_end)
 			{
-				if (!mycompare(search_node->value.first, k)) //elm de recherce >= key -> on le note et on descend
+				if (!mycompare(search_node->value, k)) //elm de recherce >= key -> on le note et on descend
 				{
 					return_ptr = search_node;
 					search_node = search_node->left;
@@ -1039,7 +1039,7 @@ namespace ft
 			node_pointer return_ptr = NULL;
 			while (search_node && search_node != this->tree_end)
 			{
-				if (mycompare(k, search_node->value.first)) //elm de recherce <= key -> on le note et on descend
+				if (mycompare(k, search_node->value)) //elm de recherce <= key -> on le note et on descend
 				{
 					return_ptr = search_node;
 					search_node = search_node->left;
@@ -1170,8 +1170,8 @@ namespace ft
 			void swap_value(node_pointer a,node_pointer b)
 			{
 				key_type tmp;
-				key_type *keya = const_cast<key_type *>(&a->value.first);
-				key_type *keyb = const_cast<key_type *>(&b->value.first);
+				key_type *keya = const_cast<key_type *>(&a->value);
+				key_type *keyb = const_cast<key_type *>(&b->value);
 				value_type	temp;
 
 				tmp = *keya;
@@ -1223,8 +1223,8 @@ namespace ft
 				key_type* kRED;
 				key_type* k2;
 
-				kRED = const_cast<key_type*>(&a->value.first);
-				k2 = const_cast<key_type*>(&b->value.first);
+				kRED = const_cast<key_type*>(&a->value);
+				k2 = const_cast<key_type*>(&b->value);
 				
 				*kRED = *k2;
 				a->value.second = b->value.second;
@@ -1292,9 +1292,10 @@ namespace ft
 // ###########################################################################################################
     template <typename _Key, typename _Val, class _Compare, class _Allocator>
     inline bool
-    operator==(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
-    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    operator==(const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &rhs)
     {
+		//std::cout << "check" << std::endl;
 		//(void)lhs;
 		//(void)rhs;
 		//return (true); // tmp
@@ -1304,8 +1305,10 @@ namespace ft
 		if (lhs.size() != rhs.size())
 			return (false);
 
-		typename ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> begin_1 = lhs.begin();
-		typename ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> begin_2 = rhs.begin();
+		//typename ft::set<_Key, _Val, _Compare, _Allocator>::const_iterator begin_1 = lhs.begin();
+		typename ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator>::const_iterator begin_1 = lhs.begin();
+		typename ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator>::const_iterator begin_2 = rhs.begin();
+		//ft::Rbt_iterator<_Key, _Val, _Compare, _Allocator> begin_2 = rhs.begin();
 	
 		while (begin_1 != lhs.end())
 		{
@@ -1322,32 +1325,32 @@ namespace ft
 
     template <typename _Key, typename _Val, class _Compare, class _Allocator>
     inline bool
-    operator<(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
-    		  const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    operator<(const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &lhs,
+    		  const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &rhs)
     { return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
 
     template <typename _Key, typename _Val, class _Compare, class _Allocator>
     inline bool
-    operator!=(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
-    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    operator!=(const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &rhs)
     { return not (lhs == rhs); }
 
     template <typename _Key, typename _Val, class _Compare, class _Allocator>
     inline bool
-    operator>(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
-    		  const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    operator>(const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &lhs,
+    		  const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &rhs)
     { return rhs < lhs; }
 
     template <typename _Key, typename _Val, class _Compare, class _Allocator>
     inline bool
-    operator>=(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
-    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    operator>=(const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &rhs)
     { return not (lhs < rhs); }
 
     template <typename _Key, typename _Val, class _Compare, class _Allocator>
     inline bool
-    operator<=(const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &lhs,
-    		   const ft::Red_black_tree<_Key, _Val, _Compare, _Allocator> &rhs)
+    operator<=(const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &lhs,
+    		   const ft::Red_black_tree_set<_Key, _Val, _Compare, _Allocator> &rhs)
     { return not (rhs < lhs); }
 
 }

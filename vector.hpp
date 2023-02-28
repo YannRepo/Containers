@@ -220,7 +220,7 @@ namespace ft
 				pointer new_pt_tmp = this->myAllocator.allocate(n);
 				if (this->_vector_size > 0)
 				{
-				std::cout << "check capa\n";
+				//std::cout << "check capa\n";
 					for (size_t i = 0; i < this->_vector_size; i++)
 					{
 						this->myAllocator.construct(&new_pt_tmp[i], this->_vector_pointer[i]);
@@ -399,7 +399,7 @@ namespace ft
 			//// 
 
 			difference_type insertion_distance = distance(this->begin(), position);
-				std::cout << "insertion_distance " << insertion_distance << std::endl;
+				//std::cout << "insertion_distance " << insertion_distance << std::endl;
 
 			difference_type insertion_size = distance(first, last);
  			if (insertion_size == 0)
@@ -407,9 +407,9 @@ namespace ft
 
 			if (this->_vector_size + this->distance(first, last) > this->_vector_capacity)
 			{
-				std::cout << "size et dist "<< this->_vector_size << " - " << this->distance(first, last) << std::endl;
+				//std::cout << "size et dist "<< this->_vector_size << " - " << this->distance(first, last) << std::endl;
 				this->reserve(this->_vector_size + this->distance(first, last));
-				std::cout << "capacity " << this->_vector_capacity << std::endl;
+				//std::cout << "capacity " << this->_vector_capacity << std::endl;
 
 			}
 			this->_vector_size += insertion_size;

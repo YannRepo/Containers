@@ -29,7 +29,7 @@ namespace ft
 			typedef Compare 								key_compare;
 
 			typedef Allocator								allocator_type;
-			typedef value_type								&reference;
+			typedef value_type&								reference;
 
 			typedef const value_type&						const_reference;
 			typedef value_type*								pointer;
@@ -316,7 +316,7 @@ namespace ft
 		if (lhs.size() != rhs.size())
 			return (false);
 
-		typename map<Key, T, Compare, Alloc>::const_iterator begin_1 = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator begin_1 = lhs.begin(); // TBD enlever typename
 		typename map<Key, T, Compare, Alloc>::const_iterator begin_2 = rhs.begin();
 	
 		while (begin_1 != lhs.end())

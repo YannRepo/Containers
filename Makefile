@@ -6,12 +6,14 @@ NAME = main
 #SRCS += main_vector.cpp
 #SRCS += main_map.cpp
 #SRCS += main_sujet.cpp
-SRCS += main_mazoise_reserve.cpp
+SRCS += main_set.cpp
+#SRCS += main_mazoise_reserve.cpp
 
 OBJS = ${SRCS:.cpp=.o}
 
 HEADER += vector.hpp
 HEADER += map.hpp
+HEADER += set.hpp
 HEADER += random_access_iterator.hpp
 HEADER += pair.hpp
 HEADER += red_black_tree.hpp
