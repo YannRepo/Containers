@@ -195,7 +195,7 @@ int main()
 	rbt2.print();
 
 	print_title_3("check operation ++ ");
-	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_insert_print_A(rbt2.get_tree_head());
+	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_insert_print_A(rbt2.begin());
 	//ft::Rbt_iterator<int, ft::Red_black_tree<int, ft::pair <int, int> >::Node<ft::pair <int, int> >* > it_insert_print_A(rbt2.get_tree_head());
 	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	++it_insert_print_A;
@@ -227,15 +227,12 @@ int main()
 	//--it_insert_print_A;
 	it_insert_print_A--;
 	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
-	//--it_insert_print_A;
-	it_insert_print_A--;
-	std::cout << "it key/value: " << it_insert_print_A.base()->value.first << "/" << it_insert_print_A.base()->value.second << std::endl;
 	std::cout << "key/value begin: " << rbt2.begin()->first << "/" << rbt2.begin()->second << std::endl;
 	
 	
 	print_title_2("check return");
 	//rbt2.print();
-	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_insert_print_C(rbt2.get_tree_head());
+	ft::Red_black_tree<int, ft::pair <int, int> >::iterator it_insert_print_C(rbt2.begin());
 	std::cout << "-it key : " << (it_insert_print_A).base()->value.first << std::endl;
 	std::cout << "it key: " << (it_insert_print_A++).base()->value.first << std::endl;
 	std::cout << "it key: " << (it_insert_print_A++).base()->value.first << std::endl;
@@ -290,7 +287,14 @@ int main()
 	map_A.insert(ft::make_pair(5,42));
 	map_A.insert(ft::make_pair(6,43));
 	map_A.insert(ft::make_pair(6,43));
-	//map_A.print();
+	map_A.print();
+
+	print_title_2("Map - range");
+	map_A = create_Map_B();
+	map_A.print();
+	ft::map<int, int> map_insert_range(map_A.begin(), ++(++(++(++(map_A.begin())))));
+	map_insert_range.print();
+	return(0);
 
 	print_title_2("Map - Erase");
 	map_A = create_Map_B();
@@ -303,7 +307,7 @@ int main()
 	//map_A.print();
 
 	print_title_2("Map - Insert / Erase big random"); // enlever comment pour test
-	map_A = create_Map_R();
+	//map_A = create_Map_R();
 	map_A.print();
 
 	print_title_2("Erase 1st element"); // enlever comment pour test

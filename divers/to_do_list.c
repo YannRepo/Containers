@@ -1,3 +1,67 @@
+To do list
+Vector
+	check list des typedef
+	check list fonction c++
+	TBD flag
+	suppression commentaires
+	Titres fichier
+	main de test perso pour correction
+		faire test
+		check leaks
+
+Map / red_black_tree / red_black_tree iterator
+	check list des typedef
+	//check list fonction c++
+	//TBD flag
+	suppression commentaires
+	Titres fichier
+	main de test perso pour correction
+		faire test
+		check leaks
+
+Stack
+	check list des typedef
+	check list fonction c++
+	TBD flag
+	suppression commentaires
+	Titres fichier
+	main de test perso pour correction
+		faire test
+		check leaks
+
+Set / red_black_tree_set
+	check list des typedef
+	check list fonction c++
+	TBD flag
+	suppression commentaires
+	Titres fichier
+	main de test perso pour correction
+		faire test
+		check leaks
+Autre
+	leaks sur main sujet
+	Makefile avec flags
+	ajout i++ apres end pointe sur debut arbre ?
+	revoir methode inert/delete RBT
+
+
+
+modif faites:
+maj end() dans map et rbt et set et rbt_set
+fonction get_allocator
+private public sur rbt
+suppression get tree head (RBT)
+
+
+
+
+
+
+
+
+
+
+
 //-----------------------------------------------------------------------------------------
 //--------------  Map  ---------------------------------------------------------------------
 //------------------------------------------------------------------------------------------

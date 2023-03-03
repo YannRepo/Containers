@@ -3,8 +3,8 @@
 NAME = main
 
 # Sources
-SRCS += main_vector.cpp
-#SRCS += main_map.cpp
+#SRCS += main_vector.cpp
+SRCS += main_map.cpp
 #SRCS += main_sujet.cpp
 #SRCS += main_set.cpp
 #SRCS += main_mazoise.cpp
@@ -30,8 +30,8 @@ LIB_INCLUDE =
 # Compilateurs
 CC = c++
 #CFLAGS = -g3 -std=c++98
-CFLAGS = -g3 -Wall -Wextra -std=c++98
-# CFLAGS = -g3 -Wall -Wextra -Werror -std=c++98
+#CFLAGS = -g3 -Wall -Wextra -std=c++98
+ CFLAGS = -g3 -Wall -Wextra -Werror -std=c++98
 
 ##########   RULES   ##########
 

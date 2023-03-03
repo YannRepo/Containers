@@ -705,13 +705,13 @@ namespace ft
 		//}
 		const_iterator end() const
 		{
-			//return (this->tree_end);
-			node_pointer search_end  = tree_head;
-			while (search_end->right and search_end != tree_end)
-			{
-				search_end = search_end->right;
-			}
-			return (search_end);
+			return (this->tree_end);
+			//node_pointer search_end  = tree_head;
+			//while (search_end->right and search_end != tree_end)
+			//{
+			//	search_end = search_end->right;
+			//}
+			//return (search_end);
 
 		}
 
