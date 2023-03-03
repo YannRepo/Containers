@@ -22,11 +22,11 @@ namespace ft
 			typedef typename iterator::pointer					pointer;
 			typedef typename iterator::reference				reference;
 
-		public: //TBD remettre en protected
+		protected:
 			node_pointer	current_node;
 
 	// ###########################################################################################################
-	// #########################################   Constructeur / destructeur  #######################################################
+	// #########################################   Constructeur / destructeur  ###################################
 	// ###########################################################################################################
 		public:
 			Rbt_iterator(): current_node(){}
@@ -39,13 +39,7 @@ namespace ft
 			}
 
 	// ###########################################################################################################
-	// #########################################   Tools  #######################################################
-	// ###########################################################################################################
-	// TBD
-
-
-	// ###########################################################################################################
-	// #########################################   Fonction membres  #######################################################
+	// #########################################   Fonction membres  #############################################
 	// ###########################################################################################################
 		node_pointer base()
 		{
@@ -66,8 +60,6 @@ namespace ft
 			// Sinon
 				// remonter jusqu'a ce qu'on vienne d'un left child
 				// Si ca n'arrive pas c'est le dernier noeud -> renvoyer Null ?
-
-
 			if (this->current_node->has_right_child())
 			{
 				this->current_node = this->current_node->right;
@@ -83,7 +75,7 @@ namespace ft
 					this->current_node = this->current_node->parent;
 				if (!this->current_node->has_parent())
 				{
-					this->current_node = NULL; // TBD check return
+					this->current_node = NULL;
 					return (*this);
 				}
 				this->current_node = this->current_node->parent;
@@ -106,7 +98,6 @@ namespace ft
 			// Sinon
 				// remonter jusqu'a ce qu'on vienne d'un right child
 				// Si ca n'arrive pas c'est le premier noeud -> renvoyer Null ?
-
 			if (this->current_node->has_left_child())
 			{
 				this->current_node = this->current_node->left;
@@ -122,7 +113,7 @@ namespace ft
 					this->current_node = this->current_node->parent;
 				if (!this->current_node->has_parent())
 				{
-					this->current_node = NULL; // TBD check return
+					this->current_node = NULL;
 					return (*this);
 				}
 				this->current_node = this->current_node->parent;
@@ -155,7 +146,6 @@ namespace ft
 		{
 			return (this->current_node != rhs.current_node);
 		}
-
 	};
 }
 

@@ -9,8 +9,8 @@ namespace ft
 		class stack
 		{
 			public:
-				typedef T							value_type;
-				typedef	Container					container_type;
+				typedef T									value_type;
+				typedef	Container							container_type;
 				typedef typename Container::size_type		size_type;
 
 			protected:
@@ -27,23 +27,23 @@ namespace ft
 				void push(const value_type &x) { c.push_back(x); }
 				void pop() { c.pop_back(); }
 
-			template <class X, class Y>
-            friend bool operator==(const stack<X, Y> &x, const stack<X, Y> &y);
+				template <class X, class Y>
+				friend bool operator==(const stack<X, Y> &x, const stack<X, Y> &y);
 
-            template <class X, class Y>
-            friend bool operator< (const stack<X, Y> &x, const stack<X, Y> &y);
+				template <class X, class Y>
+				friend bool operator< (const stack<X, Y> &x, const stack<X, Y> &y);
 
-            template <class X, class Y>
-            friend bool operator!=(const stack<X, Y> &x, const stack<X, Y> &y);
+				template <class X, class Y>
+				friend bool operator!=(const stack<X, Y> &x, const stack<X, Y> &y);
 
-            template <class X, class Y>
-            friend bool operator> (const stack<X, Y>& x, const stack<X, Y> &y);
+				template <class X, class Y>
+				friend bool operator> (const stack<X, Y>& x, const stack<X, Y> &y);
 
-            template <class X, class Y>
-            friend bool operator>=(const stack<X, Y>& x, const stack<X, Y> &y);
-    
-            template <class X, class Y>
-            friend bool operator<=(const stack<X, Y>& x, const stack<X, Y> &y);
+				template <class X, class Y>
+				friend bool operator>=(const stack<X, Y>& x, const stack<X, Y> &y);
+
+				template <class X, class Y>
+				friend bool operator<=(const stack<X, Y>& x, const stack<X, Y> &y);
 		};
 
 		template <class T, class Container>

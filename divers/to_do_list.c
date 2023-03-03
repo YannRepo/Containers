@@ -13,18 +13,18 @@ Map / red_black_tree / red_black_tree iterator
 	check list des typedef
 	//check list fonction c++
 	//TBD flag
-	suppression commentaires
-	Titres fichier
+	//suppression commentaires
+	//Titres fichier
 	main de test perso pour correction
 		faire test
 		check leaks
 
 Stack
 	check list des typedef
-	check list fonction c++
-	TBD flag
-	suppression commentaires
-	Titres fichier
+	//check list fonction c++
+	//TBD flag
+	//suppression commentaires
+	//Titres fichier na
 	main de test perso pour correction
 		faire test
 		check leaks
@@ -43,6 +43,8 @@ Autre
 	Makefile avec flags
 	ajout i++ apres end pointe sur debut arbre ?
 	revoir methode inert/delete RBT
+	changer set Julia coheremt mes fichiers
+	relire sujet
 
 
 
@@ -51,6 +53,7 @@ maj end() dans map et rbt et set et rbt_set
 fonction get_allocator
 private public sur rbt
 suppression get tree head (RBT)
+changement right de l'element fantome
 
 
 

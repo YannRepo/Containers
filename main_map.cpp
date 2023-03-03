@@ -294,7 +294,6 @@ int main()
 	map_A.print();
 	ft::map<int, int> map_insert_range(map_A.begin(), ++(++(++(++(map_A.begin())))));
 	map_insert_range.print();
-	return(0);
 
 	print_title_2("Map - Erase");
 	map_A = create_Map_B();
@@ -371,6 +370,14 @@ int main()
 		std::cout << mymap.begin()->first << " => " << mymap.begin()->second << '\n';
 		mymap.erase(mymap.begin());
 	}
+
+	//// ------------------------------------------ Iterator -------------------------------------------------------
+	print_title_2("Iterator");
+	ft::map<int, int> map_iterator = create_Map_B();
+	map_iterator.print();
+	ft::map<int, int>::iterator it_map_iterator = map_iterator.begin();
+	std::cout << "it: " << (*it_map_iterator).first << std::endl;
+
 
 	return 0;
 }

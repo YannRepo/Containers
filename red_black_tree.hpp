@@ -14,14 +14,12 @@
 
 namespace ft
 {
-
 	template <typename Key, typename Val , class Compare = std::less<Key>, class Allocator = std::allocator<Val> >
 	class Red_black_tree
 	{
 // ###########################################################################################################
 // ################################   typedef, class Node, attributs   #######################################
 // ###########################################################################################################
-
 		private:
 			template <typename V>
 			struct Node;
@@ -96,7 +94,6 @@ namespace ft
 			typedef ft::reverse_iterator<iterator>										reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
-
 		protected:
 			node_pointer	tree_head;
 			node_pointer	tree_end;
@@ -114,6 +111,7 @@ namespace ft
 			this->tree_head = myAllocator.allocate(1);
 			this->myAllocator.construct(this->tree_head, Node<Val>());
 			this->tree_end = tree_head;
+			this->tree_end->right = this->tree_end; // right pointe sur lui meme pour increment i++ identique map
 			this->tree_head->parent = tree_head; // ref sur lui-meme au depart;
 		}
 
@@ -124,6 +122,7 @@ namespace ft
 			this->tree_head = myAllocator.allocate(1);
 			this->myAllocator.construct(this->tree_head, Node<Val>());
 			this->tree_end = tree_head;
+			this->tree_end->right = this->tree_end; // right pointe sur lui meme pour increment i++ identique map
 			this->tree_head->parent = tree_head;
 			this->insert(first, last);
 		}
@@ -184,11 +183,6 @@ namespace ft
 				this->print_recursive(root->left, indent, false);
 				this->print_recursive(root->right, indent, true);
 			}
-		}
-
-		node_pointer get_tree_head()
-		{
-			return (this->tree_head);
 		}
 
 		ft::pair<iterator, bool> insert_algo(node_pointer insert_position,const value_type added_pair)
@@ -402,6 +396,9 @@ namespace ft
 			tree_head->color = BLACK;
 		}
 
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Erase fix ------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 		void fix_deletion(node_pointer x)
 		{
 			node_pointer s;
@@ -679,8 +676,7 @@ namespace ft
 				}
 			while (first != last)
 			{
-				this->erase(first++);
-				//first++; //pas incrementer apres sinon le first n'est plus valide
+				this->erase(first++); //pas incrementer apres sinon le first n'est plus valide
 			}
 		}
 
@@ -716,7 +712,7 @@ namespace ft
 			this->tree_head->left = NULL;
 			this->tree_head->right = NULL;
 		}
-			
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Operations / Lookup --------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -797,6 +793,7 @@ namespace ft
 		}
 
 	};
+
 // ###########################################################################################################
 // #########################################   Fonctions non membres   #######################################
 // ###########################################################################################################
@@ -848,6 +845,5 @@ namespace ft
 		return not(rhs < lhs);
 	}
 }
-
 
 #endif
