@@ -120,6 +120,25 @@ namespace ft
 		}
 
 	// -----------------------------------------------------------------------------------------------------------
+	// ------------------------------------------ Operator= -------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------
+		vector &operator=(const vector &src)
+		{
+			clear();
+			this->myAllocator = src.myAllocator;
+			this->_vector_size = src._vector_size;
+			this->_vector_capacity = src._vector_capacity;
+			if (this->_vector_pointer)
+				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
+			this->_vector_pointer = this->myAllocator.allocate(_vector_capacity);
+			for (size_type i = 0; i < this->_vector_size; i++)
+			{
+				this->_vector_pointer[i] = src._vector_pointer[i];
+			}
+			return (*this);
+		}
+
+	// -----------------------------------------------------------------------------------------------------------
 	// ------------------------------------------ Iterators -------------------------------------------------------
 	// -----------------------------------------------------------------------------------------------------------
 	// Iterator
@@ -197,14 +216,17 @@ namespace ft
 				this->insert(this->end(), n - this->_vector_size, val);
 			}
 		}
+
 		size_type capacity() const
 		{
 			return (this->_vector_capacity);
 		}
+
 		bool empty() const
 		{
 			return (this->_vector_size == 0);
 		}
+
 		void reserve(size_type n)
 		{
 			if (n > this->max_size())
@@ -237,6 +259,7 @@ namespace ft
 		{
 			return (this->_vector_pointer[n]);
 		}
+
 		reference at(size_type n)
 		{
 			if (n >= this->size())
@@ -249,6 +272,7 @@ namespace ft
 				throw(std::out_of_range("out of range"));
 			return (this->_vector_pointer[n]);
 		}	
+
 		reference front()
 		{
 			return (*this->begin());
@@ -270,7 +294,6 @@ namespace ft
 		{
 			return(_vector_pointer);
 		}
-		
 		const value_type* data() const
 		{
 			return(_vector_pointer);
@@ -279,22 +302,6 @@ namespace ft
 	// -----------------------------------------------------------------------------------------------------------
 	// ------------------------------------------ Modifier -------------------------------------------------------
 	// -----------------------------------------------------------------------------------------------------------
-		vector &operator=(const vector &src)
-		{
-			clear();
-			this->myAllocator = src.myAllocator;
-			this->_vector_size = src._vector_size;
-			this->_vector_capacity = src._vector_capacity;
-			if (this->_vector_pointer)
-				this->myAllocator.deallocate(this->_vector_pointer, this->_vector_capacity);
-			this->_vector_pointer = this->myAllocator.allocate(_vector_capacity);
-			for (size_type i = 0; i < this->_vector_size; i++)
-			{
-				this->_vector_pointer[i] = src._vector_pointer[i];
-			}
-			return (*this);
-		}
-
 		template <class InputIterator>  
 		void assign(InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
@@ -453,6 +460,10 @@ namespace ft
 		void clear()
 		{
 			this->resize(0);
+		}
+		allocator_type get_allocator()const
+		{
+			return allocator_type(); 
 		}
 	};
 

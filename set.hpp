@@ -12,39 +12,39 @@
 namespace ft
 {
 
-	template <class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key>>
+	template <class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key> >
 	class set
 	{
 // ###########################################################################################################
 // #############################   typedef, class value_compare, attributs   #################################
 // ###########################################################################################################
 	public:
-		typedef Key key_type;
-		typedef Key value_type;
+		typedef Key																						key_type;
+		typedef Key																						value_type;
 
-		typedef Compare key_compare;
-		typedef Compare value_compare;
-		typedef Allocator allocator_type;
+		typedef Compare																					key_compare;
+		typedef Compare																					value_compare;
+		typedef Allocator																				allocator_type;
 
-		typedef typename ft::Red_black_tree_set<key_type, value_type, key_compare, allocator_type> tree_type;
+		typedef typename ft::Red_black_tree_set<key_type, value_type, key_compare, allocator_type>		tree_type;
 
-		typedef value_type &reference;
-		typedef const value_type &const_reference;
+		typedef value_type																				&reference;
+		typedef const value_type																		&const_reference;
 
-		typedef typename tree_type::const_iterator iterator;
-		typedef typename tree_type::const_iterator const_iterator;
-		typedef typename tree_type::const_reverse_iterator reverse_iterator;
-		typedef typename tree_type::const_reverse_iterator const_reverse_iterator;
+		typedef typename tree_type::const_iterator														iterator;
+		typedef typename tree_type::const_iterator														const_iterator;
+		typedef typename tree_type::const_reverse_iterator												reverse_iterator;
+		typedef typename tree_type::const_reverse_iterator												const_reverse_iterator;
 
-		typedef typename tree_type::size_type size_type;
-		typedef std::ptrdiff_t difference_type;
+		typedef typename tree_type::size_type															size_type;
+		typedef std::ptrdiff_t																			difference_type;
 
-		typedef value_type *pointer;
+		typedef value_type																				*pointer;
 
-		typedef const value_type *const_pointer;
+		typedef const value_type																		*const_pointer;
 
 	protected:
-		tree_type RB_Tree; // TBD changer par tree
+		tree_type tree;
 
 // ###########################################################################################################
 // #################################   Fonctions membres   ###################################################
@@ -54,19 +54,19 @@ namespace ft
 // ------------------------------------ constructor / destructor ---------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 		explicit set(const Compare &comp = Compare(), const Allocator &alloc = Allocator()):
-		RB_Tree(comp, alloc)
+		tree(comp, alloc)
 		{
 		}
 
 		template <class InputIterator>
 		set(InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()):
-		RB_Tree(comp, alloc)
+		tree(comp, alloc)
 		{
-			RB_Tree.insert(first, last); //TBD voir si utile
+			tree.insert(first, last); //TBD voir si utile
 		}
 
 		set(const set<Key, Compare, Allocator> &x):
-		RB_Tree(x.begin(), x.end(), x.value_comp(), x.RB_Tree.get_allocator())
+		tree(x.begin(), x.end(), x.value_comp(), x.tree.get_allocator())
 		{
 		}
 
@@ -86,47 +86,42 @@ namespace ft
 			return (*this);
 		}
 
-		allocator_type get_allocator() const
-		{
-			return allocator_type();
-		}
-
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Iterators ------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 
 		iterator begin()
 		{
-			return RB_Tree.begin();
+			return tree.begin();
 		}
 		const_iterator begin() const
 		{
-			return RB_Tree.begin();
+			return tree.begin();
 		}
 		iterator end()
 		{
-			return RB_Tree.end();
+			return tree.end();
 		}
 		const_iterator end() const
 		{
-			return RB_Tree.end();
+			return tree.end();
 		}
 
 		reverse_iterator rbegin()
 		{
-			return reverse_iterator(RB_Tree.rbegin());
+			return reverse_iterator(tree.rbegin());
 		}
 		const_reverse_iterator rbegin() const
 		{
-			return const_reverse_iterator(RB_Tree.rbegin());
+			return const_reverse_iterator(tree.rbegin());
 		}
 		reverse_iterator rend()
 		{
-			return reverse_iterator(RB_Tree.rend());
+			return reverse_iterator(tree.rend());
 		}
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(RB_Tree.rend());
+			return const_reverse_iterator(tree.rend());
 		}
 
 // -----------------------------------------------------------------------------------------------------------
@@ -134,15 +129,15 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 		bool empty() const
 		{
-			return RB_Tree.empty();
+			return tree.empty();
 		}
 		size_type size() const
 		{
-			return RB_Tree.size();
+			return tree.size();
 		}
 		size_type max_size() const
 		{
-			return RB_Tree.max_size();
+			return tree.max_size();
 		}
 
 // -----------------------------------------------------------------------------------------------------------
@@ -150,7 +145,7 @@ namespace ft
 // -----------------------------------------------------------------------------------------------------------
 		pair<iterator, bool> insert(const value_type &x)
 		{
-			return RB_Tree.insert(x);
+			return tree.insert(x);
 		}
 
 		iterator insert(iterator position, const value_type &x)
@@ -170,18 +165,18 @@ namespace ft
 		template <class InputIterator>
 		void insert(InputIterator first, InputIterator last)
 		{
-			RB_Tree.insert(first, last);
+			tree.insert(first, last);
 		}
 
 		size_type erase(const value_type &x)
 		{
-			return RB_Tree.erase(x);
+			return tree.erase(x);
 		}
 
 		void erase(iterator position)
 		{
 			const value_type &found = *position;
-			RB_Tree.erase(found);
+			tree.erase(found);
 		}
 
 		void erase(iterator first, iterator last)
@@ -203,13 +198,13 @@ namespace ft
 
 		void swap(set<Key, Compare, Allocator> &x)
 		{
-			RB_Tree.swap(x.RB_Tree);
+			tree.swap(x.tree);
 		}
 
 		void clear()
 		{
 			if (size())
-				RB_Tree.clear();
+				tree.clear();
 		}
 
 // -----------------------------------------------------------------------------------------------------------
@@ -222,7 +217,7 @@ namespace ft
 
 		value_compare value_comp() const
 		{
-			return value_compare(value_compare(key_compare()));
+			return value_compare();
 		}
 
 // -----------------------------------------------------------------------------------------------------------
@@ -231,58 +226,63 @@ namespace ft
 
 		iterator find(const key_type &x)
 		{
-			return (RB_Tree.find(x));
+			return (tree.find(x));
 		}
 
 		const_iterator find(const key_type &x) const
 		{
-			return (RB_Tree.find(x));
+			return (tree.find(x));
 		}
 
 		size_type count(const key_type &x) const
 		{
-			return (RB_Tree.count(x));
+			return (tree.count(x));
 		}
 
 		iterator lower_bound(const key_type &x)
 		{
-			return (RB_Tree.lower_bound(x));
+			return (tree.lower_bound(x));
 		}
 
 		const_iterator lower_bound(const key_type &x) const
 		{
-			return (RB_Tree.lower_bound(x));
+			return (tree.lower_bound(x));
 		}
 
 		iterator upper_bound(const key_type &x)
 		{
-			return (RB_Tree.upper_bound(x));
+			return (tree.upper_bound(x));
 		}
 
 		const_iterator upper_bound(const key_type &x) const
 		{
-			return (RB_Tree.upper_bound(x));
+			return (tree.upper_bound(x));
 		}
 
 		pair<iterator, iterator> equal_range(const key_type &x)
 		{
-			return (RB_Tree.equal_range(x));
+			return (tree.equal_range(x));
 		}
 
 		pair<const_iterator, const_iterator> equal_range(const key_type &x) const
 		{
-			return (RB_Tree.equal_range(x));
+			return (tree.equal_range(x));
 		}
 
 		template <class _T, class _Compare, class _Allocator>
-		friend bool
-		operator==(const set<_T, _Compare, _Allocator> &lhs,
-				   const set<_T, _Compare, _Allocator> &rhs);
+		friend bool operator==(const set<_T, _Compare, _Allocator> &lhs, const set<_T, _Compare, _Allocator> &rhs);
 
 		template <class _T, class _Compare, class _Allocator>
-		friend bool
-		operator<(const set<_T, _Compare, _Allocator> &lhs,
-				  const set<_T, _Compare, _Allocator> &rhs);
+		friend bool operator<(const set<_T, _Compare, _Allocator> &lhs, const set<_T, _Compare, _Allocator> &rhs);
+
+// -----------------------------------------------------------------------------------------------------------
+// ------------------------------------ Operations / Lookup --------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+		allocator_type get_allocator() const
+		{
+			return allocator_type();
+		}
+	
 	};
 
 // ###########################################################################################################
@@ -296,19 +296,20 @@ namespace ft
 	{
 		x.swap(y);
 	}
+
 // -----------------------------------------------------------------------------------------------------------
 // ------------------------------------ Comparison operator  -------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 	template <class Key, class Compare, class Allocator>
 	bool operator==(const set<Key, Compare, Allocator> &x, const set<Key, Compare, Allocator> &y)
 	{
-		return (x.RB_Tree == y.RB_Tree);
+		return (x.tree == y.tree);
 	}
 
 	template <class Key, class Compare, class Allocator>
 	bool operator<(const set<Key, Compare, Allocator> &x, const set<Key, Compare, Allocator> &y)
 	{
-		return (x.RB_Tree < y.RB_Tree);
+		return (x.tree < y.tree);
 	}
 
 	template <class Key, class Compare, class Allocator>

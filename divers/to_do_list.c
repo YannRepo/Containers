@@ -1,16 +1,16 @@
 To do list
-Vector
-	check list des typedef
-	check list fonction c++
-	TBD flag
-	suppression commentaires
-	Titres fichier
+Vector / random acces it
+	//check list des typedef
+	//check list fonction c++
+	//TBD flag
+	//suppression commentaires
+	//Titres fichier
 	main de test perso pour correction
 		faire test
 		check leaks
 
 Map / red_black_tree / red_black_tree iterator
-	check list des typedef
+	//check list des typedef
 	//check list fonction c++
 	//TBD flag
 	//suppression commentaires
@@ -20,7 +20,7 @@ Map / red_black_tree / red_black_tree iterator
 		check leaks
 
 Stack
-	check list des typedef
+	//check list des typedef
 	//check list fonction c++
 	//TBD flag
 	//suppression commentaires
@@ -30,11 +30,11 @@ Stack
 		check leaks
 
 Set / red_black_tree_set
-	check list des typedef
-	check list fonction c++
-	TBD flag
-	suppression commentaires
-	Titres fichier
+	//check list des typedef
+	//check list fonction c++
+	//TBD flag
+	//suppression commentaires
+	//Titres fichier
 	main de test perso pour correction
 		faire test
 		check leaks
@@ -45,6 +45,8 @@ Autre
 	revoir methode inert/delete RBT
 	changer set Julia coheremt mes fichiers
 	relire sujet
+	set modif value_compare
+	set ajout get allocatoor
 
 
 

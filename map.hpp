@@ -61,8 +61,8 @@ namespace ft
 			typedef typename ft::Red_black_tree< key_type, value_type, value_compare, allocator_type>	tree_type;
 			typedef typename tree_type::iterator														iterator;	
 			typedef typename tree_type::const_iterator													const_iterator;
-			typedef typename tree_type::reverse_iterator									reverse_iterator; 
-			typedef typename tree_type::const_reverse_iterator								const_reverse_iterator;				
+			typedef typename tree_type::reverse_iterator												reverse_iterator; 
+			typedef typename tree_type::const_reverse_iterator											const_reverse_iterator;				
 
 		protected:
 			tree_type tree;
