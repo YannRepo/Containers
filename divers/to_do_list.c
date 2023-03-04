@@ -39,14 +39,16 @@ Set / red_black_tree_set
 		faire test
 		check leaks
 Autre
-	leaks sur main sujet
+	//leaks sur main sujet
 	Makefile avec flags
-	ajout i++ apres end pointe sur debut arbre ?
+	//ajout i++ apres end pointe sur debut arbre ?
 	revoir methode inert/delete RBT
-	changer set Julia coheremt mes fichiers
+	//changer set Julia coheremt mes fichiers
 	relire sujet
 	set modif value_compare
 	set ajout get allocatoor
+	relire set
+	verifier les fichiers annexes
 
 
 
