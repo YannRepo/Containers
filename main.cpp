@@ -29,7 +29,12 @@
 # define COLOR_WHITE  "\x1B[37m"
 
 # define DEBUG_WIDTH 50
-# if 0
+
+# ifndef TEST_CHOICE
+#  define TEST_CHOICE 1
+# endif
+
+# if TEST_CHOICE
 #  define TESTED_NAMESPACE ft
 #  define TESTED_NAMESPACE_STR "ft"
 # else 
@@ -89,6 +94,21 @@ void print_vector(TESTED_NAMESPACE::vector<T> vec)
 	std::cout << "]" << std::endl;
 }
 
+template<typename key, typename T>
+void print_map(TESTED_NAMESPACE::vector<T> vec)
+{
+	std::cout << "[";
+	for (typename TESTED_NAMESPACE::vector<T>::iterator it=vec.begin(); it != vec.end(); it++)
+	{
+		std::cout << (it->first);
+		if(it + 1 != vec.end())
+			std::cout << ", ";
+
+
+	}
+	std::cout << "]" << std::endl;
+}
+
 // ###########################################################################################################
 // #########################################   TESTS   #######################################################
 // ###########################################################################################################
@@ -105,8 +125,18 @@ void vector_tests(int nb_of_tests)
 
 	for(int i = 0; i < nb_of_tests; i++)
 	{
-		print_title_1("Vector");
 		print_title_2("Functions verifications");
+		print_title_2("Constructor");
+		TESTED_NAMESPACE::vector<int> vector_c1;
+		vector_c1.push_back(1);
+		vector_c1.push_back(2);
+		vector_c1.push_back(3);
+		vector_c1.push_back(3);
+		vector_c1.push_back(3);
+		TESTED_NAMESPACE::vector<int> vector_c2(5, 43);
+		TESTED_NAMESPACE::vector<int> vector_c3(++vector_c2.begin(), vector_c2.end());
+		TESTED_NAMESPACE::vector<int> vector_c4(vector_c3);
+
 		print_title_3("Iterators");
 		TESTED_NAMESPACE::vector<int> vector_1;
 		vector_1.push_back(1);
@@ -146,30 +176,40 @@ void vector_tests(int nb_of_tests)
 
 
 		TESTED_NAMESPACE::vector<int> vector_4(vector_1);
+		std::cout << "insert: " <<         *(vector_4.insert(++vector_4.begin(), 5))      << std::endl;
+		vector_4.insert(vector_4.begin(), 10,42);
 		vector_4.insert(++vector_4.begin(), vector_1.begin(), vector_1.end());
-		std::cout << "insert: " <<    *(vector_4.erase(vector_4.begin()))      << std::endl;
+		print_vector(vector_4);
+		std::cout << "erase: " <<    *(vector_4.erase(vector_4.begin()))      << std::endl;
+		std::cout << "erase: " <<    *(vector_4.erase(--(--(--(--vector_4.end()))), --vector_4.end()))      << std::endl;
 		print_vector(vector_1);
 		print_vector(vector_4);
 		vector_1.swap(vector_4);
 		print_vector(vector_1);
 		print_vector(vector_4);
+		TESTED_NAMESPACE::vector<int> vector_5(vector_4);
+		print_vector(vector_5);
+		vector_5.clear();
+		print_vector(vector_5);
 
-		// en cours
-		
-		//TESTED_NAMESPACE::vector<int> vector_4(vector_4);
-		//print_vector(vector_4);
-		//vector_4.clear();
-		//print_vector(vector_4);
-
-		std::cout << "find" << vector_1.at(1) << std::endl;
-
-
+		std::cout << "vector_1 < vector_4? : " << (vector_1 < vector_4) << std::endl;
+		std::cout << "vector_1 < vector_4? : " << (vector_1 <= vector_4) << std::endl;
+		std::cout << "vector_1 < vector_4? : " << (vector_1 > vector_4) << std::endl;
+		std::cout << "vector_1 < vector_4? : " << (vector_1 >= vector_4) << std::endl;
+		std::cout << "vector_1 < vector_4? : " << (vector_1 == vector_4) << std::endl;
+		std::cout << "vector_1 < vector_4? : " << (vector_1 != vector_4) << std::endl;
 
 		print_title_2("Iterators verifications");
 		TESTED_NAMESPACE::vector<int>::iterator it1 = vector_1.begin();
 		TESTED_NAMESPACE::vector<int>::const_iterator it2 = ++vector_1.begin();
+		std::cout << "*it1 : " << *it1 << std::endl;
 		std::cout << "it1 > it2? : " << (it1 > it2) << std::endl;
+		std::cout << "it1 > it2? : " << (it1 > it2) << std::endl;
+		std::cout << "it1 >= it2? : " << (it1 > it2) << std::endl;
 		std::cout << "it1 < it2? : " << (it1 < it2) << std::endl;
+		std::cout << "it1 <= it2? : " << (it1 < it2) << std::endl;
+		std::cout << "it1 <== it2? : " << (it1 < it2) << std::endl;
+		std::cout << "it1 != it2? : " << (it1 < it2) << std::endl;
 
 		print_title_2("Swap non member verifications");
 		TESTED_NAMESPACE::vector<int>::iterator it3 = ++(++(vector_4.begin()));
@@ -186,13 +226,129 @@ void vector_tests(int nb_of_tests)
 	std::cout << "Vector execution time for " << TESTED_NAMESPACE_STR << " = " << vector_time_time_ms << "ms \n" << std::endl;
 }
 
+// -----------------------------------------------------------------------------------------------------------
+// --------------------------------------------- Map ------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+void map_tests(int nb_of_tests)
+{
+	print_title_1("Map");
+
+	// time test at the end
+	clock_t time;
+	time = clock();
+
+	for(int i = 0; i < nb_of_tests; i++)
+	{
+		print_title_2("Functions verifications");
+		print_title_2("Constructor");
+		TESTED_NAMESPACE::map<int, std::string> map_1;
+		map_1.insert(TESTED_NAMESPACE::make_pair(1,"un"));
+		map_1.insert(TESTED_NAMESPACE::make_pair(2,"deux"));
+		map_1.insert(TESTED_NAMESPACE::make_pair(3,"trois"));
+		map_1.insert(TESTED_NAMESPACE::make_pair(4,"quatre"));
+		TESTED_NAMESPACE::map<int, std::string> map_2(++map_1.begin(), --map_1.end());
+		TESTED_NAMESPACE::map<int, std::string> map_3(map_2);
+		
+
+		
+
+	//	print_title_3("Iterators");
+	//	TESTED_NAMESPACE::vector<int> vector_1;
+	//	vector_1.push_back(1);
+	//	vector_1.push_back(2);
+	//	vector_1.push_back(3);
+	//	std::cout << "begin:" << *(vector_1.begin()) << std::endl;
+	//	std::cout << "end:" << *(--vector_1.end()) << std::endl; //-- car end non alloué
+	//	std::cout << "rbegin:" << *(vector_1.rbegin()) << std::endl;
+	//	std::cout << "rend:" << *(--vector_1.rend()) << std::endl;//-- car rend non alloué
+
+	//	print_title_3("Capacity");
+	//	std::cout << "size:" << vector_1.size() << std::endl;
+	//	std::cout << "max size:" << vector_1.max_size() << std::endl;
+	//	std::cout << "capacity:" << vector_1.capacity() << std::endl;
+	//	std::cout << "empty:" << vector_1.empty() << std::endl;
+	//	vector_1.reserve(20);
+
+	//	print_title_3("Element access");
+	//	std::cout << "operator[]: " << vector_1[1] << std::endl;
+	//	std::cout << "at: " << vector_1.at(1) << std::endl;
+	//	std::cout << "front: " << vector_1.front() << std::endl;
+	//	std::cout << "back: " << vector_1.back() << std::endl;
+	//	std::cout << "data: " << *(vector_1.data()) << std::endl;
+
+	//	print_title_3("Modifiers");
+	//	TESTED_NAMESPACE::vector<int> vector_2;
+	//	vector_2.assign(vector_1.begin(), vector_1.end());
+	//	TESTED_NAMESPACE::vector<int> vector_3;
+	//	vector_3.assign(5, 3);
+	//	print_vector(vector_3);
+	//	vector_2.push_back(42);
+	//	print_vector(vector_2);
+	//	vector_2.push_back(41);
+	//	print_vector(vector_2);
+	//	vector_2.pop_back();
+	//	print_vector(vector_2);
+
+
+	//	TESTED_NAMESPACE::vector<int> vector_4(vector_1);
+	//	std::cout << "insert: " <<         *(vector_4.insert(++vector_4.begin(), 5))      << std::endl;
+	//	vector_4.insert(vector_4.begin(), 10,42);
+	//	vector_4.insert(++vector_4.begin(), vector_1.begin(), vector_1.end());
+	//	print_vector(vector_4);
+	//	std::cout << "erase: " <<    *(vector_4.erase(vector_4.begin()))      << std::endl;
+	//	std::cout << "erase: " <<    *(vector_4.erase(--(--(--(--vector_4.end()))), --vector_4.end()))      << std::endl;
+	//	print_vector(vector_1);
+	//	print_vector(vector_4);
+	//	vector_1.swap(vector_4);
+	//	print_vector(vector_1);
+	//	print_vector(vector_4);
+	//	TESTED_NAMESPACE::vector<int> vector_5(vector_4);
+	//	print_vector(vector_5);
+	//	vector_5.clear();
+	//	print_vector(vector_5);
+
+	//	std::cout << "vector_1 < vector_4? : " << (vector_1 < vector_4) << std::endl;
+	//	std::cout << "vector_1 < vector_4? : " << (vector_1 <= vector_4) << std::endl;
+	//	std::cout << "vector_1 < vector_4? : " << (vector_1 > vector_4) << std::endl;
+	//	std::cout << "vector_1 < vector_4? : " << (vector_1 >= vector_4) << std::endl;
+	//	std::cout << "vector_1 < vector_4? : " << (vector_1 == vector_4) << std::endl;
+	//	std::cout << "vector_1 < vector_4? : " << (vector_1 != vector_4) << std::endl;
+
+	//	print_title_2("Iterators verifications");
+	//	TESTED_NAMESPACE::vector<int>::iterator it1 = vector_1.begin();
+	//	TESTED_NAMESPACE::vector<int>::const_iterator it2 = ++vector_1.begin();
+	//	std::cout << "*it1 : " << *it1 << std::endl;
+	//	std::cout << "it1 > it2? : " << (it1 > it2) << std::endl;
+	//	std::cout << "it1 > it2? : " << (it1 > it2) << std::endl;
+	//	std::cout << "it1 >= it2? : " << (it1 > it2) << std::endl;
+	//	std::cout << "it1 < it2? : " << (it1 < it2) << std::endl;
+	//	std::cout << "it1 <= it2? : " << (it1 < it2) << std::endl;
+	//	std::cout << "it1 <== it2? : " << (it1 < it2) << std::endl;
+	//	std::cout << "it1 != it2? : " << (it1 < it2) << std::endl;
+
+	//	print_title_2("Swap non member verifications");
+	//	TESTED_NAMESPACE::vector<int>::iterator it3 = ++(++(vector_4.begin()));
+	//	TESTED_NAMESPACE::swap(vector_1, vector_4);
+	//	print_vector(vector_1);
+	//	print_vector(vector_4);
+	//	std::cout << "it1: " << *it1 << std::endl;
+	//	std::cout << "it2: " << *it3 << std::endl;
+	}
+
+	print_title_2("Time test");
+	time = clock() - time;
+	double time_ms = ((double)time)/CLOCKS_PER_SEC*1000;
+	std::cout << "Map execution time for " << TESTED_NAMESPACE_STR << " = " << time_ms << "ms \n" << std::endl;
+}
+
 
 // ###########################################################################################################
 // #########################################   MAIN   ########################################################
 // ###########################################################################################################
 int main()
 {
-	vector_tests(1);
+	//vector_tests(1);
+	map_tests(1);
 }
 
 
