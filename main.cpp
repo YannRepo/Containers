@@ -449,15 +449,6 @@ void map_tests(int nb_of_tests)
 			mymap.get_allocator().deallocate(p,5);
 		}	
 	}
-
-	// for time test
-	TESTED_NAMESPACE::map<int, std::string> map_long;
-	for(int i = 0; i < 10000; i++)
-	{
-		map_long.insert(TESTED_NAMESPACE::make_pair(i,"un"));
-		map_long.find(i-1);
-	}
-
 	print_title_2("Time test");
 	time = clock() - time;
 	double time_ms = ((double)time)/CLOCKS_PER_SEC*1000;
@@ -469,9 +460,144 @@ void map_tests(int nb_of_tests)
 // -----------------------------------------------------------------------------------------------------------
 void stack_tests(int nb_of_tests)
 {
+	print_title_1("Map");
 
+	// time test at the end
+	clock_t time;
+	time = clock();
+
+	for(int i = 0; i < nb_of_tests; i++)
+	{
+		print_title_2("Functions verifications");
+		print_title_3("constructor");
+		{
+			std::deque<int> mydeque (3,100);          // deque with 3 elements
+			std::vector<int> myvector (2,200);        // vector with 2 elements
+			std::stack<int> first;                    // empty stack
+			std::stack<int> second (mydeque);         // stack initialized to copy of deque
+			std::stack<int,std::vector<int> > third;  // empty stack using vector
+			std::stack<int,std::vector<int> > fourth (myvector);
+			std::cout << "size of first: " << first.size() << '\n';
+			std::cout << "size of second: " << second.size() << '\n';
+			std::cout << "size of third: " << third.size() << '\n';
+			std::cout << "size of fourth: " << fourth.size() << '\n';
+		}
+		print_title_3("empty");
+		{
+			std::stack<int> mystack;
+			int sum (0);
+			for (int i=1;i<=10;i++) mystack.push(i);
+			while (!mystack.empty())
+			{
+				sum += mystack.top();
+				mystack.pop();
+			}
+			std::cout << "total: " << sum << '\n';
+		}
+		print_title_3("size");
+		{
+			std::stack<int> myints;
+			std::cout << "0. size: " << myints.size() << '\n';
+			for (int i=0; i<5; i++) myints.push(i);
+			std::cout << "1. size: " << myints.size() << '\n';
+			myints.pop();
+			std::cout << "2. size: " << myints.size() << '\n';
+		}
+		print_title_3("top");
+		{
+			std::stack<int> mystack;
+			mystack.push(10);
+			mystack.push(20);
+			mystack.top() -= 5;
+			std::cout << "mystack.top() is now " << mystack.top() << '\n';
+		}
+		print_title_3("push");
+		{
+			std::stack<int> mystack;
+			for (int i=0; i<5; ++i) mystack.push(i);
+			std::cout << "Popping out elements...";
+			while (!mystack.empty())
+			{
+			std::cout << ' ' << mystack.top();
+			mystack.pop();
+			}
+			std::cout << '\n';
+		}
+		print_title_3("pop");
+		{
+			std::stack<int> mystack;
+			for (int i=0; i<5; ++i) mystack.push(i);
+			std::cout << "Popping out elements...";
+			while (!mystack.empty())
+			{
+			std::cout << ' ' << mystack.top();
+			mystack.pop();
+			}
+			std::cout << '\n';
+		}
+		print_title_3("relational operators");
+		{
+			TESTED_NAMESPACE::stack<int> stack_1;
+			stack_1.push(1);
+			stack_1.push(2);
+			stack_1.push(3);
+			stack_1.push(4);
+			stack_1.push(5);
+			TESTED_NAMESPACE::stack<int> stack_2(stack_1);
+			std::cout << "stack_1 < stack_2? : " << (stack_1 < stack_2) << std::endl;
+			std::cout << "stack_1 < stack_2? : " << (stack_1 <= stack_2) << std::endl;
+			std::cout << "stack_1 < stack_2? : " << (stack_1 > stack_2) << std::endl;
+			std::cout << "stack_1 < stack_2? : " << (stack_1 >= stack_2) << std::endl;
+			std::cout << "stack_1 < stack_2? : " << (stack_1 == stack_2) << std::endl;
+			std::cout << "stack_1 < stack_2? : " << (stack_1 != stack_2) << std::endl;
+		}
+		print_title_3("swap (non member)");
+		{
+			std::stack<int> foo,bar;
+			foo.push (10); foo.push(20); foo.push(30);
+			bar.push (111); bar.push(222);
+
+			swap(foo,bar);
+
+			std::cout << "size of foo: " << foo.size() << '\n';
+			std::cout << "size of bar: " << bar.size() << '\n';
+		}
+	}
+
+	print_title_2("Time test");
+	time = clock() - time;
+	double time_ms = ((double)time)/CLOCKS_PER_SEC*1000;
+	std::cout << "Stack execution time for " << TESTED_NAMESPACE_STR << " = " << time_ms << "ms \n" << std::endl;
 }
 
+// -----------------------------------------------------------------------------------------------------------
+// --------------------------------------------- Stack ------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+void set_tests(int nb_of_tests)
+{
+	print_title_1("Set");
+
+	// time test at the end
+	clock_t time;
+	time = clock();
+
+	for(int i = 0; i < nb_of_tests; i++)
+	{
+		print_title_2("Functions verifications");
+		print_title_3("operator=");
+		print_title_3("Constructor");
+		print_title_3("Capacity");
+		print_title_3("Modifiers");
+		print_title_3("Observers");
+		print_title_3("Operations");
+		print_title_3("Allocator");
+	}
+
+	print_title_2("Time test");
+	time = clock() - time;
+	double time_ms = ((double)time)/CLOCKS_PER_SEC*1000;
+	std::cout << "Set execution time for " << TESTED_NAMESPACE_STR << " = " << time_ms << "ms \n" << std::endl;
+}
 // ###########################################################################################################
 // #########################################   MAIN   ########################################################
 // ###########################################################################################################
@@ -479,7 +605,6 @@ int main()
 {
 	//vector_tests(100);
 	//map_tests(100);
-	stack_tests(100);
+	//stack_tests(100);
+	set_tests(100);
 }
-
-
