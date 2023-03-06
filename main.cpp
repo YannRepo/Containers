@@ -109,6 +109,19 @@ void print_map(TESTED_NAMESPACE::map<key, T> map)
 	std::cout << "]" << std::endl;
 }
 
+template<typename key>
+void print_set(TESTED_NAMESPACE::set<key> set)
+{
+	std::cout << "[";
+	for (typename TESTED_NAMESPACE::set<key>::const_iterator it=set.begin(); it != set.end();)
+	{
+		std::cout << (*it);
+		if(++it != set.end())
+			std::cout << ", ";
+	}
+	std::cout << "]" << std::endl;
+}
+
 // ###########################################################################################################
 // #########################################   TESTS   #######################################################
 // ###########################################################################################################
@@ -273,19 +286,19 @@ void map_tests(int nb_of_tests)
 		print_title_3("Modifiers");
 		//insert
 		{
-			std::map<char,int> mymap;
-			mymap.insert ( std::pair<char,int>('a',100) );
-			mymap.insert ( std::pair<char,int>('z',200) );
-			std::pair<std::map<char,int>::iterator,bool> ret;
-			ret = mymap.insert ( std::pair<char,int>('z',500) );
+			TESTED_NAMESPACE::map<char,int> mymap;
+			mymap.insert ( TESTED_NAMESPACE::pair<char,int>('a',100) );
+			mymap.insert ( TESTED_NAMESPACE::pair<char,int>('z',200) );
+			TESTED_NAMESPACE::pair<TESTED_NAMESPACE::map<char,int>::iterator,bool> ret;
+			ret = mymap.insert ( TESTED_NAMESPACE::pair<char,int>('z',500) );
 			if (ret.second==false) {
 				std::cout << "element 'z' already existed";
 				std::cout << " with a value of " << ret.first->second << '\n';
 			}
-			std::map<char,int>::iterator it = mymap.begin();
-			mymap.insert (it, std::pair<char,int>('b',300));
-			mymap.insert (it, std::pair<char,int>('c',400));
-			std::map<char,int> anothermap;
+			TESTED_NAMESPACE::map<char,int>::iterator it = mymap.begin();
+			mymap.insert (it, TESTED_NAMESPACE::pair<char,int>('b',300));
+			mymap.insert (it, TESTED_NAMESPACE::pair<char,int>('c',400));
+			TESTED_NAMESPACE::map<char,int> anothermap;
 			anothermap.insert(mymap.begin(),mymap.find('c'));
 			std::cout << "mymap contains:\n";
 			for (it=mymap.begin(); it!=mymap.end(); ++it)
@@ -296,8 +309,8 @@ void map_tests(int nb_of_tests)
 		}
 		// erase
 		{
-			std::map<char,int> mymap;
-			std::map<char,int>::iterator it;
+			TESTED_NAMESPACE::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int>::iterator it;
 			mymap['a']=10;
 			mymap['b']=20;
 			mymap['c']=30;
@@ -314,7 +327,7 @@ void map_tests(int nb_of_tests)
 		}
 		// swap
 		{
-			std::map<char,int> foo,bar;
+			TESTED_NAMESPACE::map<char,int> foo,bar;
 			foo['x']=100;
 			foo['y']=200;
 			bar['a']=11;
@@ -322,38 +335,38 @@ void map_tests(int nb_of_tests)
 			bar['c']=33;
 			foo.swap(bar);
 			std::cout << "foo contains:\n";
-			for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			for (TESTED_NAMESPACE::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 			std::cout << "bar contains:\n";
-			for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			for (TESTED_NAMESPACE::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 		}
 		{
-			std::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int> mymap;
 			mymap['x']=100;
 			mymap['y']=200;
 			mymap['z']=300;
 			std::cout << "mymap contains:\n";
-			for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			for (TESTED_NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 			mymap.clear();
 			mymap['a']=1101;
 			mymap['b']=2202;
 			std::cout << "mymap contains:\n";
-			for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			for (TESTED_NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 		}
 		print_title_3("Observers");
 		// key compare
 		{
-			std::map<char,int> mymap;
-			std::map<char,int>::key_compare mycomp = mymap.key_comp();
+			TESTED_NAMESPACE::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int>::key_compare mycomp = mymap.key_comp();
 			mymap['a']=100;
 			mymap['b']=200;
 			mymap['c']=300;
 			std::cout << "mymap contains:\n";
 			char highest = mymap.rbegin()->first;     // key value of last element
-			std::map<char,int>::iterator it = mymap.begin();
+			TESTED_NAMESPACE::map<char,int>::iterator it = mymap.begin();
 			do {
 				std::cout << it->first << " => " << it->second << '\n';
 			} while ( mycomp((*it++).first, highest) );
@@ -362,8 +375,8 @@ void map_tests(int nb_of_tests)
 		print_title_3("Operations");
 		// find
 		{
-			std::map<char,int> mymap;
-			std::map<char,int>::iterator it;
+			TESTED_NAMESPACE::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int>::iterator it;
 			mymap['a']=50;
 			mymap['b']=100;
 			mymap['c']=150;
@@ -378,7 +391,7 @@ void map_tests(int nb_of_tests)
 		}
 		// count 
 		{
-			std::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int> mymap;
 			char c;
 			mymap ['a']=101;
 			mymap ['c']=202;
@@ -394,8 +407,8 @@ void map_tests(int nb_of_tests)
 		}
 		// lowerbound
 		{
-			std::map<char,int> mymap;
-			std::map<char,int>::iterator itlow,itup;
+			TESTED_NAMESPACE::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int>::iterator itlow,itup;
 			mymap['a']=20;
 			mymap['b']=40;
 			mymap['c']=60;
@@ -404,13 +417,13 @@ void map_tests(int nb_of_tests)
 			itlow=mymap.lower_bound ('b');  // itlow points to b
 			itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 			mymap.erase(itlow,itup);        // erases [itlow,itup)
-			for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			for (TESTED_NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 		}
 		// uperbound
 		{
-			std::map<char,int> mymap;
-			std::map<char,int>::iterator itlow,itup;
+			TESTED_NAMESPACE::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int>::iterator itlow,itup;
 			mymap['a']=20;
 			mymap['b']=40;
 			mymap['c']=60;
@@ -419,16 +432,16 @@ void map_tests(int nb_of_tests)
 			itlow=mymap.lower_bound ('b');  // itlow points to b
 			itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 			mymap.erase(itlow,itup);        // erases [itlow,itup)
-			for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			for (TESTED_NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 		}
 		// equal_range
 		{
-			std::map<char,int> mymap;
+			TESTED_NAMESPACE::map<char,int> mymap;
 			mymap['a']=10;
 			mymap['b']=20;
 			mymap['c']=30;
-			std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> ret;
+			TESTED_NAMESPACE::pair<TESTED_NAMESPACE::map<char,int>::iterator,TESTED_NAMESPACE::map<char,int>::iterator> ret;
 			ret = mymap.equal_range('b');
 			std::cout << "lower bound points to: ";
 			std::cout << ret.first->first << " => " << ret.first->second << '\n';
@@ -439,12 +452,12 @@ void map_tests(int nb_of_tests)
 		// get_allocator
 		{
 			int psize;
-			std::map<char,int> mymap;
-			std::pair<const char,int>* p;
+			TESTED_NAMESPACE::map<char,int> mymap;
+			TESTED_NAMESPACE::pair<const char,int>* p;
 			// allocate an array of 5 elements using mymap's allocator:
 			p=mymap.get_allocator().allocate(5);
 			// assign some values to array
-			psize = sizeof(std::map<char,int>::value_type)*5;
+			psize = sizeof(TESTED_NAMESPACE::map<char,int>::value_type)*5;
 			std::cout << "The allocated array has a size of " << psize << " bytes.\n";
 			mymap.get_allocator().deallocate(p,5);
 		}	
@@ -471,20 +484,17 @@ void stack_tests(int nb_of_tests)
 		print_title_2("Functions verifications");
 		print_title_3("constructor");
 		{
-			std::deque<int> mydeque (3,100);          // deque with 3 elements
 			std::vector<int> myvector (2,200);        // vector with 2 elements
-			std::stack<int> first;                    // empty stack
-			std::stack<int> second (mydeque);         // stack initialized to copy of deque
-			std::stack<int,std::vector<int> > third;  // empty stack using vector
-			std::stack<int,std::vector<int> > fourth (myvector);
+			TESTED_NAMESPACE::stack<int> first;                    // empty stack
+			TESTED_NAMESPACE::stack<int,std::vector<int> > third;  // empty stack using vector
+			TESTED_NAMESPACE::stack<int,std::vector<int> > fourth (myvector);
 			std::cout << "size of first: " << first.size() << '\n';
-			std::cout << "size of second: " << second.size() << '\n';
 			std::cout << "size of third: " << third.size() << '\n';
 			std::cout << "size of fourth: " << fourth.size() << '\n';
 		}
 		print_title_3("empty");
 		{
-			std::stack<int> mystack;
+			TESTED_NAMESPACE::stack<int> mystack;
 			int sum (0);
 			for (int i=1;i<=10;i++) mystack.push(i);
 			while (!mystack.empty())
@@ -496,7 +506,7 @@ void stack_tests(int nb_of_tests)
 		}
 		print_title_3("size");
 		{
-			std::stack<int> myints;
+			TESTED_NAMESPACE::stack<int> myints;
 			std::cout << "0. size: " << myints.size() << '\n';
 			for (int i=0; i<5; i++) myints.push(i);
 			std::cout << "1. size: " << myints.size() << '\n';
@@ -505,7 +515,7 @@ void stack_tests(int nb_of_tests)
 		}
 		print_title_3("top");
 		{
-			std::stack<int> mystack;
+			TESTED_NAMESPACE::stack<int> mystack;
 			mystack.push(10);
 			mystack.push(20);
 			mystack.top() -= 5;
@@ -513,7 +523,7 @@ void stack_tests(int nb_of_tests)
 		}
 		print_title_3("push");
 		{
-			std::stack<int> mystack;
+			TESTED_NAMESPACE::stack<int> mystack;
 			for (int i=0; i<5; ++i) mystack.push(i);
 			std::cout << "Popping out elements...";
 			while (!mystack.empty())
@@ -525,7 +535,7 @@ void stack_tests(int nb_of_tests)
 		}
 		print_title_3("pop");
 		{
-			std::stack<int> mystack;
+			TESTED_NAMESPACE::stack<int> mystack;
 			for (int i=0; i<5; ++i) mystack.push(i);
 			std::cout << "Popping out elements...";
 			while (!mystack.empty())
@@ -553,7 +563,7 @@ void stack_tests(int nb_of_tests)
 		}
 		print_title_3("swap (non member)");
 		{
-			std::stack<int> foo,bar;
+			TESTED_NAMESPACE::stack<int> foo,bar;
 			foo.push (10); foo.push(20); foo.push(30);
 			bar.push (111); bar.push(222);
 
@@ -584,8 +594,20 @@ void set_tests(int nb_of_tests)
 	for(int i = 0; i < nb_of_tests; i++)
 	{
 		print_title_2("Functions verifications");
-		print_title_3("operator=");
 		print_title_3("Constructor");
+		{
+			TESTED_NAMESPACE::set<int> first;                           // empty set of ints
+			int myints[]= {10,20,30,40,50};
+			TESTED_NAMESPACE::set<int> second (myints,myints+5);        // range
+			TESTED_NAMESPACE::set<int> third (second);                  // a copy of second
+			TESTED_NAMESPACE::set<int> fourth (second.begin(), second.end());  // iterator ctor.
+			print_set(first);
+			print_set(second);
+			print_set(third);
+			print_set(fourth);
+		}
+
+		print_title_3("operator=");
 		print_title_3("Capacity");
 		print_title_3("Modifiers");
 		print_title_3("Observers");
