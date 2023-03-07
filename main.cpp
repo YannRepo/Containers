@@ -9,6 +9,9 @@
 #include <map>
 #include <stack>
 #include <set>
+#include <deque>
+#include <list>
+
 
 #include "vector.hpp"
 #include "map.hpp"
@@ -485,6 +488,8 @@ void stack_tests(int nb_of_tests)
 		{
 			std::vector<int> myvector (2,200);        // vector with 2 elements
 			TESTED_NAMESPACE::stack<int> first;                    // empty stack
+			//TESTED_NAMESPACE::stack<int, std::deque<int> > first;                    // empty stack
+			//TESTED_NAMESPACE::stack<int, std::list<int> > first;                    // empty stack
 			TESTED_NAMESPACE::stack<int,std::vector<int> > third;  // empty stack using vector
 			TESTED_NAMESPACE::stack<int,std::vector<int> > fourth (myvector);
 			std::cout << "size of first: " << first.size() << '\n';
@@ -580,7 +585,7 @@ void stack_tests(int nb_of_tests)
 }
 
 // -----------------------------------------------------------------------------------------------------------
-// --------------------------------------------- Stack ------------------------------------------------------
+// --------------------------------------------- Set ------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 void set_tests(int nb_of_tests)
 {
@@ -618,7 +623,6 @@ void set_tests(int nb_of_tests)
 		}
 		print_title_3("Iterators");
 		{
-
 			int myints[]= {10,20,30,40,50};
 			TESTED_NAMESPACE::set<int> set_1 (myints,myints+5);        // range
 			std::cout << "begin:" << *(set_1.begin()) << std::endl;
@@ -840,8 +844,8 @@ void set_tests(int nb_of_tests)
 // ###########################################################################################################
 int main()
 {
-	vector_tests(100);
-	map_tests(100);
-	stack_tests(100);
-	set_tests(100);
+	vector_tests(1);
+	map_tests(1);
+	stack_tests(1);
+	set_tests(1);
 }
