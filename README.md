@@ -6,8 +6,8 @@ Containers fait partie des projets de l'école 42 et consiste à recoder les con
 - Map
 - Set
 
-Toutes les comportements des fonctions membres et non membres correspondent à ceux de la norme c++98 et sont disponible ici :
-[https://cplusplus.com/reference/stl](https://cplusplus.com/reference/stl)
+Toutes les comportements des fonctions membres et non membres correspondent à ceux de la norme c++98 et sont disponible ici : <br>
+[https://cplusplus.com/reference/stl](https://cplusplus.com/reference/stl) <br>
 [https://en.cppreference.com/w/cpp/container](https://en.cppreference.com/w/cpp/container)
 
 ## 2 - Lancement du programme
