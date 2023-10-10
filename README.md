@@ -1,4 +1,4 @@
-# containers
+# Containers
 ### 1 - Objectif du projet
 Containers fait partie des projets de l'école 42 et consiste à recoder les containers suivants en c++ :
 - Vector
