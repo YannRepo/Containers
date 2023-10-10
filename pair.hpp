@@ -30,13 +30,6 @@ namespace ft
 
 		// pas de destructor
 
-		// operator= et swap pas dans c++98
-		//pair& operator= (const pair& pr)
-		//{
-		//	this->first = pr.first;
-		//	this->second = pr.second;
-		//}
-
 	};
 
 	// -----------------------------------------------------------------------------------------------------------

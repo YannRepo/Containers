@@ -27,8 +27,6 @@ namespace ft
 		typedef typename Iterator::reference			reference;
 		typedef typename Iterator::iterator_category	iterator_category;
 	};
-
-// TBD ajouter ceux dans le standard meme si pas utilise
 }
 
 #endif

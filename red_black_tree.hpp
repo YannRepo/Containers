@@ -310,9 +310,11 @@ namespace ft
 
 		void rotate_right(node_pointer x)
 		{
-//			  (y)       (x)
-//			  /      =>   \
-//			(x)           (y)
+/*
+			  (y)       (x)
+			  /      =>   \
+  			(x)           (y)
+*/
 			node_pointer y = x->left;
 			x->left = y->right;
 			if (y->right != NULL)

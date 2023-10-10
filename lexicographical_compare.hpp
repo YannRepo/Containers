@@ -6,8 +6,7 @@ namespace ft
 	template <class InputIt1, class InputIt2>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
 	{
-		//std::cout << "lexico1" << std::endl;
-		// <=> a obj1 < obj2
+		// équivaut à obj1 < obj2
 		// return true si	: un element de 1 < un element de 2
 		// 					: il y a moins d'elements dans 1 et ils sont tous identiques a 2
 		// return false si	: tous les elements sont == 
@@ -33,8 +32,6 @@ namespace ft
 	template <class InputIt1, class InputIt2, class Compare>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Compare comp)
 	{
-		//std::cout << "lexico2" << std::endl;
-
 		while (first1 != last1)
 		{
 	        if (first2 == last2 || comp(*first2, *first1)) 
@@ -46,6 +43,5 @@ namespace ft
 	    }
 	    return (first2 != last2);
 	}
-
 }
 #endif
